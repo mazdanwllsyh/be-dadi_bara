@@ -1,1 +1,7 @@
 .vercel
+
+frontend/dist
+frontend/build
+
+backend_latest.zip
+frontend_vite_latest.zip
