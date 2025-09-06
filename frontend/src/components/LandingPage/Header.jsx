@@ -20,7 +20,6 @@ import { AppContext } from "./AppContext";
 import { UserContext } from "./UserContext";
 import ThemeSwitcher from "./ThemeSwitcher.jsx";
 import { useNavigate, useLocation } from "react-router-dom";
-import useCustomSwals from "../Dashboard/useCustomSwals.jsx";
 
 const Header = () => {
   const { data } = useContext(AppContext);
@@ -28,7 +27,6 @@ const Header = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 990);
   const navigate = useNavigate();
   const location = useLocation();
-  const { showConfirmSwal } = useCustomSwals();
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -66,14 +64,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    const isConfirmed = await showConfirmSwal(
-      "Yakin ingin Logout?",
-      "Anda akan segera melakukan Logout!"
-    );
-
-    if (isConfirmed) {
-      await logout();
-    }
+    await logout();
   };
 
   return (

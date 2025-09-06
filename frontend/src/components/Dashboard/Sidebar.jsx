@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Navbar, Nav, Button, Modal } from "react-bootstrap";
+import { Navbar, Nav, Button } from "react-bootstrap";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -23,10 +23,6 @@ const Sidebar = ({ expanded, setExpanded }) => {
   const { user, setUser, logout } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  const handleCloseModal = () => setShowLogoutModal(false);
-  const handleShowModal = () => setShowLogoutModal(true);
 
   useEffect(() => {
     localStorage.setItem("sidebarExpanded", JSON.stringify(expanded));
@@ -37,7 +33,6 @@ const Sidebar = ({ expanded, setExpanded }) => {
   };
 
   const handleSignOut = async () => {
-    handleCloseModal();
     await logout();
   };
 
@@ -135,29 +130,12 @@ const Sidebar = ({ expanded, setExpanded }) => {
         <Button
           variant="danger"
           className="w-100 my-3 d-flex align-items-center justify-content-center"
-          onClick={handleShowModal}
+          onClick={handleSignOut}
         >
           <FaSignOutAlt size={expanded ? 16 : 20} />
           {expanded && <span className="ms-2">Logout</span>}
         </Button>
       </div>
-
-      <Modal show={showLogoutModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-custom fw-bold">
-            Konfirmasi Logout
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Apakah Anda yakin ingin keluar dari sesi ini?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Batal
-          </Button>
-          <Button variant="danger" onClick={handleSignOut}>
-            Ya, Logout
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

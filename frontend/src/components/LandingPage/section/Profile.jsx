@@ -221,7 +221,9 @@ const Profile = () => {
       setOldPassword("");
       setNewPassword("");
     } catch (error) {
-      showErrorSwal(error.response?.data?.message || "Gagal memperbarui profil.");
+      showErrorSwal(
+        error.response?.data?.message || "Gagal memperbarui profil."
+      );
     } finally {
       setIsUpdating(false);
     }
@@ -246,14 +248,7 @@ const Profile = () => {
   };
 
   const handleSignOut = async () => {
-    const isConfirmed = await showConfirmSwal(
-      "Yakin ingin Logout?",
-      "Anda akan segera melakukan Logout!"
-    );
-
-    if (isConfirmed) {
-      await logout();
-    }
+    await logout();
   };
 
   if (loading) {

@@ -16,29 +16,15 @@ import { AppContext } from "../LandingPage/AppContext";
 import { UserContext } from "../LandingPage/UserContext";
 import ThemeSwitcher from "../LandingPage/ThemeSwitcher";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import instance from "../../utils/axios";
 
 const OffcanvasHeader = ({ show, handleClose, handleOffcanvasShow }) => {
   const { data } = useContext(AppContext);
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logout } = useContext(UserContext);
   const navigate = useNavigate();
   const profilePicPlaceholder = "/default-avatar.png";
 
   const handleSignOut = async () => {
-    try {
-      await instance.get("/auth/logout", {
-        withCredentials: true,
-      });
-
-      sessionStorage.clear();
-
-      setUser(null);
-      toast.success("Anda telah Logout.");
-      navigate("/");
-    } catch (error) {
-      toast.error("Logout gagal, coba lagi.");
-    }
+    await logout();
   };
 
   return (
