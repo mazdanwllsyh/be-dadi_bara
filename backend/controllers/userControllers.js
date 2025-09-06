@@ -16,7 +16,7 @@ const client = new OAuth2Client(
   "postmessage"
 );
 
-const getCookieOptions = () => {
+export const getCookieOptions = () => {
   const options = {
     httpOnly: true,
     path: "/",
@@ -31,7 +31,7 @@ const getCookieOptions = () => {
   return options;
 };
 
-const signToken = (id, role, sessionId) => {
+export const signToken = (id, role, sessionId) => {
   let expiresIn;
   switch (role) {
     case "superAdmin":

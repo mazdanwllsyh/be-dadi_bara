@@ -30,16 +30,13 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const logout = useCallback(
-    async (isConfirmed = true) => {
-      if (!isConfirmed) {
-        const confirmed = await showConfirmSwal(
-          "Yakin ingin Logout?",
-          "Anda akan segera mengakhiri sesi ini!"
-        );
-        if (!confirmed) return;
-      }
+  const logout = useCallback(async () => {
+    const isConfirmed = await showConfirmSwal(
+      "Yakin ingin Logout?",
+      "Anda akan segera mengakhiri sesi ini!"
+    );
 
+    if (isConfirmed) {
       try {
         await instance.get("/auth/logout", { withCredentials: true });
         googleLogout();
@@ -55,9 +52,8 @@ export const UserProvider = ({ children }) => {
         showErrorSwal("Gagal logout dari server, sesi frontend telah dihapus.");
         navigate("/");
       }
-    },
-    [navigate, showConfirmSwal, showErrorSwal, showInfoSwal, updateUser]
-  );
+    }
+  }, [navigate, showConfirmSwal, showErrorSwal, showInfoSwal, updateUser]);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -76,37 +72,13 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, [fetchUser]);
 
-  useEffect(() => {
-    const sessionExpiresAt = localStorage.getItem("sessionExpiresAt");
-    let timer;
-
-    if (user && sessionExpiresAt) {
-      const expiresIn = new Date(parseInt(sessionExpiresAt, 10)) - Date.now();
-      const refreshTimeout = expiresIn - 60 * 1000;
-
-      if (refreshTimeout > 0) {
-        timer = setTimeout(async () => {
-          try {
-            const response = await instance.post("/auth/refresh-token");
-            updateUser(response.data.user);
-          } catch (error) {
-            logout(true);
-          }
-        }, refreshTimeout);
-      } else {
-        logout(true);
-      }
-    }
-    return () => clearTimeout(timer);
-  }, [user, updateUser, logout]);
-
   const value = useMemo(
     () => ({
       user,
       setUser: updateUser,
       loading,
       refetchUser: fetchUser,
-      logout: () => logout(false),
+      logout,
     }),
     [user, loading, updateUser, fetchUser, logout]
   );

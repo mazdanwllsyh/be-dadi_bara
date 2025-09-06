@@ -1,51 +1,75 @@
 import jwt from "jsonwebtoken";
 import User from "../models/UserModels.js";
 import asyncHandler from "./asyncHandler.js";
+import { signToken, getCookieOptions } from "../controllers/userControllers.js";
+
+const refreshAuthToken = async (oldToken) => {
+  const decodedOld = jwt.decode(oldToken);
+  if (!decodedOld || !decodedOld.id) {
+    throw new Error("Token lama tidak valid untuk refresh.");
+  }
+
+  const user = await User.findById(decodedOld.id).select("-password");
+
+  if (!user || user.sessionTokenId !== decodedOld.sessionId) {
+    throw new Error("Sesi lama tidak valid.");
+  }
+
+  const newToken = signToken(user._id, user.role, user.sessionTokenId);
+  const decodedNew = jwt.decode(newToken);
+
+  const cookieOptions = getCookieOptions();
+  cookieOptions.expires = new Date(
+    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  );
+
+  user.sessionExpiresAt = decodedNew.exp * 1000;
+
+  return {
+    token: newToken,
+    cookieOptions: cookieOptions,
+    user: user,
+  };
+};
 
 export const protectedMiddleware = asyncHandler(async (req, res, next) => {
-  console.log("\nBACKEND: Masuk ke protectedMiddleware.");
   let token = req.cookies.jwt;
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      const user = await User.findById(decoded.id);
-      if (!user) {
-        console.log("BACKEND: User dengan ID tersebut tidak ditemukan di DB.");
-        res.status(401);
-        throw new Error("User yang terhubung dengan token ini tidak lagi ada.");
-      }
-
-      if (user.sessionTokenId !== decoded.sessionId) {
-        res.clearCookie("jwt");
-        res.status(401);
-        throw new Error(
-          "Sesi ini sudah tidak aktif karena ada Login menggunakan perangkat lain."
-        );
-      }
-
-      const userForRequest = user.toObject();
-      delete userForRequest.password;
-
-      req.user = userForRequest;
-      next();
-    } catch (error) {
-      console.error(
-        "BACKEND: Terjadi error di dalam blok try-catch middleware:",
-        error.message
-      );
-      res.status(401);
-      throw new Error("Silakan Login terlebih dahulu.");
-    }
-  } else {
-    console.log("BACKEND: Tidak ada token di cookie.");
+  if (!token) {
     res.status(401);
-    throw new Error("Not Authorized, tidak ada token.");
+    throw new Error("Tidak terotentikasi, tidak ada token.");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user || user.sessionTokenId !== decoded.sessionId) {
+      res.status(401);
+      throw new Error("Tidak terotentikasi, sesi tidak valid.");
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      try {
+        const refreshedData = await refreshAuthToken(token);
+        res.cookie("jwt", refreshedData.token, refreshedData.cookieOptions);
+        req.user = refreshedData.user;
+        next();
+      } catch (refreshError) {
+        res.status(401);
+        throw new Error("Sesi telah berakhir. Silakan login kembali.");
+      }
+    } else {
+      res.status(401);
+      throw new Error("Token tidak valid atau rusak.");
+    }
   }
 });
 
-export const adminMiddleware = asyncHandler(async (req, res, next) => {
+export const adminMiddleware = (req, res, next) => {
   if (
     req.user &&
     (req.user.role === "admin" || req.user.role === "superAdmin")
@@ -53,22 +77,22 @@ export const adminMiddleware = asyncHandler(async (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error("Not Authorized as Admin");
+    throw new Error("Tidak diizinkan, khusus Admin.");
   }
-});
+};
 
-export const superAdminMiddleware = asyncHandler(async (req, res, next) => {
+export const superAdminMiddleware = (req, res, next) => {
   if (req.user && req.user.role === "superAdmin") {
     next();
   } else {
     res.status(401);
-    throw new Error("Not Authorized as Super Admin");
+    throw new Error("Tidak diizinkan, khusus Super Admin.");
   }
-});
+};
 
 export const roleMiddleware = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!req.user || !roles.includes(req.user.role)) {
       res.status(403);
       throw new Error(
         `Akses ditolak. Peran Anda bukan ${roles.join(" atau ")}.`
