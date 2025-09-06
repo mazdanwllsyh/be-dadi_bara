@@ -1,5 +1,3 @@
-// userControllers.js (VERSI LENGKAP & DIPERBAIKI)
-
 import User from "../models/UserModels.js";
 import Member from "../models/memberModel.js";
 import jwt from "jsonwebtoken";
@@ -228,7 +226,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
         role: "user",
       });
     } else {
-      if (picture && user.profilePicture !== picture) {
+      if (picture && !user.profilePicture) {
         user.profilePicture = picture;
         await user.save();
       }
@@ -604,7 +602,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
       const optimizedBuffer = await sharp(req.file.buffer)
         .resize(500, 500, { fit: "cover" })
-        .webp({ quality: 75 }) //
+        .webp({ quality: 70 })
         .toBuffer();
 
       const result = await streamUploadFromBuffer(
