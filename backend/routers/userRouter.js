@@ -33,7 +33,7 @@ router.post("/register-verify", verifyUser);
 router.post("/resend-verification", resendVerification);
 router.post("/login", loginUser);
 router.post("/google", googleAuth);
-router.get("/logout", protectedMiddleware, logoutUser);
+router.get("/logout", logoutUser);
 
 // Rute Data Pengguna
 router.get("/getuser", protectedMiddleware, getUser);
