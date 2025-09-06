@@ -19,19 +19,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AppContext } from "./AppContext";
 import { UserContext } from "./UserContext";
 import ThemeSwitcher from "./ThemeSwitcher.jsx";
-import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
-import instance from "../../utils/axios.js";
-import { googleLogout } from "@react-oauth/google";
+import useCustomSwals from "../Dashboard/useCustomSwals.jsx";
 
 const Header = () => {
   const { data } = useContext(AppContext);
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logout } = useContext(UserContext);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 990);
   const navigate = useNavigate();
   const location = useLocation();
+  const { showConfirmSwal } = useCustomSwals();
 
-  // --- HANYA LOGIKA INI YANG KITA PAKAI UNTUK SCROLL ---
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -39,21 +37,17 @@ const Header = () => {
     const handleResize = () => setIsMobile(window.innerWidth < 990);
 
     const controlNavbar = () => {
-      // Jangan jalankan logika sembunyi jika di mobile
       if (isMobile || window.scrollY < 100) {
         setIsVisible(true);
         return;
       }
 
-      // Jika scroll ke bawah, sembunyikan header
       if (window.scrollY > lastScrollY) {
         setIsVisible(false);
       } else {
-        // Jika scroll ke atas, tampilkan header
         setIsVisible(true);
       }
 
-      // Update posisi scroll terakhir
       setLastScrollY(window.scrollY);
     };
 
@@ -66,27 +60,23 @@ const Header = () => {
       window.removeEventListener("scroll", controlNavbar);
     };
   }, [lastScrollY, isMobile]);
-  // --- AKHIR DARI LOGIKA SCROLL ---
 
   const handleProfileClick = () => {
     navigate("/profile", { state: { from: location.pathname } });
   };
 
   const handleLogout = async () => {
-    try {
-      await instance.get("/auth/logout", { withCredentials: true });
-      sessionStorage.clear();
-      setUser(null);
-      googleLogout();
-      toast.success("Logout berhasil!");
-      navigate("/");
-    } catch (error) {
-      toast.error("Logout gagal, Refresh halaman dan coba lagi.");
+    const isConfirmed = await showConfirmSwal(
+      "Yakin ingin Logout?",
+      "Anda akan segera melakukan Logout!"
+    );
+
+    if (isConfirmed) {
+      await logout();
     }
   };
 
   return (
-    // Kita gunakan `className` dinamis, BUKAN `style`
     <Navbar
       expand="lg"
       className={`navbar sticky-top ${!isVisible ? "navbar--hidden" : ""}`}

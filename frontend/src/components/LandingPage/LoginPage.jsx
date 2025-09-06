@@ -12,18 +12,19 @@ import {
 } from "react-bootstrap";
 import VerificationStep from "./VerificationStep";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AppContext } from "./AppContext";
 import { UserContext } from "./UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import instance from "../../utils/axios.js";
 import GoogleSignIn from "./GoogleSignIn.jsx";
+import useCustomSwals from "../Dashboard/useCustomSwals.jsx";
 
 const LoginPage = ({ show, handleClose, handleShowRegister }) => {
-  const { data, theme } = useContext(AppContext);
+  const { data, } = useContext(AppContext);
   const { user, setUser } = useContext(UserContext);
+  const { showSuccessSwal, showErrorSwal, showInfoSwal, } =
+    useCustomSwals();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +43,7 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    toast.success(`Login berhasil! Selamat datang, ${userData.fullName}`);
+    showSuccessSwal(`Login berhasil! Selamat datang, ${userData.fullName}`);
     handleClose();
 
     if (userData.role === "admin" || userData.role === "superAdmin") {
@@ -67,6 +68,8 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
 
     if (form.checkValidity() === false) {
       e.stopPropagation();
+
+      showInfoSwal("Email dan Password tidak boleh kosong.");
       setValidated(true);
       return;
     }
@@ -88,7 +91,7 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
     } catch (error) {
       const message =
         error.response?.data?.message || "Terjadi kesalahan. Coba Lagi Nanti!";
-      toast.error(message, { theme: theme });
+      showInfoSwal(message);
       if (message.includes("belum diverifikasi")) {
         handleClose();
         navigate("/verification", { state: { email: email } });

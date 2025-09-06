@@ -3,7 +3,17 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+console.log(
+  "DEBUG GMAIL_PASS:",
+  process.env.GMAIL_PASS
+    ? "Password Ada (terbaca)"
+    : "Password KOSONG/UNDEFINED"
+);
+
 const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, 
   service: "gmail",
   auth: {
     user: process.env.GMAIL_USER,
@@ -18,11 +28,19 @@ export const sendEmailVerify = async (email, verificationCode) => {
     subject: "Kode Verifikasi Akun Dadi Bara",
     html: `
       <body style="font-family: 'Inter', 'SF UI Display', Arial, sans-serif; background-color: #7B7B9176; margin: 0; padding: 20px; width: max-content;">
-  <table role="presentation" width="100%" style="border:0; border-spacing:0;">
+  <table role="presentation" style="width:100%; max-width:600px; border:0; border-spacing:0; border-radius: 12px; color: #ffffff; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.39);">
     <tr>
       <td align="center">
         <table role="presentation" style="width:100%; max-width:600px; border:0; border-spacing:0; background-color: #163126FF; border-radius: 12px; color: #ffffff; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.39);">
           
+          <tr>
+            <td style="padding: 20px 0; text-align: center;">
+              <a href="https://dadibara.bejalen.com/"_blank style="background-color: none; border-radius="12px">
+                <img src="https://res.cloudinary.com/dr7olcn4r/image/upload/v1757167793/logos/logo_organisasi.webp" alt="Logo Organisasi" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
+              </a>
+            </td>
+          </tr>
+
           <tr>
             <td style="padding: 0 20px; text-align: center;">
               <h1 style="color: #079393FF; margin: 0; font-family: 'SF UI Display', Arial, sans-serif;">Verifikasi Email Anda</h1>

@@ -3,14 +3,15 @@ import { Modal, Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { AppContext } from "./AppContext";
-import { toast } from "react-toastify";
 import instance from "../../utils/axios.js";
+import useCustomSwals from "../Dashboard/useCustomSwals.jsx";
 
 const VerificationPage = ({ show, handleClose }) => {
   const { data } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const { showSuccessSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
 
   const [email, setEmail] = useState(
     () =>
@@ -43,10 +44,10 @@ const VerificationPage = ({ show, handleClose }) => {
         { email, verificationCode },
         { withCredentials: true }
       );
-      toast.success("Verifikasi berhasil! Selamat datang.");
+      showSuccessSwal("Verifikasi berhasil! Selamat datang.");
       onVerifySuccess(response.data);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Verifikasi gagal.");
+      showErrorSwal(error.response?.data?.message || "Verifikasi gagal.");
     } finally {
       setIsLoading(false);
     }
@@ -60,9 +61,9 @@ const VerificationPage = ({ show, handleClose }) => {
       setResendAttempts(resendAttempts + 1);
       setCooldown(nextCooldown);
       await instance.post("/auth/resend-verification", { email });
-      toast.success("Email verifikasi baru telah dikirim.");
+      showSuccessSwal("Email verifikasi baru telah dikirim.");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal mengirim ulang.");
+      showErrorSwal(error.response?.data?.message || "Gagal mengirim ulang.");
     } finally {
       setIsLoading(false);
     }

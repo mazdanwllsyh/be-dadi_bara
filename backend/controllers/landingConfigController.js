@@ -4,15 +4,22 @@ import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import sharp from "sharp";
 
-const streamUploadFromBuffer = (buffer, folder) => {
+const streamUploadFromBuffer = (buffer, folder, public_id) => {
   return new Promise((resolve, reject) => {
-    let stream = cloudinary.uploader.upload_stream(
-      { folder: folder },
-      (error, result) => {
-        if (result) resolve(result);
-        else reject(error);
-      }
-    );
+    const options = {
+      folder: folder,
+      overwrite: true,
+      invalidate: true,
+    };
+
+    if (public_id) {
+      options.public_id = public_id;
+    }
+
+    let stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (result) resolve(result);
+      else reject(error);
+    });
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
@@ -56,10 +63,14 @@ export const updateLandingConfig = asyncHandler(async (req, res) => {
     }
 
     const optimizedBuffer = await sharp(files.logoDadiBara[0].buffer)
-      .webp({ quality: 90 })
+      .webp({ quality: 85 })
       .toBuffer();
 
-    const result = await streamUploadFromBuffer(optimizedBuffer, "logos");
+    const result = await streamUploadFromBuffer(
+      optimizedBuffer,
+      "logos",
+      "logo_organisasi"
+    );
     config.logoDadiBara = result.secure_url;
   }
 
@@ -72,7 +83,11 @@ export const updateLandingConfig = asyncHandler(async (req, res) => {
       .webp({ quality: 80 })
       .toBuffer();
 
-    const result = await streamUploadFromBuffer(optimizedBuffer, "logos");
+    const result = await streamUploadFromBuffer(
+      optimizedBuffer,
+      "logos",
+      "logo_desa"
+    );
     config.logoDesaBaru = result.secure_url;
   }
 

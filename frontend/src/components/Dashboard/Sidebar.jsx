@@ -17,12 +17,10 @@ import { FaRupiahSign } from "react-icons/fa6";
 import { AppContext } from "../LandingPage/AppContext";
 import { UserContext } from "../LandingPage/UserContext";
 import ThemeSwitcher from "../LandingPage/ThemeSwitcher";
-import { toast } from "react-toastify";
-import instance from "../../utils/axios";
 
 const Sidebar = ({ expanded, setExpanded }) => {
   const { data } = useContext(AppContext);
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logout } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -40,20 +38,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
 
   const handleSignOut = async () => {
     handleCloseModal();
-
-    try {
-      await instance.get("/auth/logout", {
-        withCredentials: true,
-      });
-
-      sessionStorage.clear();
-      setUser(null);
-      toast.success("Anda telah berhasil Logout.");
-      navigate("/");
-    } catch (error) {
-      toast.error("Logout gagal, silakan coba lagi.");
-      console.error("Logout error:", error);
-    }
+    await logout();
   };
 
   const menuItems = [
@@ -159,7 +144,9 @@ const Sidebar = ({ expanded, setExpanded }) => {
 
       <Modal show={showLogoutModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title className="text-custom fw-bold">Konfirmasi Logout</Modal.Title>
+          <Modal.Title className="text-custom fw-bold">
+            Konfirmasi Logout
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>Apakah Anda yakin ingin keluar dari sesi ini?</Modal.Body>
         <Modal.Footer>

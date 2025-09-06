@@ -13,11 +13,11 @@ import { UserContext } from "../UserContext";
 import { FaStar } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { toast } from "react-toastify";
 import moment from "moment";
 import "moment/locale/id";
 import { useNavigate, useLocation } from "react-router-dom";
 import instance from "../../../utils/axios";
+import useCustomSwals from "../../Dashboard/useCustomSwals";
 
 moment.locale("id");
 const Testimonials = () => {
@@ -25,6 +25,7 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { showSuccessSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
   const [isLoading, setIsLoading] = useState(true);
   const [newTestimonial, setNewTestimonial] = useState({
     rating: 0,
@@ -44,7 +45,7 @@ const Testimonials = () => {
         const response = await instance.get("/testimonials");
         setTestimonials(response.data.testimonials);
       } catch (error) {
-        toast.error("Gagal memuat data testimoni.");
+        showErrorSwal("Gagal memuat data testimoni.");
       } finally {
         setIsLoading(false);
       }
@@ -86,7 +87,7 @@ const Testimonials = () => {
   const handleSubmitTestimonial = async (e) => {
     e.preventDefault();
     if (!newTestimonial.message || newTestimonial.rating === 0) {
-      return toast.error("Rating dan pesan tidak boleh kosong.");
+      return showInfoSwal("Rating dan pesan tidak boleh kosong.");
     }
     try {
       const response = await instance.post(
@@ -98,7 +99,7 @@ const Testimonials = () => {
       setTestimonials([newlySubmittedTestimonial, ...testimonials]);
       setCurrentIndex(0); //
 
-      toast.success("Testimoni berhasil dikirim! Terima kasih.");
+      showSuccessSwal("Testimoni berhasil dikirim! Terima kasih.");
       setShowForm(false);
       setNewTestimonial({ rating: 0, message: "" });
 
@@ -110,7 +111,7 @@ const Testimonials = () => {
       });
       setUser(userResponse.data.user);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal mengirim testimoni.");
+      showErrorSwal(error.response?.data?.message || "Gagal mengirim testimoni.");
     } finally {
       setIsSubmitting(false);
     }
@@ -295,11 +296,11 @@ const Testimonials = () => {
                             as="textarea"
                             name="message"
                             rows={3}
-                            placeholder="Keren sih ini . . . (Tambahin Sendiri)"
+                            defaultValue="Keren sih ini . . . (Tambahin Sendiri)"
                             value={newTestimonial.message}
                             onChange={handleInputChange}
                             required
-                            minLength={30}
+                            minLength={50}
                           />
                         </Form.Group>
                         <Button

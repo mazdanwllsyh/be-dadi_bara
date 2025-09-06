@@ -1,25 +1,20 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DADI BARA",
+  "name": "Karang Taruna DADI BARA",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_192,w_192/logos/logo_organisasi.webp",
+      "type": "image/webp",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
-      "type": "image/png",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_512,w_512/logos/logo_organisasi.webp",
+      "type": "image/webp",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#163126",
   "background_color": "#ffffff"
 }

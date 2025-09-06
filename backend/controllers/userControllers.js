@@ -28,13 +28,11 @@ const getCookieOptions = () => {
   } else {
     options.sameSite = "lax";
   }
-
   return options;
 };
 
 const signToken = (id, role, sessionId) => {
   let expiresIn;
-
   switch (role) {
     case "superAdmin":
       expiresIn = "25m";
@@ -48,24 +46,19 @@ const signToken = (id, role, sessionId) => {
     default:
       expiresIn = "40m";
   }
-
-  return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, {
-    expiresIn: expiresIn,
-  });
+  return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, { expiresIn });
 };
 
 const createSendResToken = async (user, statusCode, res) => {
   const newSessionId = crypto.randomBytes(16).toString("hex");
-
   user.sessionTokenId = newSessionId;
   await user.save();
 
   const token = signToken(user._id, user.role, newSessionId);
-
   const decodedToken = jwt.decode(token);
   const sessionExpiresAt = decodedToken.exp * 1000;
 
-  const cookieOptions = getCookieOptions();
+  const cookieOptions = getCookieOptions(); 
   cookieOptions.expires = new Date(
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   );
@@ -77,15 +70,12 @@ const createSendResToken = async (user, statusCode, res) => {
   delete userResponse.password;
   userResponse.sessionExpiresAt = sessionExpiresAt;
 
-  res.status(statusCode).json({
-    user: userResponse,
-  });
+  res.status(statusCode).json({ user: userResponse });
 };
 
 export const logoutUser = (req, res) => {
-  const cookieOptions = getCookieOptions();
+  const cookieOptions = getCookieOptions(); 
   cookieOptions.expires = new Date(0);
-
   res.cookie("jwt", "loggedout", cookieOptions);
   res.status(200).json({ message: "Logout berhasil" });
 };
@@ -96,22 +86,18 @@ export const deleteMyAccount = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Password wajib diisi untuk menghapus akun.");
   }
-
   const user = await User.findById(req.user._id);
-
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     res.status(401);
     throw new Error("Password yang Anda masukkan salah.");
   }
-
   if (user.cloudinaryId) {
     await cloudinary.uploader.destroy(user.cloudinaryId);
   }
-
   await user.deleteOne();
 
-  const cookieOptions = getCookieOptions();
+  const cookieOptions = getCookieOptions(); 
   cookieOptions.expires = new Date(0);
   res.cookie("jwt", "loggedout", cookieOptions);
 

@@ -25,19 +25,13 @@ import { UserContext } from "../UserContext.jsx";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import instance from "../../../utils/axios.js";
-import { googleLogout } from "@react-oauth/google";
 import { AppContext } from "../AppContext.jsx";
 import useCustomSwals from "../../Dashboard/useCustomSwals.jsx";
 
 const Profile = () => {
-  const { user, setUser, loading } = useContext(UserContext);
-  const {
-    showConfirmSwal,
-    showSuccessSwal,
-    showErrorSwal,
-    showInfoSwal,
-    showQuestionSwal,
-  } = useCustomSwals();
+  const { user, setUser, loading, logout } = useContext(UserContext);
+  const { showConfirmSwal, showSuccessSwal, showErrorSwal, showInfoSwal } =
+    useCustomSwals();
 
   const { theme } = useContext(AppContext);
   const navigate = useNavigate();
@@ -227,7 +221,7 @@ const Profile = () => {
       setOldPassword("");
       setNewPassword("");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal memperbarui profil.");
+      showErrorSwal(error.response?.data?.message || "Gagal memperbarui profil.");
     } finally {
       setIsUpdating(false);
     }
@@ -258,23 +252,7 @@ const Profile = () => {
     );
 
     if (isConfirmed) {
-      try {
-        await instance.get("/auth/logout", {
-          withCredentials: true,
-        });
-
-        sessionStorage.clear();
-
-        setUser(null);
-        googleLogout();
-        showInfoSwal("Anda telah berhasil Logout.");
-        navigate("/");
-      } catch (error) {
-        showErrorSwal("Logout gagal, coba lagi.");
-      }
-      setTimeout(() => {
-        window.location.reload();
-      }, 1050);
+      await logout();
     }
   };
 
