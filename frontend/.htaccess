@@ -25,6 +25,8 @@
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
+  
+  Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://accounts.google.com; connect-src 'self' https://be-dadi-bara.vercel.app https://accounts.google.com https://res.cloudinary.com; frame-src https://accounts.google.com https://www.google.com https://res.cloudinary.com; img-src 'self' https://res.cloudinary.com data:; object-src 'self' https://res.cloudinary.com; worker-src 'self' blob:;"
 </IfModule>
 
 <IfModule mod_filter.c>
