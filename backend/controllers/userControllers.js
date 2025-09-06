@@ -9,7 +9,6 @@ import Testimonial from "../models/TestimonialModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import sharp from "sharp";
-import axios from "axios";
 
 const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
@@ -26,7 +25,6 @@ const getCookieOptions = () => {
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
     options.sameSite = "None";
-    options.domain = "dadibara.bejalen.com";
   } else {
     options.sameSite = "lax";
   }
@@ -39,16 +37,16 @@ const signToken = (id, role, sessionId) => {
 
   switch (role) {
     case "superAdmin":
-      expiresIn = "30m";
+      expiresIn = "25m";
       break;
     case "admin":
-      expiresIn = "50m";
+      expiresIn = "45m";
       break;
     case "user":
-      expiresIn = "110m";
+      expiresIn = "85m";
       break;
     default:
-      expiresIn = "40m";
+      expiresIn = "50m";
   }
 
   return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, {
@@ -72,13 +70,6 @@ const createSendResToken = async (user, statusCode, res) => {
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   );
 
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions.secure = true;
-    cookieOptions.sameSite = "None";
-  } else {
-    cookieOptions.sameSite = "lax";
-  }
-
   res.cookie("jwt", token, cookieOptions);
   user.password = undefined;
 
@@ -90,6 +81,44 @@ const createSendResToken = async (user, statusCode, res) => {
     user: userResponse,
   });
 };
+
+export const logoutUser = (req, res) => {
+  const cookieOptions = getCookieOptions();
+  cookieOptions.expires = new Date(0);
+
+  res.cookie("jwt", "loggedout", cookieOptions);
+  res.status(200).json({ message: "Logout berhasil" });
+};
+
+export const deleteMyAccount = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  if (!password) {
+    res.status(400);
+    throw new Error("Password wajib diisi untuk menghapus akun.");
+  }
+
+  const user = await User.findById(req.user._id);
+
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch) {
+    res.status(401);
+    throw new Error("Password yang Anda masukkan salah.");
+  }
+
+  if (user.cloudinaryId) {
+    await cloudinary.uploader.destroy(user.cloudinaryId);
+  }
+
+  await user.deleteOne();
+
+  const cookieOptions = getCookieOptions();
+  cookieOptions.expires = new Date(0);
+  res.cookie("jwt", "loggedout", cookieOptions);
+
+  res
+    .status(200)
+    .json({ message: "Akun Anda telah berhasil dihapus secara permanen." });
+});
 
 const streamUploadFromBuffer = (buffer, folderName) => {
   return new Promise((resolve, reject) => {
@@ -428,7 +457,7 @@ export const createAdmin = asyncHandler(async (req, res) => {
   const username = email.split("@")[0];
   if (username.length < 8) {
     res.status(400);
-    throw new Error("Bagian nama email (sebelum @) minimal harus 8 karakter.");
+    throw new Error("Bagian nama admin (sebelum @) minimal harus 8 karakter.");
   }
 
   const emailExists = await User.findOne({ email });
@@ -622,52 +651,6 @@ export const deleteUserByAdmin = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Pengguna tidak ditemukan atau bukan role user");
   }
-});
-
-export const logoutUser = (req, res) => {
-  const cookieOptions = getCookieOptions();
-  cookieOptions.expires = new Date(0);
-
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions.secure = true;
-    cookieOptions.sameSite = "None";
-  }
-
-  res.cookie("jwt", "loggedout", cookieOptions);
-
-  res.status(200).json({ message: "Logout berhasil" });
-};
-
-export const deleteMyAccount = asyncHandler(async (req, res) => {
-  const { password } = req.body;
-  if (!password) {
-    res.status(400);
-    throw new Error("Password wajib diisi untuk menghapus akun.");
-  }
-
-  const user = await User.findById(req.user._id);
-
-  const isMatch = await user.comparePassword(password);
-  if (!isMatch) {
-    res.status(401);
-    throw new Error("Password yang Anda masukkan salah.");
-  }
-
-  if (user.cloudinaryId) {
-    await cloudinary.uploader.destroy(user.cloudinaryId);
-  }
-
-  await user.deleteOne();
-
-  res.cookie("jwt", "loggedout", {
-    httpOnly: true,
-    expires: new Date(0),
-    path: "/",
-  });
-
-  res
-    .status(200)
-    .json({ message: "Akun Anda telah berhasil dihapus secara permanen." });
 });
 
 export const deleteSuperAdmin = asyncHandler(async (req, res) => {
