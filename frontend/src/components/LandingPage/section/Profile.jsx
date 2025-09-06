@@ -31,7 +31,13 @@ import useCustomSwals from "../../Dashboard/useCustomSwals.jsx";
 
 const Profile = () => {
   const { user, setUser, loading } = useContext(UserContext);
-  const { showConfirmSwal, showSuccessSwal, showErrorSwal, showInfoSwal, showQuestionSwal } = useCustomSwals();
+  const {
+    showConfirmSwal,
+    showSuccessSwal,
+    showErrorSwal,
+    showInfoSwal,
+    showQuestionSwal,
+  } = useCustomSwals();
 
   const { theme } = useContext(AppContext);
   const navigate = useNavigate();
@@ -246,23 +252,30 @@ const Profile = () => {
   };
 
   const handleSignOut = async () => {
-    try {
-      await instance.get("/auth/logout", {
-        withCredentials: true,
-      });
+    const isConfirmed = await showConfirmSwal(
+      "Yakin ingin Logout?",
+      "Anda akan segera melakukan Logout!"
+    );
 
-      sessionStorage.clear();
+    if (isConfirmed) {
+      try {
+        await instance.get("/auth/logout", {
+          withCredentials: true,
+        });
 
-      setUser(null);
-      googleLogout();
-      showInfoSwal("Anda telah Logout.");
-      navigate("/");
-    } catch (error) {
-      showErrorSwal("Logout gagal, coba lagi.");
+        sessionStorage.clear();
+
+        setUser(null);
+        googleLogout();
+        showInfoSwal("Anda telah berhasil Logout.");
+        navigate("/");
+      } catch (error) {
+        showErrorSwal("Logout gagal, coba lagi.");
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 1050);
     }
-    setTimeout(() => {
-      window.location.reload();
-    }, 1050);
   };
 
   if (loading) {

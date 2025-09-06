@@ -13,11 +13,14 @@ const GoogleSignIn = ({ onLoginSuccess, handleClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const login = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
+    flow: "auth-code",
+
+    onSuccess: async (codeResponse) => {
       setIsLoading(true);
       try {
+        // Kirim 'code' ke backend
         const response = await instance.post("/auth/google", {
-          token: tokenResponse.access_token,
+          code: codeResponse.code,
         });
 
         if (onLoginSuccess) {
@@ -31,8 +34,8 @@ const GoogleSignIn = ({ onLoginSuccess, handleClose }) => {
     },
     onError: () => {
       toast.error("Login Google gagal.");
+      setIsLoading(false);
     },
-    scope: "openid email profile",
   });
 
   return (
@@ -41,8 +44,23 @@ const GoogleSignIn = ({ onLoginSuccess, handleClose }) => {
       onClick={() => login()}
       disabled={isLoading}
     >
-      {isLoading ? <Spinner size="sm" className="me-2" /> : <GoogleIcon />}
-      <span className="ms-2">Lanjutkan dengan Google</span>
+      {isLoading ? (
+        <>
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+          <span className="ms-2">Memproses...</span>
+        </>
+      ) : (
+        <>
+          <GoogleIcon />
+          <span className="ms-2">Lanjutkan dengan Google</span>
+        </>
+      )}
     </Button>
   );
 };

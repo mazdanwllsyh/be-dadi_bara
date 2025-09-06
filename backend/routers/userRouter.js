@@ -16,8 +16,7 @@ import {
   deleteUserByAdmin,
   logoutUser,
   updateUserProfile,
-  googleLogin,
-  googleOneTapLogin,
+  googleAuth,
 } from "../controllers/userControllers.js";
 import {
   protectedMiddleware,
@@ -33,8 +32,7 @@ router.post("/register-request", registerRequest);
 router.post("/register-verify", verifyUser);
 router.post("/resend-verification", resendVerification);
 router.post("/login", loginUser);
-router.post("/google", googleLogin);
-router.post("/google-onetap", googleOneTapLogin);
+router.post("/google", googleAuth);
 router.get("/logout", protectedMiddleware, logoutUser);
 
 // Rute Data Pengguna

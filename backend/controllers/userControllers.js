@@ -11,23 +11,27 @@ import streamifier from "streamifier";
 import sharp from "sharp";
 import axios from "axios";
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET, 
+  "postmessage" 
+);
 
 const signToken = (id, role, sessionId) => {
   let expiresIn;
 
   switch (role) {
     case "superAdmin":
-      expiresIn = "25m";
+      expiresIn = "30m";
       break;
     case "admin":
-      expiresIn = "45m";
+      expiresIn = "50m";
       break;
     case "user":
-      expiresIn = "90m";
+      expiresIn = "110m";
       break;
     default:
-      expiresIn = "60m";
+      expiresIn = "40m";
   }
 
   return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, {
@@ -135,98 +139,63 @@ export const registerRequest = asyncHandler(async (req, res) => {
   });
 });
 
-export const googleLogin = asyncHandler(async (req, res) => {
-  const { token } = req.body;
-
-  if (!token) {
-    res.status(400);
-    throw new Error("Token kredensial Google tidak ada.");
-  }
+export const googleAuth = asyncHandler(async (req, res) => {
+  const { credential, code } = req.body;
+  let idToken;
 
   try {
-    const response = await axios.get(
-      "https://www.googleapis.com/oauth2/v3/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    const { email, given_name, family_name, picture } = response.data;
-
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      const role = "user";
-
-      user = await User.create({
-        fullName: `${given_name} ${family_name || ""}`.trim(),
-        email,
-        password: Math.random().toString(36).slice(-8),
-        isVerified: true,
-        profilePicture: picture,
-        role: role,
-      });
+    if (code) {
+      const { tokens } = await client.getToken(code);
+      idToken = tokens.id_token;
+    } else if (credential) {
+      idToken = credential;
+    } else {
+      res.status(400);
+      throw new Error("Kredensial Google atau Authorization Code tidak ada.");
     }
 
-    const existingTestimonial = await Testimonial.findOne({ user: user._id });
+    if (!idToken) {
+      res.status(400);
+      throw new Error("Gagal mendapatkan ID Token dari Google.");
+    }
 
-    const userForFrontend = user.toObject();
-    userForFrontend.hasSubmittedTestimonial = !!existingTestimonial;
-
-    createSendResToken(user, 200, res);
-  } catch (error) {
-    res.status(400);
-    throw new Error("Token Google tidak valid atau sudah kedaluwarsa.");
-  }
-});
-
-export const googleOneTapLogin = asyncHandler(async (req, res) => {
-  const { credential } = req.body;
-
-  if (!credential) {
-    res.status(400);
-    throw new Error("Kredensial Google One-Tap tidak ada.");
-  }
-
-  try {
     const ticket = await client.verifyIdToken({
-      idToken: credential,
+      idToken: idToken,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
-
-    const { email, given_name, family_name, picture } = payload;
+    const { email, name, picture } = payload;
 
     if (!email) {
       res.status(400);
-      throw new Error("Tidak dapat mengambil email dari token Google.");
+      throw new Error("Tidak dapat mengambil email dari kredensial Google.");
     }
 
     let user = await User.findOne({ email });
 
     if (!user) {
-      const role = "user";
-
       user = await User.create({
-        fullName: `${given_name} ${family_name || ""}`.trim(),
+        fullName: name,
         email,
         password: Math.random().toString(36).slice(-8),
         isVerified: true,
         profilePicture: picture,
-        role: role,
+        role: "user",
       });
+    } else {
+      if (picture && user.profilePicture !== picture) {
+        user.profilePicture = picture;
+        await user.save();
+      }
     }
 
     const existingTestimonial = await Testimonial.findOne({ user: user._id });
-
     const userForFrontend = user.toObject();
     userForFrontend.hasSubmittedTestimonial = !!existingTestimonial;
 
     createSendResToken(user, 200, res);
   } catch (error) {
-    console.error("Error pada Google One Tap Login:", error);
+    console.error("Error verifikasi Google Auth:", error);
     res.status(400);
     throw new Error("Kredensial Google tidak valid atau sudah kedaluwarsa.");
   }
@@ -677,7 +646,7 @@ export const deleteMyAccount = asyncHandler(async (req, res) => {
     await cloudinary.uploader.destroy(user.cloudinaryId);
   }
 
-  await user.deleteOne(); 
+  await user.deleteOne();
 
   res.cookie("jwt", "loggedout", {
     httpOnly: true,

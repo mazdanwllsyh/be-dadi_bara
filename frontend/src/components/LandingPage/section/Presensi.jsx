@@ -204,7 +204,7 @@ const Presensi = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center my-5 vh-100">
+      <div className="text-center d-flex justify-content-center align-items-center my-5 vh-100">
         <Spinner />
       </div>
     );

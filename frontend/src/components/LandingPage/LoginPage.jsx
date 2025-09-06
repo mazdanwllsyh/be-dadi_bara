@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Button,
@@ -20,16 +20,17 @@ import { UserContext } from "./UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import instance from "../../utils/axios.js";
 import GoogleSignIn from "./GoogleSignIn.jsx";
-import GoogleOneTap from "./GoogleOneTap.jsx";
 
 const LoginPage = ({ show, handleClose, handleShowRegister }) => {
   const { data, theme } = useContext(AppContext);
+  const { user, setUser } = useContext(UserContext);
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -37,7 +38,6 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
 
   const [showVerification, setShowVerification] = useState(false);
 
-  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLoginSuccess = (userData) => {
@@ -97,6 +97,56 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    if (show && !user) {
+      if ("credentials" in navigator && navigator.credentials.get) {
+        const handleAutoLogin = async () => {
+          setIsGoogleLoading(true);
+          try {
+            const credential = await navigator.credentials.get({
+              signal: controller.signal,
+              identity: {
+                providers: [
+                  {
+                    configURL: "https://accounts.google.com/gsi/fedcm.json",
+                    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+                  },
+                ],
+              },
+              mediation: "optional",
+            });
+
+            if (credential && credential.token) {
+              const response = await instance.post("/auth/google", {
+                credential: credential.token,
+              });
+              handleLoginSuccess(response.data.user);
+            }
+          } catch (error) {
+            if (error.name === "AbortError") {
+              console.log(
+                "FedCM dibatalkan karena pengguna login dengan cara lain."
+              );
+            } else {
+              console.log(
+                "FedCM auto-login dilewati atau dibatalkan oleh pengguna."
+              );
+            }
+          } finally {
+            setIsGoogleLoading(false);
+          }
+        };
+
+        handleAutoLogin();
+      }
+    }
+    return () => {
+      controller.abort();
+    };
+  }, [show, user]);
 
   const handleVerificationSuccess = (data) => {
     setUser(data.user);
@@ -200,7 +250,6 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
               </div>
 
               <GoogleSignIn onLoginSuccess={handleLoginSuccess} />
-              {show && <GoogleOneTap onLoginSuccess={handleLoginSuccess} />}
 
               <Row className="justify-content-center align-items-baseline mt-3 section-subtitle">
                 <Col xs="auto" className="pe-1">
