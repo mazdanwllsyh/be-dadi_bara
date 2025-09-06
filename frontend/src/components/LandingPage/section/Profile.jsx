@@ -27,9 +27,11 @@ import { toast, ToastContainer } from "react-toastify";
 import instance from "../../../utils/axios.js";
 import { googleLogout } from "@react-oauth/google";
 import { AppContext } from "../AppContext.jsx";
+import useCustomSwals from "../../Dashboard/useCustomSwals.jsx";
 
 const Profile = () => {
   const { user, setUser, loading } = useContext(UserContext);
+  const { showConfirmSwal, showSuccessSwal, showErrorSwal, showInfoSwal, showQuestionSwal } = useCustomSwals();
 
   const { theme } = useContext(AppContext);
   const navigate = useNavigate();
@@ -69,12 +71,12 @@ const Profile = () => {
         file.type !== "image/png" &&
         file.type !== "image/webp"
       ) {
-        toast.error("Format file harus .jpg, .png, atau .webp!");
+        showInfoSwal("Format file harus .jpg, .png, atau .webp!");
         return;
       }
 
       if (file.size > 4 * 1024 * 1024) {
-        toast.error("Ukuran gambar tidak boleh lebih dari 4MB!");
+        showErrorSwal("Ukuran gambar tidak boleh lebih dari 4MB!");
         return;
       }
       setImageFile(file);
@@ -142,7 +144,7 @@ const Profile = () => {
 
   const handleDeleteAccount = async () => {
     if (!deletePassword) {
-      return toast.error("Harap masukkan password Anda untuk konfirmasi.");
+      return showErrorSwal("Harap masukkan password Anda untuk konfirmasi.");
     }
     setIsUpdating(true); // Gunakan state loading yang sama
     try {
@@ -150,11 +152,11 @@ const Profile = () => {
         data: { password: deletePassword },
         withCredentials: true,
       });
-      toast.success(response.data.message);
+      showSuccessSwal(response.data.message);
       setUser(null); // Logout user
       navigate("/"); // Arahkan ke beranda
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal menghapus akun.");
+      showErrorSwal(error.response?.data?.message || "Gagal menghapus akun.");
     } finally {
       setIsUpdating(false);
       setShowDeleteModal(false);
@@ -169,11 +171,11 @@ const Profile = () => {
 
     if (oldPassword || newPassword) {
       if (!oldPassword || !newPassword) {
-        toast.error("Sandi Lama dan Sandi Baru harus diisi!");
+        showErrorSwal("Sandi Lama dan Sandi Baru harus diisi!");
         return;
       }
       if (newPassword.length < 8) {
-        toast.error("Kata sandi baru minimal 8 karakter!");
+        showInfoSwal("Kata sandi baru minimal 8 karakter!");
         return;
       }
       updatePayload.oldPassword = oldPassword;
@@ -253,10 +255,10 @@ const Profile = () => {
 
       setUser(null);
       googleLogout();
-      toast.success("Anda telah Logout.");
+      showInfoSwal("Anda telah Logout.");
       navigate("/");
     } catch (error) {
-      toast.error("Logout gagal, coba lagi.");
+      showErrorSwal("Logout gagal, coba lagi.");
     }
     setTimeout(() => {
       window.location.reload();
