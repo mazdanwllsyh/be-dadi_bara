@@ -16,13 +16,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const {
-    showConfirmSwal,
-    showSuccessSwal,
-    showErrorSwal,
-    showInfoSwal,
-    showQuestionSwal,
-  } = useCustomSwals();
+  const { showConfirmSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
 
   const updateUser = useCallback((newUserData) => {
     if (newUserData) {
@@ -35,6 +29,35 @@ export const UserProvider = ({ children }) => {
       localStorage.removeItem("sessionExpiresAt");
     }
   }, []);
+
+  const logout = useCallback(
+    async (isConfirmed = true) => {
+      if (!isConfirmed) {
+        const confirmed = await showConfirmSwal(
+          "Yakin ingin Logout?",
+          "Anda akan segera mengakhiri sesi ini!"
+        );
+        if (!confirmed) return;
+      }
+
+      try {
+        await instance.get("/auth/logout", { withCredentials: true });
+        googleLogout();
+        sessionStorage.clear();
+        updateUser(null);
+        showInfoSwal("Anda telah berhasil logout.");
+        navigate("/");
+      } catch (error) {
+        console.error("Logout error:", error);
+        googleLogout();
+        sessionStorage.clear();
+        updateUser(null);
+        showErrorSwal("Gagal logout dari server, sesi frontend telah dihapus.");
+        navigate("/");
+      }
+    },
+    [navigate, showConfirmSwal, showErrorSwal, showInfoSwal, updateUser]
+  );
 
   const fetchUser = useCallback(async () => {
     try {
@@ -53,59 +76,28 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, [fetchUser]);
 
-  const logout = async () => {
-    const isConfirmed = await showConfirmSwal(
-      "Yakin ingin Logout?",
-      "Anda akan segera mengakhiri sesi ini!"
-    );
-
-    if (isConfirmed) {
-      try {
-        await instance.get("/auth/logout", { withCredentials: true });
-        googleLogout();
-        sessionStorage.clear();
-        updateUser(null);
-        showInfoSwal("Anda telah berhasil logout.");
-        navigate("/");
-      } catch (error) {
-        console.error("Logout error:", error);
-        googleLogout();
-        sessionStorage.clear();
-        updateUser(null);
-        showErrorSwal("Gagal logout dari server, sesi frontend telah dihapus.");
-        navigate("/");
-      }
-    }
-  };
-
   useEffect(() => {
     const sessionExpiresAt = localStorage.getItem("sessionExpiresAt");
+    let timer;
+
     if (user && sessionExpiresAt) {
       const expiresIn = new Date(parseInt(sessionExpiresAt, 10)) - Date.now();
       const refreshTimeout = expiresIn - 60 * 1000;
 
       if (refreshTimeout > 0) {
-        const timer = setTimeout(async () => {
+        timer = setTimeout(async () => {
           try {
-            console.log("Sesi akan habis, mencoba refresh token...");
             const response = await instance.post("/auth/refresh-token");
             updateUser(response.data.user);
-            console.log("Token berhasil di-refresh.");
           } catch (error) {
-            console.error(
-              "Gagal refresh token, melakukan logout paksa.",
-              error
-            );
-            logout();
+            logout(true);
           }
         }, refreshTimeout);
-
-        return () => clearTimeout(timer);
       } else {
-        console.log("Token sudah kedaluwarsa, melakukan logout.");
-        logout();
+        logout(true);
       }
     }
+    return () => clearTimeout(timer);
   }, [user, updateUser, logout]);
 
   const value = useMemo(
@@ -114,7 +106,7 @@ export const UserProvider = ({ children }) => {
       setUser: updateUser,
       loading,
       refetchUser: fetchUser,
-      logout,
+      logout: () => logout(false),
     }),
     [user, loading, updateUser, fetchUser, logout]
   );

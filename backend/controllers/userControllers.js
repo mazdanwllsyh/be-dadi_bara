@@ -49,16 +49,27 @@ const signToken = (id, role, sessionId) => {
   return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, { expiresIn });
 };
 
-const createSendResToken = async (user, statusCode, res) => {
-  const newSessionId = crypto.randomBytes(16).toString("hex");
-  user.sessionTokenId = newSessionId;
-  await user.save();
+const createSendResToken = async (
+  user,
+  statusCode,
+  res,
+  isRefreshToken = false
+) => {
+  let token;
 
-  const token = signToken(user._id, user.role, newSessionId);
+  if (!isRefreshToken) {
+    const newSessionId = crypto.randomBytes(16).toString("hex");
+    user.sessionTokenId = newSessionId;
+    await user.save();
+    token = signToken(user._id, user.role, newSessionId);
+  } else {
+    token = signToken(user._id, user.role, user.sessionTokenId);
+  }
+
   const decodedToken = jwt.decode(token);
   const sessionExpiresAt = decodedToken.exp * 1000;
 
-  const cookieOptions = getCookieOptions(); 
+  const cookieOptions = getCookieOptions();
   cookieOptions.expires = new Date(
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   );
@@ -74,7 +85,7 @@ const createSendResToken = async (user, statusCode, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  const cookieOptions = getCookieOptions(); 
+  const cookieOptions = getCookieOptions();
   cookieOptions.expires = new Date(0);
   res.cookie("jwt", "loggedout", cookieOptions);
   res.status(200).json({ message: "Logout berhasil" });
@@ -97,7 +108,7 @@ export const deleteMyAccount = asyncHandler(async (req, res) => {
   }
   await user.deleteOne();
 
-  const cookieOptions = getCookieOptions(); 
+  const cookieOptions = getCookieOptions();
   cookieOptions.expires = new Date(0);
   res.cookie("jwt", "loggedout", cookieOptions);
 

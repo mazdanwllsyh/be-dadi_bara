@@ -35,7 +35,7 @@ router.post("/login", loginUser);
 router.post("/google", googleAuth);
 router.get("/logout", logoutUser);
 router.post("/refresh-token", protectedMiddleware, (req, res) => {
-  createSendResToken(req.user, 200, res);
+  createSendResToken(req.user, 200, res, true);
 });
 
 // Rute Data Pengguna
