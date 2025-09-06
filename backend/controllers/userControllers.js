@@ -1,3 +1,5 @@
+// userControllers.js (VERSI LENGKAP & DIPERBAIKI)
+
 import User from "../models/UserModels.js";
 import Member from "../models/memberModel.js";
 import jwt from "jsonwebtoken";
@@ -46,7 +48,7 @@ const signToken = (id, role, sessionId) => {
       expiresIn = "85m";
       break;
     default:
-      expiresIn = "50m";
+      expiresIn = "40m";
   }
 
   return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, {
@@ -457,7 +459,7 @@ export const createAdmin = asyncHandler(async (req, res) => {
   const username = email.split("@")[0];
   if (username.length < 8) {
     res.status(400);
-    throw new Error("Bagian nama admin (sebelum @) minimal harus 8 karakter.");
+    throw new Error("Bagian nama email (sebelum @) minimal harus 8 karakter.");
   }
 
   const emailExists = await User.findOne({ email });
