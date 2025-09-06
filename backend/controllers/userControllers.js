@@ -13,9 +13,26 @@ import axios from "axios";
 
 const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET, 
-  "postmessage" 
+  process.env.GOOGLE_CLIENT_SECRET,
+  "postmessage"
 );
+
+const getCookieOptions = () => {
+  const options = {
+    httpOnly: true,
+    path: "/",
+  };
+
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+    options.sameSite = "None";
+    options.domain = "dadibara.bejalen.com";
+  } else {
+    options.sameSite = "lax";
+  }
+
+  return options;
+};
 
 const signToken = (id, role, sessionId) => {
   let expiresIn;
@@ -50,13 +67,10 @@ const createSendResToken = async (user, statusCode, res) => {
   const decodedToken = jwt.decode(token);
   const sessionExpiresAt = decodedToken.exp * 1000;
 
-  const cookieOptions = {
-    httpOnly: true,
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    path: "/",
-  };
+  const cookieOptions = getCookieOptions();
+  cookieOptions.expires = new Date(
+    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  );
 
   if (process.env.NODE_ENV === "production") {
     cookieOptions.secure = true;
@@ -611,11 +625,8 @@ export const deleteUserByAdmin = asyncHandler(async (req, res) => {
 });
 
 export const logoutUser = (req, res) => {
-  const cookieOptions = {
-    httpOnly: true,
-    expires: new Date(0),
-    path: "/",
-  };
+  const cookieOptions = getCookieOptions();
+  cookieOptions.expires = new Date(0);
 
   if (process.env.NODE_ENV === "production") {
     cookieOptions.secure = true;
