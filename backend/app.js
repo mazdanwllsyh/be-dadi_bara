@@ -12,6 +12,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { MulterError } from "multer";
 
+const PORT = process.env.PORT || 3000;
+
 // ROUTER
 import userRouter from "./routers/userRouter.js";
 import testimonialRoutes from "./routers/testimonialRouter.js";
@@ -124,5 +126,9 @@ app.use((err, req, res, next) => {
 });
 app.use(notFound);
 app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 export default app;

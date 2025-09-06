@@ -35,7 +35,7 @@ const AdminDashboard = () => {
   const [admins, setAdmins] = useState([]);
 
   const [editingAdmin, setEditingAdmin] = useState(null);
-  const { showConfirmSwal, showSuccessSwal, showErrorSwal } = useCustomSwals();
+  const { showConfirmSwal, showSuccessSwal, showErrorSwal, showInfoSwal, } = useCustomSwals();
   const [showPassword, setShowPassword] = useState({});
   const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   const [newAdminData, setNewAdminData] = useState({
@@ -85,18 +85,18 @@ const AdminDashboard = () => {
       !newAdminData.password ||
       !newAdminData.phone
     ) {
-      return toast.error("Semua field wajib diisi!");
+      return showInfoSwal("Semua field wajib diisi!");
     }
     try {
       await instance.post("/auth/admins", newAdminData, {
         withCredentials: true,
       });
-      toast.success("Admin baru berhasil ditambahkan!");
+      showSuccessSwal("Admin baru berhasil ditambahkan!");
       setShowAddAdminModal(false);
       setNewAdminData({ fullName: "", email: "", password: "", phone: "" });
       fetchAdminData();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal menambah admin.");
+      showErrorSwal(error.response?.data?.message || "Gagal menambah admin.");
     }
   };
 
@@ -146,11 +146,11 @@ const AdminDashboard = () => {
       await instance.put(`/auth/admins/${_id}`, updateData, {
         withCredentials: true,
       });
-      toast.success(`Data ${editingAdmin.fullName} berhasil diperbarui.`);
+      showSuccessSwal(`Data ${editingAdmin.fullName} berhasil diperbarui.`);
       setEditingAdmin(null);
       fetchAdminData();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal memperbarui admin.");
+      showErrorSwal(error.response?.data?.message || "Gagal memperbarui admin.");
     }
   };
 

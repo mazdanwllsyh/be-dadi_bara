@@ -25,6 +25,7 @@ const getCookieOptions = () => {
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
     options.sameSite = "None";
+    options.domain = '.vercel.app';
   } else {
     options.sameSite = "lax";
   }
