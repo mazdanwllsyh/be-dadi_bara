@@ -85,6 +85,8 @@ const createSendResToken = async (
 };
 
 export const logoutUser = (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+
   const cookieOptions = getCookieOptions();
   cookieOptions.expires = new Date(0);
   res.cookie("jwt", "loggedout", cookieOptions);
