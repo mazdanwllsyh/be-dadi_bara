@@ -34,6 +34,9 @@ router.post("/resend-verification", resendVerification);
 router.post("/login", loginUser);
 router.post("/google", googleAuth);
 router.get("/logout", logoutUser);
+router.post("/refresh-token", protectedMiddleware, (req, res) => {
+  createSendResToken(req.user, 200, res);
+});
 
 // Rute Data Pengguna
 router.get("/getuser", protectedMiddleware, getUser);
@@ -87,7 +90,7 @@ router.delete(
   "/superadmins/:id",
   protectedMiddleware,
   superAdminMiddleware,
-  deleteSuperAdmin,
+  deleteSuperAdmin
 );
 
 export default router;

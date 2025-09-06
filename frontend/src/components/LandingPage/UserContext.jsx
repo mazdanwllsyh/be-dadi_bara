@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
   const logout = async () => {
     const isConfirmed = await showConfirmSwal(
       "Yakin ingin Logout?",
-      "Anda akan segera melakukan Logout!"
+      "Anda akan segera mengakhiri sesi ini!"
     );
 
     if (isConfirmed) {
@@ -77,6 +77,36 @@ export const UserProvider = ({ children }) => {
       }
     }
   };
+
+  useEffect(() => {
+    const sessionExpiresAt = localStorage.getItem("sessionExpiresAt");
+    if (user && sessionExpiresAt) {
+      const expiresIn = new Date(parseInt(sessionExpiresAt, 10)) - Date.now();
+      const refreshTimeout = expiresIn - 60 * 1000;
+
+      if (refreshTimeout > 0) {
+        const timer = setTimeout(async () => {
+          try {
+            console.log("Sesi akan habis, mencoba refresh token...");
+            const response = await instance.post("/auth/refresh-token");
+            updateUser(response.data.user);
+            console.log("Token berhasil di-refresh.");
+          } catch (error) {
+            console.error(
+              "Gagal refresh token, melakukan logout paksa.",
+              error
+            );
+            logout();
+          }
+        }, refreshTimeout);
+
+        return () => clearTimeout(timer);
+      } else {
+        console.log("Token sudah kedaluwarsa, melakukan logout.");
+        logout();
+      }
+    }
+  }, [user, updateUser, logout]);
 
   const value = useMemo(
     () => ({
