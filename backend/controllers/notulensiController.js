@@ -44,11 +44,15 @@ export const updateNotulensi = asyncHandler(async (req, res) => {
     let result;
     if (file.mimetype.startsWith("image/")) {
       const optimizedBuffer = await sharp(file.buffer)
-        .webp({ quality: 80 })
+        .webp({ quality: 75 })
         .toBuffer();
       result = await streamUpload(optimizedBuffer, { folder: "notulensi" });
     } else if (file.mimetype === "application/pdf") {
-      result = await streamUpload(file.buffer, { folder: "notulensi" });
+      result = await streamUpload(file.buffer, {
+        folder: "notulensi",
+        quality: "auto:good",
+        resource_type: "auto",
+      });
     }
 
     if (result) {
@@ -78,7 +82,7 @@ export const updateNotulensi = asyncHandler(async (req, res) => {
   }
 
   kegiatan.documents = newDocuments.filter(Boolean);
-  kegiatan.markModified("documents"); 
+  kegiatan.markModified("documents");
 
   const updatedKegiatan = await kegiatan.save();
   res.status(200).json(updatedKegiatan);
