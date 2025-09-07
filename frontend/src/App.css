@@ -98,32 +98,36 @@ body {
 /* SCROLLBAR */
 :root {
   --scrollbar-thumb-color: #393939;
+  --scrollbar-track-color: transparent;
 }
 
 html[data-bs-theme="dark"] {
   --scrollbar-thumb-color: #b5b5b5;
+  --scrollbar-track-color: transparent;
 }
 
 ::-webkit-scrollbar {
-  width: 1%;
+  width: 16px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track-color);
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb-color);
   border-radius: 0px;
+  border: 6px solid var(--scrollbar-track-color);
+  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-button {
-  display: none !important;
+  display: none;
 }
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb-color) transparent;
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
 }
 
 /* TRANSITION */
@@ -1163,7 +1167,7 @@ footer p {
 }
 
 [data-bs-theme="dark"] .sidebar {
-  background-color: #212529;
+  background-color: #2a3036;
   border-right: 1px solid #495057;
 }
 

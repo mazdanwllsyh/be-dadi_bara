@@ -40,8 +40,6 @@ const GalleryEditor = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -81,8 +79,8 @@ const GalleryEditor = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > MAX_FILE_SIZE) {
-        toast.error("Ukuran file tidak boleh melebihi 5MB.");
-        e.target.value = null; // Reset input file
+        showErrorSwal("Ukuran file tidak boleh melebihi 5MB.");
+        e.target.value = null;
         return;
       }
       setNewImageFile(file);
@@ -99,7 +97,7 @@ const GalleryEditor = () => {
     setIsSavingEdit(true);
 
     if (newImageFile && newImageFile.size > 5 * 1024 * 1024) {
-      toast.error("Gagal menyimpan. Ukuran file melebihi 5MB.");
+      showErrorSwal("Gagal menyimpan. Ukuran file melebihi 5MB.");
       setIsSavingEdit(false);
       return;
     }
@@ -115,12 +113,12 @@ const GalleryEditor = () => {
       await instance.put(`/gallery/${editedImage._id}`, formData, {
         withCredentials: true,
       });
-      toast.success("Gambar berhasil diperbarui!");
+      showSuccessSwal("Gambar berhasil diperbarui!");
       fetchImages();
       setIsEditing(null);
       setNewImageFile(null);
     } catch (error) {
-      toast.error("Gagal memperbarui gambar.");
+      showErrorSwal("Gagal memperbarui gambar.");
     } finally {
       setIsSavingEdit(false);
     }
@@ -163,30 +161,17 @@ const GalleryEditor = () => {
 
     try {
       await instance.post("/gallery", formData, { withCredentials: true });
-      toast.success("Gambar berhasil ditambahkan!");
+      showSuccessSwal("Gambar berhasil ditambahkan!");
       fetchImages();
       setNewImageFile(null);
       setNewImageUrl("");
       setNewImageTitle("");
       setNewImageDescription("");
     } catch (error) {
-      toast.error("Gagal menambahkan gambar. Periksa Ukurannya!");
+      showErrorSwal("Gagal menambahkan gambar. Periksa Ukurannya!");
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleSidebarToggle = (expanded) => {
-    setSidebarExpanded(expanded);
-  };
-
-  const handleOffcanvasClose = () => setShowOffcanvas(false);
-
-  const getContentWidth = () => {
-    if (isMobile) {
-      return "100%";
-    }
-    return sidebarExpanded ? "calc(100% - 220px)" : "calc(100% - 90px)";
   };
 
   const filteredImages = useMemo(() => {

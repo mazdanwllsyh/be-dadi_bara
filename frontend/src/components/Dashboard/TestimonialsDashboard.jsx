@@ -5,6 +5,7 @@ import { FaArchive, FaEye, FaStar } from "react-icons/fa";
 import { UserContext } from "../LandingPage/UserContext";
 import { AppContext } from "../LandingPage/AppContext";
 import { toast } from "react-toastify";
+import useCustomSwals from "./useCustomSwals";
 import moment from "moment";
 import instance from "../../utils/axios";
 
@@ -12,6 +13,7 @@ const TestimonialsDashboard = () => {
   const { user } = useContext(UserContext);
   const { theme } = useContext(AppContext);
   const [testimonials, setTestimonials] = useState([]);
+  const { showSuccessSwal, showErrorSwal } = useCustomSwals();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -145,10 +147,10 @@ const TestimonialsDashboard = () => {
         {},
         { withCredentials: true }
       );
-      toast.success("Status testimoni berhasil diubah!");
+      showSuccessSwal("Status testimoni berhasil diubah!");
       fetchAllTestimonials();
     } catch (error) {
-      toast.error("Gagal mengubah status testimoni.");
+      showErrorSwal("Gagal mengubah status testimoni.");
     }
   };
 
