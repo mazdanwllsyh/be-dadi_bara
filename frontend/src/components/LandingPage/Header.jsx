@@ -74,7 +74,13 @@ const Header = () => {
     >
       <Container className="d-flex justify-content-between align-items-center">
         <Navbar.Brand as={Link} to="/#home">
-          <img src={data.logoDadiBara} alt="Logo" width="70" height="auto" />
+          <img
+            src={data.logoDadiBara}
+            alt="Logo"
+            width="70"
+            height="auto"
+            fetchpriority="high"
+          />
         </Navbar.Brand>
 
         {isMobile && (
@@ -223,6 +229,7 @@ const Header = () => {
                 alt="LogoDesa"
                 width="70"
                 height="auto"
+                fetchpriority="high"
               />
             </Navbar.Brand>
           </div>
