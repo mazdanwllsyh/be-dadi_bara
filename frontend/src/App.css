@@ -54,7 +54,7 @@ body {
 .section-title {
   font-family: "SF UI Display", sans-serif;
   font-weight: bold;
-  font-size: 215%;
+  font-size: 205%;
   text-align: center;
   color: var(--bs-body-color);
 }
@@ -632,7 +632,7 @@ fieldset {
   font-family: "SF UI Display", sans-serif;
   text-transform: capitalize !important;
   font-weight: bold;
-  font-size: 140%;
+  font-size: 135%;
   color: #fff;
   margin-bottom: 0.5rem;
   text-align: center;
@@ -780,7 +780,7 @@ fieldset {
 
 .accordion-body {
   font-family: "SF UI Text", sans-serif;
-  font-size: 98%;
+  font-size: 95%;
   text-align: justify;
   line-height: 1.6;
   padding: 20px 40px;
@@ -876,7 +876,7 @@ fieldset {
 
 #userprofile label {
   font-family: "SF UI Display", monospace;
-  font-size: 105%;
+  font-size: 95%;
   color: #495057;
 }
 
@@ -886,7 +886,7 @@ fieldset {
 
 #userprofile .form-control {
   font-family: "SF UI Text", sans-serif;
-  font-size: 98%;
+  font-size: 90%;
   text-align: justify;
   border-radius: 8px;
   border: 1px solid #ced4da;
@@ -1179,8 +1179,8 @@ footer p {
   font-family: "SF UI Text", sans-serif;
   transition: all 390ms ease;
   border-radius: 9px;
-  padding: 0.35rem 0.7rem;
-  margin: 3.5% 0.6rem;
+  padding: 0.35rem 0.5rem;
+  margin: 2.5% 0.5rem;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -1238,8 +1238,8 @@ footer p {
 
 .sidebar.collapsed .sidebar-link {
   justify-content: center;
-  font-size: 115%;
-  padding: 10px auto;
+  font-size: 120%;
+  margin: 5px 10%;
 }
 
 .sidebar.collapsed .sidebar-footer .d-flex {
@@ -1247,11 +1247,11 @@ footer p {
 }
 
 .sidebar.expanded {
-  width: 210px;
+  width: 200px;
 }
 
 .sidebar.collapsed {
-  width: 80px;
+  width: 70px;
 }
 
 /* --- Header & Footer --- */

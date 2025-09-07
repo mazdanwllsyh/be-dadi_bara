@@ -20,7 +20,7 @@ const Footer = () => {
               src={data.logoDadiBara}
               alt="Logo"
               width="80"
-              height="auto"
+              height="80"
               style={{ cursor: "pointer" }}
               onClick={scrollToTop}
               className="mb-2"
@@ -74,7 +74,7 @@ const Footer = () => {
               src={data.logoDadiBara}
               alt="Logo"
               width="80"
-              height="auto"
+              height="80"
               style={{ cursor: "pointer" }}
               onClick={scrollToTop}
             />
