@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import viteCompression from "vite-plugin-compression";
+import purgecss from 'vite-plugin-purgecss';
 
 export default defineConfig(({ command }) => ({
   plugins: [
@@ -13,6 +14,10 @@ export default defineConfig(({ command }) => ({
     viteCompression({
       algorithm: "brotliCompress",
       ext: ".br",
+    }),
+    purgecss({
+      content: ['./index.html', './src/**/*.jsx', './src/**/*.js'],
+      safelist: [],
     }),
     process.env.ANALYZE ? visualizer({ open: true }) : null,
   ],
