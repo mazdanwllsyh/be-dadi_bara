@@ -73,7 +73,7 @@ const Home = () => {
               className="img-fluid pb-4"
               width="65%"
               height="auto"
-              fetchpriority="high"
+              fetchPriority="high"
             />
           </div>
           <div

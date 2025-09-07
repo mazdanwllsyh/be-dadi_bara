@@ -79,7 +79,7 @@ const Header = () => {
             alt="Logo"
             width="70"
             height="auto"
-            fetchpriority="high"
+            fetchPriority="high"
           />
         </Navbar.Brand>
 
@@ -113,7 +113,10 @@ const Header = () => {
                 Login
               </Link>
             )}
-            <Navbar.Toggle aria-controls="basic-navbar-nav" className="shadow ms-2">
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              className="shadow ms-2"
+            >
               <HiMiniBars4 style={{ fontSize: "1.8rem" }} />
             </Navbar.Toggle>
           </div>
@@ -229,7 +232,7 @@ const Header = () => {
                 alt="LogoDesa"
                 width="70"
                 height="auto"
-                fetchpriority="high"
+                fetchPriority="high"
               />
             </Navbar.Brand>
           </div>
