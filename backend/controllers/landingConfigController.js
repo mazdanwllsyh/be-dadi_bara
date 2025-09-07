@@ -63,6 +63,7 @@ export const updateLandingConfig = asyncHandler(async (req, res) => {
     }
 
     const optimizedBuffer = await sharp(files.logoDadiBara[0].buffer)
+      .resize(900, 900)
       .webp({ quality: 85 })
       .toBuffer();
 
@@ -80,6 +81,7 @@ export const updateLandingConfig = asyncHandler(async (req, res) => {
     }
 
     const optimizedBuffer = await sharp(files.logoDesaBaru[0].buffer)
+      .resize(900, 900)
       .webp({ quality: 80 })
       .toBuffer();
 
