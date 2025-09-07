@@ -57,10 +57,16 @@ export const UserProvider = ({ children }) => {
 
   const fetchUser = useCallback(async () => {
     try {
-      const response = await instance.get("/auth/getuser", {
+      const timestamp = new Date().getTime();
+      const response = await instance.get(`/auth/getuser?t=${timestamp}`, {
         withCredentials: true,
       });
-      updateUser(response.data.user);
+
+      if (response.data.user) {
+        updateUser(response.data.user);
+      } else {
+        updateUser(null);
+      }
     } catch (error) {
       updateUser(null);
     } finally {

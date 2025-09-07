@@ -134,7 +134,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`app.js Berjalan di port  ${PORT}`);
 });
 
 export default app;

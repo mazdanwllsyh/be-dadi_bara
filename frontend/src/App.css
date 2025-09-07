@@ -330,17 +330,16 @@ iframe {
 }
 
 .explore-btn {
-  font-family: "SF UI Text", sans-serif !important;
+  font-family: "SF UI Display", sans-serif !important;
   margin-top: 20px;
   width: 160px;
   padding: 10px;
   background-color: darkcyan !important;
-  color: rgb(242, 236, 236);
+  color: rgb(255, 255, 255);
   border: none;
 }
 
 .explore-btn:hover {
-  width: 185px;
   font-family: "SF UI Display", sans-serif;
   font-weight: bolder;
   transition: all 0.35s ease-in-out;
@@ -354,7 +353,7 @@ iframe {
 
 [data-bs-theme="dark"] .explore-btn {
   background-color: #23334a !important;
-  border: 1.5px solid wheat !important;
+  border: 1px solid wheat !important;
 }
 
 /* ABOUT */
