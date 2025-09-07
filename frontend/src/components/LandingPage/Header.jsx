@@ -93,12 +93,12 @@ const Header = () => {
                 roundedCircle
                 onClick={handleProfileClick}
                 style={{
-                  width: "40px",
-                  height: "40px",
+                  width: "2.3rem",
+                  height: "2.3rem",
                   objectFit: "cover",
                   cursor: "pointer",
-                  margin: "0 8px",
-                  border: "3px solid darkcyan",
+                  margin: "auto 3px",
+                  border: "2px solid darkcyan",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.55)",
                   backgroundColor: "darkcyan",
                 }}
@@ -113,7 +113,7 @@ const Header = () => {
                 Login
               </Link>
             )}
-            <Navbar.Toggle aria-controls="basic-navbar-nav" className="shadow">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" className="shadow ms-2">
               <HiMiniBars4 style={{ fontSize: "1.8rem" }} />
             </Navbar.Toggle>
           </div>
@@ -178,8 +178,8 @@ const Header = () => {
                     alt="Profil"
                     roundedCircle
                     style={{
-                      width: "50px",
-                      height: "50px",
+                      width: "2.8rem",
+                      height: "2.8rem",
                       objectFit: "cover",
                       cursor: "pointer",
                       border: "2px solid",

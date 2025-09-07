@@ -8,9 +8,6 @@ import { AppContext } from "../AppContext";
 const Home = () => {
   const { data } = useContext(AppContext);
 
-  const optimizedLogoUrl =
-    "https://res.cloudinary.com/dr7olcn4r/image/upload/w_600,h_600,c_fill/v1757167793/logos/logo_organisasi.webp";
-
   const [showPengurusButton, setShowPengurusButton] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -71,11 +68,11 @@ const Home = () => {
             data-aos="slide-down"
           >
             <img
-              src={optimizedLogoUrl}
+              src={data.logoDadiBara}
               alt="Logo"
               className="img-fluid pb-4"
-              width="300"
-              height="300"
+              width="65%"
+              height="auto"
               fetchpriority="high"
             />
           </div>

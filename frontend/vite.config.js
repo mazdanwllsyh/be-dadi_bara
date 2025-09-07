@@ -17,7 +17,6 @@ export default defineConfig(({ command }) => ({
     process.env.ANALYZE ? visualizer({ open: true }) : null,
   ],
   build: {
-    sourcemap: true,
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
