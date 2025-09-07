@@ -13,7 +13,6 @@ import {
   Button,
   Spinner,
   Form,
-  Offcanvas,
 } from "react-bootstrap";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -88,20 +87,19 @@ const customStyles = {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      color: "var(--bs-secondary-color)", // Warna teks adaptif
-      backgroundColor: "var(--bs-body-bg)", // Latar belakang adaptif
+      color: "var(--bs-secondary-color)", 
+      backgroundColor: "var(--bs-body-bg)", 
       padding: "24px",
     },
   },
 };
 
 const DashboardPendaftaran = () => {
-  const { data, theme } = useContext(AppContext);
+  const { theme } = useContext(AppContext);
   const [pendaftar, setPendaftar] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
   const { showConfirmSwal, showSuccessSwal, showErrorSwal } = useCustomSwals();
 
   const formatTanggalIndonesia = (tanggalISO) => {
@@ -410,7 +408,6 @@ const DashboardPendaftaran = () => {
             pagination
             paginationPerPage={5}
             paginationRowsPerPageOptions={[10, 25, 50, 100]}
-            onChangeRowsPerPage={setEntriesPerPage}
             paginationComponentOptions={{
               rowsPerPageText: "Baris per halaman:",
               rangeSeparatorText: "dari",

@@ -23,6 +23,7 @@ import {
   roleMiddleware,
   superAdminMiddleware,
 } from "../middlewares/authMiddleware.js";
+import { noCache } from "../middlewares/noCacheMiddleware.js";
 import upload from "../utils/upload.js";
 
 const router = express.Router();
@@ -39,7 +40,7 @@ router.post("/refresh-token", protectedMiddleware, (req, res) => {
 });
 
 // Rute Data Pengguna
-router.get("/getuser", protectedMiddleware, getUser);
+router.get("/getuser", noCache, protectedMiddleware, getUser);
 router.put(
   "/profile",
   protectedMiddleware,

@@ -53,15 +53,8 @@ export const protectedMiddleware = asyncHandler(async (req, res, next) => {
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      try {
-        const refreshedData = await refreshAuthToken(token);
-        res.cookie("jwt", refreshedData.token, refreshedData.cookieOptions);
-        req.user = refreshedData.user;
-        next();
-      } catch (refreshError) {
-        res.status(401);
-        throw new Error("Sesi telah berakhir. Silakan login kembali.");
-      }
+      res.status(401);
+      throw new Error("Sesi telah berakhir. Silakan login kembali.");
     } else {
       res.status(401);
       throw new Error("Token tidak valid atau rusak.");

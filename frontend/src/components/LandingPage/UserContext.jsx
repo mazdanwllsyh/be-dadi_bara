@@ -78,6 +78,23 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, [fetchUser]);
 
+  useEffect(() => {
+    if (!user || !user.sessionExpiresAt) {
+      return;
+    }
+    const expiresIn = user.sessionExpiresAt - Date.now() - 2000;
+    if (expiresIn <= 0) {
+      showErrorSwal("Sesi Anda telah berakhir, silakan login kembali.");
+      logout();
+      return;
+    }
+    const sessionTimeout = setTimeout(() => {
+      showErrorSwal("Sesi Anda telah berakhir, silakan login kembali.");
+      logout();
+    }, expiresIn);
+    return () => clearTimeout(sessionTimeout);
+  }, [user, logout, showErrorSwal]);
+
   const value = useMemo(
     () => ({
       user,

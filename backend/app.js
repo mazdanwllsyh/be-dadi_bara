@@ -8,9 +8,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
-import path from "path";
-import { fileURLToPath } from "url";
 import { MulterError } from "multer";
+import { noCache } from "./middlewares/noCacheMiddleware.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -107,6 +106,7 @@ app.get("/api", (req, res) => {
 });
 
 // Routes API
+app.use("/api", noCache);
 app.use("/api/auth", userRouter);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/landing-config", landingConfigRoutes);

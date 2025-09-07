@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Offcanvas } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { FaUserEdit, FaUsers, FaUserFriends } from "react-icons/fa";
 import { FaUserGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -26,9 +26,6 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
-
   const [dashboardData, setDashboardData] = useState({
     totalAdmins: 0,
     totalSuperAdmins: 0,
@@ -126,120 +123,112 @@ const Dashboard = () => {
     ],
   };
 
-  const handleOffcanvasClose = () => setShowOffcanvas(false);
-  const handleOffcanvasShow = () => setShowOffcanvas(true);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 992);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
-        <Container className="dashboard-container my-3">
-          <Row>
-            <Col>
-              <h2 className="section-title mb-4">Dashboard</h2>
-            </Col>
-          </Row>
+    <Container className="dashboard-container my-3">
+      <Row>
+        <Col>
+          <h2 className="section-title mb-4">Dashboard</h2>
+        </Col>
+      </Row>
 
-          <Row>
-            <Col md={6} className="mb-4">
-              <Link
-                to="/admin/data-admin"
-                className="dashboard-card-link text-decoration-none"
+      <Row>
+        <Col md={6} className="mb-4">
+          <Link
+            to="/admin/data-admin"
+            className="dashboard-card-link text-decoration-none"
+          >
+            <Card>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h2 className="text-custom fw-bold">
+                    {dashboardData.totalAdmins}
+                  </h2>
+                  <h5 className="text-custom fw-bold">Admin</h5>
+                </div>
+                <FaUserEdit size={50} />
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
+
+        <Col md={6} className="mb-4">
+          <Link
+            to="/admin/data-admin"
+            className="dashboard-card-link text-decoration-none"
+          >
+            <Card>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h2 className="text-custom fw-bold">
+                    {dashboardData.totalSuperAdmins}
+                  </h2>
+                  <h5 className="text-custom fw-bold">Super Admin</h5>
+                </div>
+                <FaUserGear size={50} />
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col md={6} className="mb-4">
+          <Link
+            to="/admin/data-user"
+            className="dashboard-card-link text-decoration-none"
+          >
+            <Card>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h2 className="text-custom fw-bold">
+                    {dashboardData.totalUsers}
+                  </h2>
+                  <h5 className="text-custom fw-bold">Total User</h5>
+                </div>
+                <FaUserFriends size={50} />
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
+
+        <Col md={6} className="mb-4">
+          <Link
+            to="/admin/keanggotaan"
+            className="dashboard-card-link text-decoration-none"
+          >
+            <Card>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h2 className="text-custom fw-bold">
+                    {dashboardData.totalPengurus}
+                  </h2>
+                  <h5 className="text-custom fw-bold">Pengurus</h5>
+                </div>
+                <FaUsers size={50} />
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
+      </Row>
+
+      <Row className="mt-4">
+        <Col xs={12}>
+          <Card>
+            <Card.Body>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "auto",
+                }}
               >
-                <Card>
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h2 className="text-custom fw-bold">{dashboardData.totalAdmins}</h2>
-                      <h5 className="text-custom fw-bold">Admin</h5>
-                    </div>
-                    <FaUserEdit size={50} />
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-
-            <Col md={6} className="mb-4">
-              <Link
-                to="/admin/data-admin"
-                className="dashboard-card-link text-decoration-none"
-              >
-                <Card>
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h2 className="text-custom fw-bold">
-                        {dashboardData.totalSuperAdmins}
-                      </h2>
-                      <h5 className="text-custom fw-bold">Super Admin</h5>
-                    </div>
-                    <FaUserGear size={50} />
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          </Row>
-
-          <Row>
-            <Offcanvas
-              show={showOffcanvas}
-              onHide={handleOffcanvasClose}
-            ></Offcanvas>
-
-            <Col md={6} className="mb-4">
-              <Link
-                to="/admin/data-user"
-                className="dashboard-card-link text-decoration-none"
-              >
-                <Card>
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h2 className="text-custom fw-bold">{dashboardData.totalUsers}</h2>
-                      <h5 className="text-custom fw-bold">Total User</h5>
-                    </div>
-                    <FaUserFriends size={50} />
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-
-            <Col md={6} className="mb-4">
-              <Link
-                to="/admin/keanggotaan"
-                className="dashboard-card-link text-decoration-none"
-              >
-                <Card>
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h2 className="text-custom fw-bold">{dashboardData.totalPengurus}</h2>
-                      <h5 className="text-custom fw-bold">Pengurus</h5>
-                    </div>
-                    <FaUsers size={50} />
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          </Row>
-
-          <Row className="mt-4">
-            <Col xs={12}>
-              <Card>
-                <Card.Body>
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "auto",
-                    }}
-                  >
-                    <Bar options={chartOptions} data={chartData} />
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+                <Bar options={chartOptions} data={chartData} />
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

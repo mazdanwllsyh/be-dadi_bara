@@ -35,16 +35,16 @@ export const signToken = (id, role, sessionId) => {
   let expiresIn;
   switch (role) {
     case "superAdmin":
-      expiresIn = "25m";
+      expiresIn = "20m";
       break;
     case "admin":
-      expiresIn = "45m";
+      expiresIn = "43m";
       break;
     case "user":
-      expiresIn = "85m";
+      expiresIn = "82m";
       break;
     default:
-      expiresIn = "40m";
+      expiresIn = "25";
   }
   return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, { expiresIn });
 };

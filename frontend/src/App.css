@@ -95,6 +95,37 @@ body {
   text-justify: inter-word;
 }
 
+/* SCROLLBAR */
+:root {
+  --scrollbar-thumb-color: #393939;
+}
+
+html[data-bs-theme="dark"] {
+  --scrollbar-thumb-color: #b5b5b5;
+}
+
+::-webkit-scrollbar {
+  width: 1%;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-button {
+  display: none !important;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color) transparent;
+}
+
 /* TRANSITION */
 .transition-overlay {
   position: fixed;
@@ -120,7 +151,7 @@ body {
 }
 
 .transition-image-container {
-  width: 200px; /* Sesuaikan ukuran gambar sesuai keinginan */
+  width: 200px;
   height: 200px;
   display: flex;
   justify-content: center;
@@ -155,6 +186,7 @@ body {
   opacity: 0;
 }
 
+/* HEADER NAVBAR */
 .navbar-toggler:focus {
   box-shadow: none;
 }
@@ -169,7 +201,6 @@ body {
   display: none !important;
 }
 
-/* HEADER NAVBAR */
 .navbar.sticky-top {
   transition: transform 0.4s ease-in-out;
 }
