@@ -65,6 +65,7 @@
     "purgecss": "^7.0.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "vite": "^7.1.2",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-purgecss": "^0.2.13"
   }
 }
