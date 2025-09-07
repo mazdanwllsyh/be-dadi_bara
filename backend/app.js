@@ -40,9 +40,16 @@ cloudinary.config({
 
 const app = express();
 
+console.log("MEMULAI KONEKSI KE DATABASE..."); 
+
 mongoose
   .connect(process.env.DATABASE, {})
-  .catch((err) => console.error("DB Connection Error:", err));
+  .then(() => {
+    console.log("KONEKSI DATABASE BERHASIL!"); 
+  })
+  .catch(
+    (err) => console.error("KONEKSI DATABASE GAGAL:", err) 
+  );
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -68,9 +75,8 @@ app.use(
   })
 );
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
   "https://dadibara.bejalen.com",
+  "http://localhost:5173",
 ];
 app.use(
   cors({
