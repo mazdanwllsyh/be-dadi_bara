@@ -1,20 +1,21 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  RewriteCond %{HTTP:Accept-Encoding} br
+  RewriteCond %{REQUEST_FILENAME}.br -f
+  RewriteRule ^(.*)$ $1.br [L]
 
-  # --- PENGALIHAN KE HTTPS & NON-WWW (LEBIH KUAT) ---
-  RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+  RewriteCond %{HTTP:Accept-Encoding} gzip
+  RewriteCond %{REQUEST_FILENAME}.gz -f
+  RewriteRule ^(.*)$ $1.gz [L]
 
+  RewriteCond %{HTTP_HOST} ^www\. [NC,OR]
   RewriteCond %{HTTPS} off
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
   RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
   RewriteRule ^ /%1 [R=301,L]
-
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}\.html -f
-  RewriteRule ^(.*?)/?$ $1.html [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
@@ -22,19 +23,25 @@
 </IfModule>
 
 <IfModule mod_headers.c>
+  <FilesMatch \.br$>
+    Header set Content-Encoding br
+  </FilesMatch>
+  <FilesMatch \.gz$>
+    Header set Content-Encoding gzip
+  </FilesMatch>
+  <FilesMatch "\.(css\.br|css\.gz)$">
+    Header set Content-Type "text/css"
+  </FilesMatch>
+  <FilesMatch "\.(js\.br|js\.gz)$">
+    Header set Content-Type "application/javascript"
+  </FilesMatch>
+
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
-  Header set X-XSS-Protection "1; mode=block"
-  
   Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://accounts.google.com; connect-src 'self' https://be-dadi-bara.vercel.app https://accounts.google.com https://res.cloudinary.com; frame-src https://accounts.google.com https://www.google.com https://res.cloudinary.com; img-src 'self' https://res.cloudinary.com https://lh3.googleusercontent.com data: blob:; object-src 'self' https://res.cloudinary.com; worker-src 'self' blob:;"
-
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), midi=(), magnetometer=(), gyroscope=(), speaker=(), usb=()"
   Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
-</IfModule>
-
-<IfModule mod_filter.c>
-  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript
 </IfModule>
 
 <IfModule mod_expires.c>
@@ -51,5 +58,9 @@
   ExpiresByType image/gif                 "access plus 1 year"
   ExpiresByType image/svg+xml             "access plus 1 year"
   ExpiresByType image/x-icon              "access plus 1 year"
-  **ExpiresByType font/woff2                "access plus 1 year"**
+  ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE application/javascript application/json text/css text/html text/xml image/svg+xml font/woff2
 </IfModule>
