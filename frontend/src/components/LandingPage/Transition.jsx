@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "./AppContext";
 
-const Transition = ({ imageUrl, onTransitionEnd }) => {
+const Transition = ({ onTransitionEnd, isLoading = false }) => {
   const { data } = useContext(AppContext);
-  const [animationClass, setAnimationClass] = useState("");
-  const [isVisible, setIsVisible] = useState(true); 
+  const [animationClass, setAnimationClass] = useState("zoom-in");
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    if (isVisible) {
-      setAnimationClass("zoom-in");
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setAnimationClass((prevClass) =>
+          prevClass === "zoom-in" ? "zoom-out" : "zoom-in"
+        );
+      }, 1000);
+      return () => clearInterval(interval);
+    } else {
       const zoomInTimeout = setTimeout(() => {
         setAnimationClass("zoom-out");
       }, 800);
@@ -19,7 +25,9 @@ const Transition = ({ imageUrl, onTransitionEnd }) => {
 
       const fadeOutTimeout = setTimeout(() => {
         setIsVisible(false);
-        onTransitionEnd();
+        if (onTransitionEnd) {
+          onTransitionEnd();
+        }
       }, 2700);
 
       return () => {
@@ -27,17 +35,18 @@ const Transition = ({ imageUrl, onTransitionEnd }) => {
         clearTimeout(zoomOutTimeout);
         clearTimeout(fadeOutTimeout);
       };
-    } else {
-      setAnimationClass(""); 
     }
-  }, [isVisible, onTransitionEnd]);
+  }, [isLoading, onTransitionEnd]);
 
   return (
-    isVisible && ( 
+    isVisible && (
       <div className={`transition-overlay ${animationClass}`}>
         <div className="transition-image-container">
           <img
-            src={data.logoDadiBara}
+            src={
+              data?.logoDadiBara ||
+              "https://github.com/mazdanwllsyh/dadibara/blob/main/assets/Logo.png?raw=true"
+            }
             alt="Logo"
             className="transition-image"
           />

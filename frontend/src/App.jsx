@@ -6,13 +6,14 @@ import { AppProvider } from "./components/LandingPage/AppContext.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ThemedToastContainer from "./components/ThemedToastContainer.jsx";
-
 import instance from "./utils/axios.js";
-import { Spinner } from "react-bootstrap";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+const Transition = lazy(() =>
+  import("./components/LandingPage/Transition.jsx")
+);
 const AppLandingPage = lazy(() => import("./components/AppLandingPage.jsx"));
 const AppDashboard = lazy(() => import("./components/AppDashboard.jsx"));
 
@@ -27,20 +28,13 @@ function App() {
     instance
       .get("/auth/getuser")
       .then((res) => {})
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, []);
 
   return (
     <AppProvider>
       <UserProvider>
-        <Suspense
-          fallback={
-            <div className="vh-100 d-flex justify-content-center align-items-center">
-              <Spinner animation="border" />
-            </div>
-          }
-        >
+        <Suspense fallback={<Transition isLoading={true} />}>
           <Routes>
             <Route
               path="/admin/*"

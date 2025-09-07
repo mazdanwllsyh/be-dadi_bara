@@ -161,19 +161,10 @@ function AppLandingPage() {
       {!isTransitioning && <Header />}
       <div style={{ overflowX: "hidden" }}>
         {isTransitioning && (
-          <Transition
-            imageUrl="https://github.com/mazdanwllsyh/dadibara/blob/main/assets/Logo.png?raw=true"
-            onTransitionEnd={handleTransitionEnd}
-          />
+          <Transition onTransitionEnd={handleTransitionEnd} />
         )}
 
-        <Suspense
-          fallback={
-            <div className="container d-flex flex-column justify-content-center align-items-center vh-100 SF-UIDisplay fw-bold">
-              Sedang Memuat Halaman...
-            </div>
-          }
-        >
+        <Suspense fallback={<Transition isLoading={true} />}>
           <Routes location={backgroundLocation || location}>
             <Route
               path="/"
