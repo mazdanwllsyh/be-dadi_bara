@@ -335,7 +335,7 @@ iframe {
   width: 160px;
   padding: 10px;
   background-color: darkcyan !important;
-  color: aquamarine !important;
+  color: rgb(223, 223, 223) !important;
   border: none;
 }
 
