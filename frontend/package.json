@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build && purgecss --css dist/assets/*.css --content 'dist/**/*.html' 'dist/assets/*.js' -o dist/assets/",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "eslintConfig": {
