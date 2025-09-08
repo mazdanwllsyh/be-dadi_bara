@@ -75,7 +75,7 @@ app.use(
   })
 );
 const allowedOrigins = [
-  "https://dadibara.bejalen.com/",
+  "https://dadibara.bejalen.com",
   "http://localhost:5173",
 ];
 app.use(
