@@ -1,11 +1,13 @@
 /* FONT ONLINE */
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
-/* LOCAL FONTS */
+/* SF UI FONTS */
 @font-face {
   font-family: "SF UI Text";
-  src: url("./fonts/SFUIText-Regular.woff2") format("woff2"),
-    url("./fonts/SFUIText-Regular.woff") format("woff");
+  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIText-Regular_qugrix.woff2")
+      format("woff2"),
+    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIText-Regular_grvgao.woff")
+      format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -13,8 +15,10 @@
 
 @font-face {
   font-family: "SF UI Display";
-  src: url("./fonts/SFUIDisplay-Medium.woff2") format("woff2"),
-    url("./fonts/SFUIDisplay-Medium.woff") format("woff");
+  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIDisplay-Medium_zapfdz.woff2")
+      format("woff2"),
+    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Medium_edyskr.woff")
+      format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -22,8 +26,10 @@
 
 @font-face {
   font-family: "SF UI Display";
-  src: url("./fonts/SFUIDisplay-Bold.woff2") format("woff2"),
-    url("./fonts/SFUIDisplay-Bold.woff") format("woff");
+  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Bold_xfhhjj.woff2")
+      format("woff2"),
+    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Bold_e1yaux.woff")
+      format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -368,7 +374,7 @@ iframe {
   margin-top: 20px;
   width: 160px;
   padding: 10px;
-  background-color: rgb(0, 182, 182) !important;
+  background-color: rgb(13, 200, 200) !important;
   color: rgb(0, 0, 0);
   border: none;
 }
@@ -376,9 +382,13 @@ iframe {
 .explore-btn:hover {
   font-family: "SF UI Display", sans-serif;
   font-weight: bolder;
-  transition: all 0.35s ease-in-out;
+  transition: all 0.3s ease-in-out;
   color: azure !important;
-  background-color: rgb(1, 110, 110);
+  background-color: rgb(11, 153, 153) !important;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
 }
 
 .explore-btn:focus {
@@ -421,10 +431,14 @@ iframe {
   padding: 0;
   text-decoration: none;
   font-size: 55%;
+  background-color: #00265e0e !important;
+  padding: 0 12px;
 }
 
 .btn-link:hover {
   text-decoration: none;
+  background-color: #00000025 !important;
+  color: var(--bs-tertiary-bg);
 }
 
 .about__setion-thumbnail {

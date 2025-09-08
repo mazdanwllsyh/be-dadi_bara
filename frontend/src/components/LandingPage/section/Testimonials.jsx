@@ -172,7 +172,8 @@ const Testimonials = () => {
                     width="80"
                     height="80"
                     roundedCircle
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "cover", border: "3px solid", }}
+                    className="shadow-lg border-black-emphasis"
                   />
                 </Col>
                 <Col xs="auto">

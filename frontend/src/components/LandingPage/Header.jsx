@@ -52,7 +52,6 @@ const Header = () => {
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", controlNavbar, { passive: true });
 
-    // Cleanup function
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", controlNavbar);

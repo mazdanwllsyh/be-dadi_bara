@@ -80,7 +80,7 @@ const Footer = () => {
             />
           </Col>
           <Col md={4} className="d-none d-md-block order-md-3 text-center">
-            <a href="https://www.bejalen.com">
+            <a href="https://www.bejalen.com" rel="noreferrer">
               <img
                 src={data.logoDesaBaru}
                 alt="LogoDesa"

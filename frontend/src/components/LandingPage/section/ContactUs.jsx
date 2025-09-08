@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { UserContext } from "../UserContext";
+import useCustomSwals from "../../Dashboard/useCustomSwals";
 
 const ContactUs = () => {
   const { user } = useContext(UserContext);
@@ -14,6 +15,7 @@ const ContactUs = () => {
     pesan: "",
   });
 
+  const { showSuccessSwal, showErrorSwal, } = useCustomSwals();
   const [isSending, setIsSending] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
   const [cooldownMessage, setCooldownMessage] = useState("");
@@ -56,10 +58,9 @@ const ContactUs = () => {
 
     const remaining = checkCooldown();
 
-    // Jika masih dalam cooldown, update pesan setiap menit
     if (remaining > 0) {
-      const interval = setInterval(checkCooldown, 60000); // Update setiap 1 menit
-      return () => clearInterval(interval); // Cleanup interval saat komponen di-unmount
+      const interval = setInterval(checkCooldown, 60000); 
+      return () => clearInterval(interval); 
     }
   }, []);
 
@@ -80,7 +81,7 @@ const ContactUs = () => {
       return;
     }
 
-    setIsSending(true); // 1. Mulai loading, tombol akan disabled
+    setIsSending(true); 
 
     emailjs
       .send(
@@ -92,7 +93,7 @@ const ContactUs = () => {
       .then(
         (response) => {
           console.log("Berhasil mengirim email", response);
-          toast.success("Pesan Anda telah berhasil dikirim!", {
+          showSuccessSwal("Pesan Anda telah berhasil dikirim!", {
             position: "bottom-left",
           });
 
@@ -105,7 +106,7 @@ const ContactUs = () => {
         },
         (error) => {
           console.error("Gagal mengirim email:", error);
-          toast.error("Terjadi kesalahan, silakan coba lagi.", {
+          showErrorSwal("Terjadi kesalahan, silakan coba lagi.", {
             position: "bottom-center",
           });
         }

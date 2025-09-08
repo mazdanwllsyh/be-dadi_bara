@@ -120,7 +120,7 @@ const AdminDashboard = () => {
   };
 
   const handleEditClick = (admin) => {
-    setEditingAdmin({ ...admin, password: "" }); // Kosongkan password saat edit
+    setEditingAdmin({ ...admin, password: "" }); 
   };
 
   const handleCancelEdit = () => {
@@ -135,11 +135,9 @@ const AdminDashboard = () => {
   const handleUpdateAdmin = async () => {
     if (!editingAdmin) return;
     try {
-      // Hanya kirim data yang diubah
       const { _id, fullName, password } = editingAdmin;
       const updateData = { fullName };
       if (password) {
-        // Hanya sertakan password jika diisi
         updateData.password = password;
       }
 
@@ -159,7 +157,6 @@ const AdminDashboard = () => {
       ? `${email.substring(0, 2)}****${email.substring(email.indexOf("@"))}`
       : "";
 
-  // Memoization untuk performa, logika tidak berubah
   const memoizedSuperAdmins = useMemo(() => superAdmins, [superAdmins]);
   const memoizedAdmins = useMemo(() => admins, [admins]);
 

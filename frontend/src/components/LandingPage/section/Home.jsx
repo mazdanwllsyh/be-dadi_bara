@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <section id="home" className="hero-section d-flex align-items-center">
       <Helmet>
-        <title>Beranda | Karang Taruna Desa Bejalen</title>
+        <title>Karang Taruna Desa Bejalen</title>
         <meta
           name="description"
           content="Karang Taruna Dadi Bara - Organisasi bersama dalam mengembangkan kesejahteraan sosial di Bejalen, Ambarawa."
@@ -100,7 +100,6 @@ const Home = () => {
 
             <div className="mt-4">
               <Row className="justify-content-center gx-3">
-                {/* Tombol Pertama */}
                 <Col xs={10} sm={8} md={"auto"}>
                   <Button
                     as="a"
