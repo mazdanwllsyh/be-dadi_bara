@@ -2,10 +2,28 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import viteCompression from "vite-plugin-compression";
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 export default defineConfig(({ command }) => ({
   plugins: [
     react(),
+    ViteImageOptimizer({
+      png: {
+        quality: 80,
+      },
+      jpeg: {
+        quality: 80,
+      },
+      jpg: {
+        quality: 75,
+      },
+      webp: {
+        quality: 70,
+      },
+      avif: {
+        quality: 70,
+      },
+    }),
     viteCompression({
       algorithm: "gzip",
       ext: ".gz",
@@ -32,6 +50,12 @@ export default defineConfig(({ command }) => ({
             return "vendor";
           }
         },
+      },
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
       },
     },
   },
