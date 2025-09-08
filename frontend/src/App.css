@@ -3,22 +3,9 @@
 
 /* SF UI FONTS */
 @font-face {
-  font-family: "SF UI Text";
-  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIText-Regular_qugrix.woff2")
-      format("woff2"),
-    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIText-Regular_grvgao.woff")
-      format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "SF UI Display";
-  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329648/SFUIDisplay-Medium_zapfdz.woff2")
-      format("woff2"),
-    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Medium_edyskr.woff")
-      format("woff");
+  src: url("../fonts/SFUIDisplay-Medium.woff2") format("woff2"),
+    url("../fonts/SFUIDisplay-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -26,11 +13,18 @@
 
 @font-face {
   font-family: "SF UI Display";
-  src: url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Bold_xfhhjj.woff2")
-      format("woff2"),
-    url("https://res.cloudinary.com/dr7olcn4r/raw/upload/v1757329649/SFUIDisplay-Bold_e1yaux.woff")
-      format("woff");
+  src: url("../fonts/SFUIDisplay-Bold.woff2") format("woff2"),
+    url("../fonts/SFUIDisplay-Bold.woff") format("woff");
   font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF UI Text";
+  src: url("../fonts/SFUIText-Regular.woff2") format("woff2"),
+    url("../fonts/SFUIText-Regular.woff") format("woff");
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
