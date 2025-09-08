@@ -4,8 +4,8 @@
 /* SF UI FONTS */
 @font-face {
   font-family: "SF UI Display";
-  src: url("../fonts/SFUIDisplay-Medium.woff2") format("woff2"),
-    url("../fonts/SFUIDisplay-Medium.woff") format("woff");
+  src: url("./fonts/SFUIDisplay-Medium.woff2") format("woff2"),
+    url("./fonts/SFUIDisplay-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -13,8 +13,8 @@
 
 @font-face {
   font-family: "SF UI Display";
-  src: url("../fonts/SFUIDisplay-Bold.woff2") format("woff2"),
-    url("../fonts/SFUIDisplay-Bold.woff") format("woff");
+  src: url("./fonts/SFUIDisplay-Bold.woff2") format("woff2"),
+    url("./fonts/SFUIDisplay-Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -22,8 +22,8 @@
 
 @font-face {
   font-family: "SF UI Text";
-  src: url("../fonts/SFUIText-Regular.woff2") format("woff2"),
-    url("../fonts/SFUIText-Regular.woff") format("woff");
+  src: url("./fonts/SFUIText-Regular.woff2") format("woff2"),
+    url("./fonts/SFUIText-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
