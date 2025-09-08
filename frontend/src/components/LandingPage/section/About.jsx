@@ -96,11 +96,9 @@ const About = () => {
                   <Carousel.Item key={image._id}>
                     <Image
                       src={image.src}
-                      className="d-block mx-auto w-100 h-100 object-fit-cover border-1"
+                      className="d-block mx-auto w-100 h-100 object-fit-cover border border-3 mb-4"
                       alt={image.title}
                     />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
                   </Carousel.Item>
                 ))}
               </Carousel>

@@ -412,6 +412,10 @@ iframe {
   background-attachment: fixed;
 }
 
+.border {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
 .text-about-us h2 {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -424,7 +428,7 @@ iframe {
   text-align: justify;
 }
 
-.btn-link {
+#about .btn-link {
   display: block;
   clear: both;
   font-family: "Manrope", manrope-fallback;
@@ -435,7 +439,7 @@ iframe {
   padding: 0 12px;
 }
 
-.btn-link:hover {
+#about .btn-link:hover {
   text-decoration: none;
   background-color: #00000025 !important;
   color: var(--bs-tertiary-bg);
@@ -911,14 +915,14 @@ fieldset {
   height: 200px;
   border-radius: 50%;
   overflow: hidden;
-  margin: 0 auto 1rem; /* Otomatis tengahkan dan beri margin bawah */
-  border: 4px solid #dee2e6; /* Memberi efek seperti 'thumbnail' */
+  margin: 0 auto 1rem;
+  border: 4px solid;
 }
 
 .profile-image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ini bagian paling penting untuk cropping */
+  object-fit: cover;
 }
 
 #userprofile .profile-picture {

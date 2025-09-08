@@ -9,8 +9,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import Header from "./LandingPage/Header";
+import LazySection from "./LazySection";
 import { UserContext } from "./LandingPage/UserContext";
-import { AppContext } from "./LandingPage/AppContext";
 import Home from "./LandingPage/section/Home";
 import Transition from "./LandingPage/Transition";
 import ProtectedRoute from "./ProtectedRoute";
@@ -171,10 +171,18 @@ function AppLandingPage() {
               element={
                 <>
                   <Home />
-                  <About />
-                  <JadwalKegiatan />
-                  <FAQ />
-                  <ContactUs />
+                  <LazySection>
+                    <About />
+                  </LazySection>
+                  <LazySection minHeight="50vh">
+                    <JadwalKegiatan />
+                  </LazySection>
+                  <LazySection minHeight="70vh">
+                    <FAQ />
+                  </LazySection>
+                  <LazySection minHeight="60vh">
+                    <ContactUs />
+                  </LazySection>
                 </>
               }
             />

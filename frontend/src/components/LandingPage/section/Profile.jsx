@@ -30,7 +30,7 @@ import useCustomSwals from "../../Dashboard/useCustomSwals.jsx";
 
 const Profile = () => {
   const { user, setUser, loading, logout } = useContext(UserContext);
-  const { showConfirmSwal, showSuccessSwal, showErrorSwal, showInfoSwal } =
+  const { showSuccessSwal, showErrorSwal, showInfoSwal } =
     useCustomSwals();
 
   const { theme } = useContext(AppContext);
@@ -272,7 +272,7 @@ const Profile = () => {
               <Card className="p-4 align-items-center shadow-sm text-center">
                 <h2 className="section-title">Foto Profil</h2>
                 <hr className="w-100" />
-                <div className="profile-image-container">
+                <div className="profile-image-container border-black-emphasis">
                   <Image
                     src={
                       imagePreview ||
@@ -327,7 +327,7 @@ const Profile = () => {
               )}
 
               {backButton && user?.role === "user" && (
-                <div className="text-center mt-2">
+                <div className="text-center mt-3">
                   <Button
                     variant="info"
                     className="w-100 text-light border-0"
@@ -353,7 +353,7 @@ const Profile = () => {
 
             <Col xs={12} lg={8} className="order-lg-3">
               <Card className="p-4 shadow-sm">
-                <h2 className="section-title">Data Anda</h2>
+                <h2 className="section-title">Data Diri</h2>
                 <hr />
                 <Form>
                   <Form.Group className="mb-2" controlId="formName">

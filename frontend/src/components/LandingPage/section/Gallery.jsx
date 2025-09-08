@@ -120,7 +120,7 @@ const Gallery = () => {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "50vh" }}
+        style={{ minHeight: "95vh" }}
       >
         <Spinner animation="border" />
       </div>
