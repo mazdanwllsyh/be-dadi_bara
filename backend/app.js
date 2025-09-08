@@ -39,16 +39,14 @@ cloudinary.config({
 
 const app = express();
 
-console.log("MEMULAI KONEKSI KE DATABASE..."); 
+console.log("MEMULAI KONEKSI KE DATABASE...");
 
 mongoose
   .connect(process.env.DATABASE, {})
   .then(() => {
-    console.log("KONEKSI DATABASE BERHASIL!"); 
+    console.log("KONEKSI DATABASE BERHASIL!");
   })
-  .catch(
-    (err) => console.error("KONEKSI DATABASE GAGAL:", err) 
-  );
+  .catch((err) => console.error("KONEKSI DATABASE GAGAL:", err));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -61,7 +59,13 @@ app.use(
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "default-src": ["'self'", "blob:"],
         "script-src": ["'self'", "https://accounts.google.com/gsi/client"],
-        "connect-src": ["'self'", "https://accounts.google.com"],
+        "connect-src": [
+          "'self'",
+          "blob:",
+          "https://accounts.google.com",
+          "https://be-dadi-bara.vercel.app",
+          "https://res.cloudinary.com",
+        ],
         "frame-src": ["'self'", "https://accounts.google.com"],
         "img-src": [
           "'self'",
