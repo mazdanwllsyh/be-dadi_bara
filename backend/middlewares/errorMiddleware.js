@@ -14,7 +14,6 @@ export const errorHandler = (err, req, res, next) => {
     resStatusCode = 400;
   }
 
-  // Tangani error validasi Mongoose
   if (err.name === "ValidationError") {
     message = Object.values(err.errors)
       .map((item) => item.message)

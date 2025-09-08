@@ -227,7 +227,6 @@ html {
   transition: top 700ms ease-in-out;
   background-color: #d6dfdd !important;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 [data-bs-theme="dark"] .navbar {
@@ -369,8 +368,8 @@ iframe {
   margin-top: 20px;
   width: 160px;
   padding: 10px;
-  background-color: darkcyan !important;
-  color: rgb(255, 255, 255);
+  background-color: rgb(0, 182, 182) !important;
+  color: rgb(0, 0, 0);
   border: none;
 }
 

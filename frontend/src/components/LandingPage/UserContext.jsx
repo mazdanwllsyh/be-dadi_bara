@@ -68,6 +68,11 @@ export const UserProvider = ({ children }) => {
         updateUser(null);
       }
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.info("Sesi tidak aktif, Tidak ada yang login.");
+      } else {
+        console.error("Gagal mengambil data user:", error);
+      }
       updateUser(null);
     } finally {
       setLoading(false);

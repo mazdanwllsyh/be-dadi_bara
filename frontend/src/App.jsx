@@ -6,7 +6,6 @@ import { AppProvider } from "./components/LandingPage/AppContext.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ThemedToastContainer from "./components/ThemedToastContainer.jsx";
-import instance from "./utils/axios.js";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -24,11 +23,6 @@ function App() {
       easing: "ease-in-out",
       once: true,
     });
-
-    instance
-      .get("/auth/getuser")
-      .then((res) => {})
-      .catch((err) => {});
   }, []);
 
   return (
