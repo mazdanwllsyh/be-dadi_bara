@@ -59,6 +59,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "default-src": ["'self'", "blob:"],
         "script-src": ["'self'", "https://accounts.google.com/gsi/client"],
         "connect-src": ["'self'", "https://accounts.google.com"],
         "frame-src": ["'self'", "https://accounts.google.com"],
