@@ -3,13 +3,14 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
-const streamUploadFromBuffer = (buffer, folder) => {
+const streamUploadFromBuffer = (buffer, folder, publicId) => {
   return new Promise((resolve, reject) => {
     let stream = cloudinary.uploader.upload_stream(
       {
         folder: folder,
+        public_id: publicId,
         resource_type: "auto",
-        quality: "auto:good", 
+        quality: "auto:good",
       },
       (error, result) => {
         if (result) resolve(result);
@@ -31,7 +32,6 @@ const deleteFromCloudinaryByUrl = async (fileUrl) => {
 };
 
 export const getSkDocument = asyncHandler(async (req, res) => {
-  // Logika tidak berubah
   const sk = await SkDocument.findOne();
   res.status(200).json(sk);
 });
@@ -48,7 +48,14 @@ export const uploadSk = asyncHandler(async (req, res) => {
     await SkDocument.findByIdAndDelete(oldSk._id);
   }
 
-  const result = await streamUploadFromBuffer(req.file.buffer, "sk_documents");
+  const currentYear = new Date().getFullYear();
+  const newPublicId = `SuratKeputusanOrganisasi-${currentYear}`;
+
+  const result = await streamUploadFromBuffer(
+    req.file.buffer,
+    "sk_documents",
+    newPublicId
+  );
 
   const newSk = await SkDocument.create({ filePath: result.secure_url });
   res.status(201).json(newSk);
