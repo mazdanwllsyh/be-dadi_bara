@@ -62,25 +62,37 @@ const FaqEditor = () => {
   };
 
   const handleAddFaq = async () => {
+    if (!question.trim() || !answer.trim()) {
+      return showErrorSwal(
+        "Oops!",
+        "Pertanyaan dan Jawaban tidak boleh kosong ya."
+      );
+    }
     try {
       const newFaq = { question, answer };
       await instance.post("/faq", newFaq, { withCredentials: true });
       fetchFaq();
-      toast.success("FAQ berhasil ditambahkan!");
+      showSuccessSwal("FAQ berhasil ditambahkan!");
       handleCloseModal();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Gagal menambahkan FAQ.");
+      showErrorSwal(error.response?.data?.message || "Gagal menambahkan FAQ.");
     }
   };
 
   const handleEditFaq = async () => {
+    if (!question.trim() || !answer.trim()) {
+      return showErrorSwal(
+        "Oops!",
+        "Pertanyaan dan Jawaban tidak boleh kosong ya."
+      );
+    }
     try {
       const updatedFaq = { question, answer };
       await instance.put(`/faq/${currentFaqId}`, updatedFaq, {
         withCredentials: true,
       });
-      fetchFaq(); // Ambil ulang data
-      toast.success("FAQ berhasil diperbarui!");
+      fetchFaq();
+      showSuccessSwal("FaQ berhasil diperbarui!");
       handleCloseModal();
     } catch (error) {
       toast.error(error.response?.data?.message || "Gagal mengedit FAQ.");
@@ -89,17 +101,20 @@ const FaqEditor = () => {
 
   const handleDeleteFaq = async (faqId) => {
     const isConfirmed = await showConfirmSwal(
-    "Yakin ingin menghapus?",
-    "Pertanyaan dan Jawaban (FAQ) ini akan dihapus secara permanen!"
-  );
+      "Yakin ingin menghapus?",
+      "Pertanyaan dan Jawaban (FaQ) ini akan dihapus secara permanen!"
+    );
 
     if (isConfirmed) {
       try {
         await instance.delete(`/faq/${faqId}`, { withCredentials: true });
         showSuccessSwal("Berhasil!", "FAQ berhasil dihapus.");
-        fetchFaq(); 
+        fetchFaq();
       } catch (error) {
-        showErrorSwal("Gagal!", error.response?.data?.message || "Gagal menghapus FAQ.");
+        showErrorSwal(
+          "Gagal!",
+          error.response?.data?.message || "Gagal menghapus FAQ."
+        );
       }
     }
   };

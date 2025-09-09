@@ -19,7 +19,7 @@ import instance from "../../utils/axios";
 
 const LandingPageDashboard = () => {
   const { data, updateData } = useContext(AppContext);
-
+  const [initialData, setInitialData] = useState({});
   const [formData, setFormData] = useState({
     namaOrganisasi: "",
     tagline: "",
@@ -31,18 +31,29 @@ const LandingPageDashboard = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const { showConfirmSwal, showSuccessSwal, showErrorSwal } = useCustomSwals();
+  const [hasChanged, setHasChanged] = useState(false);
+  const { showSuccessSwal, showErrorSwal } = useCustomSwals();
 
   useEffect(() => {
-    if (data.namaOrganisasi !== "") {
-      setFormData({
+    if (data && Object.keys(data).length > 0) {
+      const initialFormState = {
         namaOrganisasi: data.namaOrganisasi || "",
         tagline: data.tagline || "",
         aboutUsText: data.aboutUsParagraphs?.join("\n") || "",
-      });
+      };
+      setFormData(initialFormState);
+      setInitialData(initialFormState);
       setIsLoading(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    const changesDetected =
+      JSON.stringify(formData) !== JSON.stringify(initialData) ||
+      logoDadiBaraFile !== null ||
+      logoDesaBaruFile !== null;
+    setHasChanged(changesDetected);
+  }, [formData, initialData, logoDadiBaraFile, logoDesaBaruFile]);
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -147,6 +158,15 @@ const LandingPageDashboard = () => {
                   <Form.Label className="text-custom fw-bold">
                     Logo Organisasi:
                   </Form.Label>
+                  {data.logoDadiBara && (
+                    <Button
+                      variant="link"
+                      className="p-0 ms-2 text-decoration-underline"
+                      onClick={() => window.open(data.logoDadiBara, "_blank")}
+                    >
+                      (Lihat File)
+                    </Button>
+                  )}
                   <Form.Control
                     type="file"
                     accept="image/*"
@@ -159,6 +179,15 @@ const LandingPageDashboard = () => {
                   <Form.Label className="text-custom fw-bold">
                     Logo Desa:
                   </Form.Label>
+                  {data.logoDesaBaru && (
+                    <Button
+                      variant="link"
+                      className="p-0 ms-2 text-decoration-underline"
+                      onClick={() => window.open(data.logoDesaBaru, "_blank")}
+                    >
+                      (Lihat File)
+                    </Button>
+                  )}
                   <Form.Control
                     type="file"
                     accept="image/*"
@@ -181,15 +210,17 @@ const LandingPageDashboard = () => {
               />
             </Form.Group>
             <div className="text-center">
-              <Button
-                variant="primary"
-                type="submit"
-                disabled={isSaving}
-                className="w-50"
-              >
-                <FaSave />{" "}
-                {isSaving ? <Spinner size="sm" /> : "Simpan Perubahan"}
-              </Button>
+              {hasChanged && (
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={isSaving}
+                  className="w-50"
+                >
+                  <FaSave />{" "}
+                  {isSaving ? <Spinner size="sm" /> : "Simpan Perubahan"}
+                </Button>
+              )}
             </div>
           </Form>
         </Card.Body>

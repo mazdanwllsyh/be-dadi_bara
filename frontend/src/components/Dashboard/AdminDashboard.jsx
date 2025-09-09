@@ -240,7 +240,7 @@ const AdminDashboard = () => {
                     <th className="th-short align-middle text-center">#</th>
                     <th style={{ minWidth: "155px" }}>Nama</th>
                     <th className="align-middle text-center">Email</th>
-                    <th style={{ minWidth: "125px" }}>Password</th>
+                    <th style={{ minWidth: "195px" }}>Password</th>
                     <th className="align-middle text-center">Aksi</th>
                   </tr>
                 </thead>

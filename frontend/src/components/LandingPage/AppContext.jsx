@@ -23,10 +23,25 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const response = await instance.get("/landing-config");
-        setData(response.data);
+        const response = await instance.get("/landing-config", {
+          withCredentials: true,
+        });
+        const responseData = response.data;
+        setData(responseData);
+        if (responseData.logoDadiBara) {
+          const preloadLink = document.createElement("link");
+          preloadLink.rel = "preload";
+          preloadLink.as = "image";
+          preloadLink.href = responseData.logoDadiBara;
+          preloadLink.fetchPriority = "high";
+          preloadLink.id = "lcp-logo-preload";
+          if (!document.getElementById("lcp-logo-preload")) {
+            document.head.appendChild(preloadLink);
+          }
+        }
       } catch (error) {
         console.error("Gagal mengambil data awal:", error);
+        console.info("Gagal terhubung ke server.");
       } finally {
         setIsLoading(false);
       }
@@ -36,11 +51,9 @@ export const AppProvider = ({ children }) => {
 
   const toggleTheme = useCallback(() => {
     const newTheme = theme === "light" ? "dark" : "light";
-
     localStorage.setItem("theme", newTheme);
-
     setTheme(newTheme);
-  }, [theme]); 
+  }, [theme]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-bs-theme", theme);

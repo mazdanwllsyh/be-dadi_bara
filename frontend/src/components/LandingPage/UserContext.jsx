@@ -19,33 +19,6 @@ export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const { showConfirmSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const response = await instance.get("/landing-config", {
-          withCredentials: true,
-        });
-        const responseData = response.data;
-        setData(responseData);
-        if (responseData.logoDadiBara) {
-          const preloadLink = document.createElement("link");
-          preloadLink.rel = "preload";
-          preloadLink.as = "image";
-          preloadLink.href = responseData.logoDadiBara;
-          preloadLink.fetchPriority = "high";
-          preloadLink.id = "lcp-logo-preload";
-          if (!document.getElementById("lcp-logo-preload")) {
-            document.head.appendChild(preloadLink);
-          }
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data awal:", error);
-        showErrorSwal("Gagal terhubung ke server.");
-      }
-    };
-    fetchInitialData();
-  }, []);
-
   const updateUser = useCallback((newUserData) => {
     if (newUserData) {
       setUser(newUserData);

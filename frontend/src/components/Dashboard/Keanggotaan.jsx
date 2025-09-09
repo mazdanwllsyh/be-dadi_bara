@@ -232,7 +232,6 @@ const Keanggotaan = () => {
 
   const handleFormChange = (e) => {
     const { name, value, type, files } = e.target;
-
     if (type === "file") {
       const file = files[0];
       if (file) {
@@ -244,10 +243,7 @@ const Keanggotaan = () => {
       if (name === "whatsapp" && value.startsWith("0")) {
         updatedValue = "62" + value.substring(1);
       }
-
-      // Update state utama
       setCurrentRow((prevState) => ({ ...prevState, [name]: updatedValue }));
-
       if (name === "title") {
         setCurrentRow((prevState) => ({ ...prevState, subTitle: "" }));
       }
@@ -287,6 +283,22 @@ const Keanggotaan = () => {
   };
 
   const handleSaveChanges = async () => {
+    if (
+      !currentRow?.nama?.trim() ||
+      !currentRow?.title?.trim() ||
+      !currentRow?.whatsapp?.trim()
+    ) {
+      return showErrorSwal(
+        "Oops!",
+        "Nama, Jabatan, dan Whatsapp tidak boleh kosong ya."
+      );
+    }
+    if (!isEditing && !currentRow.foto) {
+      return showErrorSwal(
+        "Oops!",
+        "Foto wajib di-upload untuk pengurus baru."
+      );
+    }
     const allJabatanOptions = [
       ...jabatanUtamaOptions,
       ...Object.values(subJabatanOptions).flat(),
@@ -300,7 +312,6 @@ const Keanggotaan = () => {
       ? selectedJabatan.label
       : jabatanFinalValue;
 
-    // Siapkan data untuk dikirim
     const formData = new FormData();
     formData.append("nama", currentRow.nama);
     formData.append("title", jabatanFinalValue);

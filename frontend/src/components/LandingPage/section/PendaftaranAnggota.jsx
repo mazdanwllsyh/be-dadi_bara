@@ -6,7 +6,6 @@ import {
   Form,
   Button,
   Card,
-  Toast,
   CardHeader,
   Spinner,
   Alert,
@@ -52,9 +51,9 @@ const PendaftaranAnggota = () => {
         name: user.fullName || "",
         email: user.email || "",
         phone: user.phone || "",
-        address: user.address || "Desa Bejalen, Bejalen Barat/Timur RT 00 RW 00",
-        gender:
-          user.gender || "",
+        address:
+          user.address || "Desa Bejalen, Bejalen Barat/Timur RT 00 RW 00",
+        gender: user.gender || "",
       }));
     }
   }, [user]);
@@ -141,7 +140,6 @@ const PendaftaranAnggota = () => {
       const submissionData = { ...formData, birthDate: birthDate };
       await instance.post("/pendaftaran", submissionData);
       toast.success("Pendaftaran berhasil! Kami akan segera menghubungi Anda.");
-
       setUser((prevUser) => ({ ...prevUser, hasRegistered: true }));
     } catch (error) {
       toast.error(
@@ -467,7 +465,7 @@ const PendaftaranAnggota = () => {
           </Col>
         </Row>
       </Container>
-    </section>  
+    </section>
   );
 };
 

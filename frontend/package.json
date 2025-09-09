@@ -64,6 +64,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "purgecss": "^7.0.2",
     "rollup-plugin-visualizer": "^6.0.3",
+    "sharp": "^0.34.3",
     "vite": "^7.1.2",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-image-optimizer": "^2.0.2"

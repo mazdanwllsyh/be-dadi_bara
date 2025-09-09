@@ -84,7 +84,7 @@ const AppDashboard = () => {
         className="dashboard-content"
         style={{
           flex: 1,
-          padding: isMobile ? "80px 20px 20px 20px" : "20px",
+          padding: isMobile ? "60px 0 20px 0" : "20px",
           transition: "margin-left 0.3s ease",
           marginLeft: isMobile
             ? 0

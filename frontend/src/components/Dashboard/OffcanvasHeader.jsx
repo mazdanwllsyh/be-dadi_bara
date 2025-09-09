@@ -15,7 +15,7 @@ import { FaRupiahSign } from "react-icons/fa6";
 import { AppContext } from "../LandingPage/AppContext";
 import { UserContext } from "../LandingPage/UserContext";
 import ThemeSwitcher from "../LandingPage/ThemeSwitcher";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const OffcanvasHeader = ({ show, handleClose, handleOffcanvasShow }) => {
   const { data } = useContext(AppContext);
@@ -84,13 +84,13 @@ const OffcanvasHeader = ({ show, handleClose, handleOffcanvasShow }) => {
       <Offcanvas show={show} onHide={handleClose} className="d-lg-none">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            <a href="/">
+            <Link to="/" onClick={handleClose}>
               <img
                 src={data.logoDadiBara}
                 alt="Logo DADI BARA"
                 style={{ width: "100px" }}
               />
-            </a>
+            </Link>
           </Offcanvas.Title>
         </Offcanvas.Header>
         <hr
@@ -105,56 +105,64 @@ const OffcanvasHeader = ({ show, handleClose, handleOffcanvasShow }) => {
         <Offcanvas.Body>
           <Nav className="flex-column">
             <Nav.Link
-              href="/admin"
+              as={Link}
+              to="/admin"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <MdDashboard className="me-2" /> Dashboard
             </Nav.Link>
             <Nav.Link
-              href="/admin/landingpage"
+              as={Link}
+              to="/admin/landingpage"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <SiPacker className="me-2" /> Landing Page
             </Nav.Link>
             <Nav.Link
-              href="/admin/gallery-dashboard"
+              as={Link}
+              to="/admin/gallery-dashboard"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <FaImage className="me-2" /> Gallery
             </Nav.Link>
             <Nav.Link
-              href="/admin/keanggotaan"
+              as={Link}
+              to="/admin/keanggotaan"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <FaUsers className="me-2" /> Keanggotaan
             </Nav.Link>
             <Nav.Link
-              href="/admin/keuangan"
+              as={Link}
+              to="/admin/keuangan"
               onClick={handleClose}
               className="sidebar-link"
             >
               <FaRupiahSign className="me-2" /> Keuangan
             </Nav.Link>
             <Nav.Link
-              href="/admin/pendaftaran"
+              as={Link}
+              to="/admin/pendaftaran"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <FaRegHandPaper className="me-2" /> Pendaftaran
             </Nav.Link>
             <Nav.Link
-              href="/admin/data-user"
+              as={Link}
+              to="/admin/data-user"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
               <FaUserFriends className="me-2" /> Data User
             </Nav.Link>
             <Nav.Link
-              href="/admin/data-admin"
+              as={Link}
+              to="/admin/data-admin"
               onClick={handleClose}
               className="sidebar-link my-2"
             >
