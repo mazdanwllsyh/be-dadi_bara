@@ -379,7 +379,7 @@ const Profile = () => {
                                 ? profileData.email
                                 : "•••••••"
                             }
-                            readOnly={!isEditing}
+                            readOnly
                             className={
                               !isEditing || !showEmail ? "password-mask" : ""
                             }
@@ -489,18 +489,7 @@ const Profile = () => {
                   <div className="text-center justify-content-center mt-4">
                     {isEditing ? (
                       <Row className="justify-content-center g-2">
-                        <Col xs={12} md="auto">
-                          <Button
-                            variant="warning"
-                            onClick={handleCancelEdit}
-                            className="w-100"
-                            disabled={isUpdating}
-                          >
-                            <FaTimesCircle className="me-2" />
-                            Batal Edit
-                          </Button>
-                        </Col>
-                        <Col xs={12} md="auto">
+                        <Col xs={12} md="auto" className="order-lg-2 mb-2">
                           <Button
                             variant="success"
                             onClick={handleSaveChanges}
@@ -513,6 +502,17 @@ const Profile = () => {
                               <FaSave className="me-2" />
                             )}
                             Simpan Perubahan
+                          </Button>
+                        </Col>
+                        <Col xs={12} md="auto" className="order-lg-1 mb-2">
+                          <Button
+                            variant="warning"
+                            onClick={handleCancelEdit}
+                            className="w-100"
+                            disabled={isUpdating}
+                          >
+                            <FaTimesCircle className="me-2" />
+                            Batal Edit
                           </Button>
                         </Col>
                       </Row>

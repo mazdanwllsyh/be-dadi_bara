@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import {
   FaUserEdit,
@@ -18,6 +18,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { AppContext } from "../LandingPage/AppContext.jsx";
 import instance from "../../utils/axios.js";
 
 ChartJS.register(
@@ -30,12 +31,14 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const { theme } = useContext(AppContext);
   const [dashboardData, setDashboardData] = useState({
     totalAdmins: 0,
     totalUsers: 0,
     totalPengurus: 0,
     totalPendaftar: 0,
   });
+  const textColor = theme === "dark" ? "white" : "#495057";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +72,7 @@ const Dashboard = () => {
       legend: {
         position: "top",
         labels: {
+          color: textColor,
           font: {
             family: "'SF UI Text', 'SF UI Display', 'Roboto', sans-serif",
           },
@@ -77,6 +81,7 @@ const Dashboard = () => {
       title: {
         display: true,
         text: "Visualisasi Data Akun Pengguna",
+        color: textColor,
         font: {
           size: 21,
           family: "'SF UI Display', 'SF UI Text', 'Roboto', sans-serif",
@@ -96,6 +101,7 @@ const Dashboard = () => {
         beginAtZero: true,
         ticks: {
           stepSize: 10,
+          color: textColor,
           font: {
             family: "'SF UI Text', 'SF UI Display', 'Roboto', sans-serif",
           },
@@ -103,6 +109,7 @@ const Dashboard = () => {
       },
       x: {
         ticks: {
+          color: textColor,
           font: {
             family: "'SF UI Text', 'SF UI Display', 'Roboto', sans-serif",
           },
@@ -198,7 +205,7 @@ const Dashboard = () => {
                   <h2 className="text-custom fw-bold">
                     {dashboardData.totalUsers}
                   </h2>
-                  <h5 className="text-custom fw-bold">Total User</h5>
+                  <h5 className="text-custom fw-bold">User / Pengunjung</h5>
                 </div>
                 <FaUserFriends size={50} />
               </Card.Body>

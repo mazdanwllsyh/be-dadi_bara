@@ -87,8 +87,8 @@ const customStyles = {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      color: "var(--bs-secondary-color)", 
-      backgroundColor: "var(--bs-body-bg)", 
+      color: "var(--bs-secondary-color)",
+      backgroundColor: "var(--bs-body-bg)",
       padding: "24px",
     },
   },
@@ -338,6 +338,10 @@ const DashboardPendaftaran = () => {
                         legend: {
                           labels: {
                             color: theme === "dark" ? "white" : "black",
+                            font: {
+                              family:
+                                "'SF UI Text', 'SF UI Display', 'Roboto', sans-serif",
+                            },
                           },
                         },
                       },

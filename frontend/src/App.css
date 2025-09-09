@@ -1318,6 +1318,10 @@ footer p {
   background-color: #b5bac1;
   color: #212529 !important;
   backdrop-filter: blur(10px);
+  -webkit-transition: top 700ms ease-in-out;
+  -moz-transition: top 700ms ease-in-out;
+  -ms-transition: top 700ms ease-in-out;
+  -o-transition: top 700ms ease-in-out;
 }
 
 [data-bs-theme="dark"] .mobile-header {
