@@ -41,11 +41,8 @@ export const UserProvider = ({ children }) => {
       } catch (error) {
         console.error("Gagal mengambil data awal:", error);
         showErrorSwal("Gagal terhubung ke server.");
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchInitialData();
   }, []);
 
