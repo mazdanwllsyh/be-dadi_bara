@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { UserContext } from "./LandingPage/UserContext.jsx";
-import Transition from "./LandingPage/Transition.jsx";
+import { UserContext } from "./LandingPage/UserContext";
+import Transition from "./LandingPage/Transition";
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(UserContext);
@@ -12,10 +12,10 @@ const AdminRoute = ({ children }) => {
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-  if (user.role === "admin" || user.role === "superAdmin") {
-    return children;
+  if (user.role !== "admin" && user.role !== "superAdmin") {
+    return <Navigate to="/" replace />;
   }
-  return <Navigate to="/profile" replace />;
+  return children;
 };
 
 export default AdminRoute;
