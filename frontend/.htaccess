@@ -2,6 +2,7 @@
   RewriteEngine On
   RewriteBase /
 
+  # Aturan untuk redirect HTTP ke HTTPS dan non-www (jika ada)
   RewriteCond %{HTTP_HOST} ^www\. [NC,OR]
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
@@ -41,9 +42,9 @@
 
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
-  Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://accounts.google.com; connect-src 'self' https://be-dadi-bara.vercel.app https://accounts.google.com https://res.cloudinary.com; frame-src https://accounts.google.com https://www.google.com https://res.cloudinary.com; img-src 'self' https://res.cloudinary.com https://lh3.googleusercontent.com data: blob:; object-src 'self' https://res.cloudinary.com; worker-src 'self' blob:;"
+  Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com blob:; script-src 'self' https://accounts.google.com; connect-src 'self' https://be-dadi-bara.vercel.app https://accounts.google.com https://res.cloudinary.com blob:; frame-src https://accounts.google.com https://www.google.com https://res.cloudinary.com; img-src 'self' https://res.cloudinary.com https://lh3.googleusercontent.com data: blob:; object-src 'self' https://res.cloudinary.com; worker-src 'self' blob:;"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), midi=(), magnetometer=(), gyroscope=(), speaker=(), usb=()"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), midi=(), magnetometer=(), gyroscope=(), usb=()"
   Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 </IfModule>
 
