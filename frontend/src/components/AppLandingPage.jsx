@@ -174,9 +174,7 @@ function AppLandingPage() {
                   <LazySection>
                     <About />
                   </LazySection>
-                  <LazySection minHeight="50vh">
                     <JadwalKegiatan />
-                  </LazySection>
                   <LazySection minHeight="70vh">
                     <FAQ />
                   </LazySection>
