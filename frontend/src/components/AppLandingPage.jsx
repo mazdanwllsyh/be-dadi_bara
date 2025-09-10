@@ -88,7 +88,7 @@ function AppLandingPage() {
         case "/":
           return "Beranda";
         case "/profile":
-          return "Profil";
+          return "Profil Akun";
         case "/pendaftaran":
           return "Pendaftaran Anggota";
         case "/presensi":
