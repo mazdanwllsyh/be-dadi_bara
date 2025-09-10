@@ -1,6 +1,7 @@
 import React, { useEffect, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminRoute from "./components/AdminRoute.jsx";
+import { HelmetProvider } from "react-helmet-async";
 import { UserProvider } from "./components/LandingPage/UserContext.jsx";
 import { AppProvider } from "./components/LandingPage/AppContext.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,21 +29,22 @@ function App() {
   return (
     <AppProvider>
       <UserProvider>
-        <Suspense fallback={<Transition isLoading={true} />}>
-          <Routes>
-            <Route
-              path="/admin/*"
-              element={
-                <AdminRoute>
-                  <AppDashboard />
-                </AdminRoute>
-              }
-            />
-            <Route path="/*" element={<AppLandingPage />} />
-          </Routes>
-        </Suspense>
+        <HelmetProvider>
+          <Suspense fallback={<Transition isLoading={true} />}>
+            <Routes>
+              <Route
+                path="/admin/*"
+                element={
+                  <AdminRoute>
+                    <AppDashboard />
+                  </AdminRoute>
+                }
+              />
+              <Route path="/*" element={<AppLandingPage />} />
+            </Routes>
+          </Suspense>
+        </HelmetProvider>
       </UserProvider>
-
       <ThemedToastContainer />
     </AppProvider>
   );

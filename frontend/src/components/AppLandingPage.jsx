@@ -87,12 +87,6 @@ function AppLandingPage() {
       switch (pathname) {
         case "/":
           return "Beranda";
-        case "/gallery":
-          return "Galeri";
-        case "/pengurus":
-          return "Pengurus";
-        case "/sk":
-          return "Surat Keputusan";
         case "/profile":
           return "Profil";
         case "/pendaftaran":

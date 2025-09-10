@@ -179,6 +179,37 @@ const Pengurus = () => {
     return animations[index];
   };
 
+  const generateStructuredData = () => {
+    if (!dataPengurus || dataPengurus.length === 0) {
+      return null;
+    }
+
+    const membersList = dataPengurus.map((person) => ({
+      "@type": "Person",
+      name: person.nama,
+      jobTitle: person.titleLabel,
+      image: person.foto,
+      url: `https://dadibara.bejalen.com/pengurus#${person.nama.replace(
+        /\s+/g,
+        "-"
+      )}`, // URL unik jika ada
+      sameAs: person.instagram
+        ? `https://instagram.com/${person.instagram}`
+        : undefined,
+    }));
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Karang Taruna DADI BARA",
+      url: "https://dadibara.bejalen.com",
+      logo: "https://res.cloudinary.com/dr7olcn4r/image/upload/v1754596459/landing-page-logos/landing-page-logos-LogoKartar-1754596456138.png",
+      member: membersList,
+    };
+  };
+
+  const structuredData = generateStructuredData();
+
   if (isLoading) {
     return (
       <div
@@ -211,7 +242,6 @@ const Pengurus = () => {
           name="keywords"
           content="Pengurus Karang Taruna Dadi Bara, KARTAR Bejalen, Ambarawa, organisasi sosial, Karang Taruna, Pemuda Pemudi, Pengurus Dadi Bara"
         />
-
         <meta
           property="og:title"
           content="Struktur Pengurus | Karang Taruna Dadi Bara"
@@ -230,7 +260,6 @@ const Pengurus = () => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Karang Taruna DADI BARA" />
-
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -240,6 +269,11 @@ const Pengurus = () => {
           name="twitter:description"
           content="Kenali lebih dekat jajaran pengurus Karang Taruna DADI BARA Bejalen."
         />
+        {structuredData && (
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        )}
       </Helmet>
       <Container className="py-5">
         <div className="intro">

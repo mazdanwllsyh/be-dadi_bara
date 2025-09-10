@@ -52,11 +52,11 @@ const SK = () => {
   return (
     <section id="sk-dadibara">
       <Helmet>
-        <title>Surat Keputusan (SK) | Karang Taruna Dadi Bara</title>
+        <title>Surat Keputusan | Dadi Bara</title>
         <link rel="canonical" href="https://dadibara.bejalen.com/sk" />
         <meta
           name="description"
-          content="Lihat dan unduh dokumen Surat Keputusan (SK) resmi mengenai penetapan struktur organisasi Karang Taruna DADI BARA Desa Bejalen."
+          content="Lihat dokumen Surat Keputusan (SK) resmi mengenai penetapan struktur organisasi Karang Taruna DADI BARA Desa Bejalen."
         />
         <meta
           name="keywords"
