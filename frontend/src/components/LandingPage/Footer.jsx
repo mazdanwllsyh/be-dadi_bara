@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 import { Container, Row, Col } from "react-bootstrap";
 import { AppContext } from "./AppContext";
-import moment from "moment";
 
 const Footer = () => {
-  const { data } = useContext(AppContext); // Ambil data dari context
+  const { data } = useContext(AppContext);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -95,8 +94,8 @@ const Footer = () => {
           <Col xs={12} className="text-center">
             <hr className="bg-light custom-hr" />
             <p className="mb-0">
-              © 2023 - {moment().year()} {data.namaOrganisasi}. All Rights
-              Reserved.
+              © 2023 - {new Date().getFullYear()} {data.namaOrganisasi}. All
+              Rights Reserved.
             </p>
           </Col>
         </Row>

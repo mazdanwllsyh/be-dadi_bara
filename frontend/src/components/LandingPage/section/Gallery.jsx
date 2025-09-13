@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import {
+  Placeholder,
   Container,
   Row,
   Col,
@@ -45,15 +46,15 @@ const Gallery = () => {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 768) {
-        setItemsPerPage(3); 
+        setItemsPerPage(3);
       } else if (width < 992) {
-        setItemsPerPage(4); 
+        setItemsPerPage(4);
       } else {
-        setItemsPerPage(6); 
+        setItemsPerPage(6);
       }
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -118,12 +119,40 @@ const Gallery = () => {
 
   if (isLoading) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "95vh" }}
-      >
-        <Spinner animation="border" />
-      </div>
+      <Container className="py-5">
+        <h2 className="section-title text-center placeholder-glow">
+          <span className="placeholder col-4"></span>
+        </h2>
+        <Row className="my-3 justify-content-center">
+          {[...Array(6)].map((_, index) => (
+            <Col xs={12} md={6} lg={4} key={index} className="mb-4">
+              <Card
+                className="w-100 h-100 shadow gallery-card"
+                aria-hidden="true"
+              >
+                <div
+                  className="placeholder"
+                  style={{
+                    height: "250px",
+                    borderTopLeftRadius: "var(--bs-card-inner-border-radius)",
+                    borderTopRightRadius: "var(--bs-card-inner-border-radius)",
+                  }}
+                ></div>
+                <Card.Body>
+                  <Card.Title className="placeholder-glow">
+                    <span className="placeholder col-8"></span>
+                  </Card.Title>
+                  <Card.Text className="placeholder-glow">
+                    <span className="placeholder col-7"></span>
+                    <span className="placeholder col-4"></span>
+                    <span className="placeholder col-6"></span>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     );
   }
 

@@ -34,27 +34,41 @@ const Header = () => {
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 990);
 
+    let throttleTimeout = null;
+
     const controlNavbar = () => {
       if (isMobile || window.scrollY < 100) {
         setIsVisible(true);
         return;
       }
-
       if (window.scrollY > lastScrollY) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
       }
-
       setLastScrollY(window.scrollY);
     };
 
+    const throttledControlNavbar = () => {
+      if (throttleTimeout === null) {
+        throttleTimeout = setTimeout(() => {
+          controlNavbar();
+          throttleTimeout = null; 
+        }, 100); 
+      }
+    };
+
     window.addEventListener("resize", handleResize);
-    window.addEventListener("scroll", controlNavbar, { passive: true });
+    window.addEventListener("scroll", throttledControlNavbar, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", controlNavbar);
+      window.removeEventListener("scroll", throttledControlNavbar);
+      if (throttleTimeout) {
+        clearTimeout(throttleTimeout); 
+      }
     };
   }, [lastScrollY, isMobile]);
 

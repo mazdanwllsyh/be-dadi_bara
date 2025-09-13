@@ -30,8 +30,7 @@ import useCustomSwals from "../../Dashboard/useCustomSwals.jsx";
 
 const Profile = () => {
   const { user, setUser, loading, logout } = useContext(UserContext);
-  const { showSuccessSwal, showErrorSwal, showInfoSwal } =
-    useCustomSwals();
+  const { showSuccessSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
 
   const { theme } = useContext(AppContext);
   const navigate = useNavigate();
@@ -146,15 +145,15 @@ const Profile = () => {
     if (!deletePassword) {
       return showErrorSwal("Harap masukkan password Anda untuk konfirmasi.");
     }
-    setIsUpdating(true); // Gunakan state loading yang sama
+    setIsUpdating(true);
     try {
       const response = await instance.delete("/auth/profile", {
         data: { password: deletePassword },
         withCredentials: true,
       });
       showSuccessSwal(response.data.message);
-      setUser(null); // Logout user
-      navigate("/"); // Arahkan ke beranda
+      setUser(null);
+      navigate("/");
     } catch (error) {
       showErrorSwal(error.response?.data?.message || "Gagal menghapus akun.");
     } finally {
@@ -253,9 +252,34 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="text-center my-5">
-        <Spinner animation="border" />
-      </div>
+      <section
+        id="userprofile"
+        className="d-flex my-4 align-items-center justify-content-center"
+      >
+        <Container>
+          <Row className="justify-content-md-center placeholder-glow">
+            <Col xs={12} lg={4} className="mb-4 mb-lg-0">
+              <Card className="p-4 align-items-center shadow-sm text-center">
+                <div
+                  className="placeholder rounded-circle"
+                  style={{ width: "150px", height: "150px" }}
+                ></div>
+                <span className="placeholder col-8 mt-3"></span>
+              </Card>
+            </Col>
+            <Col xs={12} lg={8}>
+              <Card className="p-4 shadow-sm">
+                <h2 className="placeholder col-4"></h2>
+                <hr />
+                <span className="placeholder col-12 mb-2"></span>
+                <span className="placeholder col-10 mb-2"></span>
+                <span className="placeholder col-11 mb-2"></span>
+                <span className="placeholder col-8 mb-2"></span>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </section>
     );
   }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Accordion, Spinner } from "react-bootstrap";
+import FAQSkeleton from "./skeletons/FAQSkeleton";
 import { FaQuestionCircle } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -32,15 +33,7 @@ function Faq() {
   }, []);
 
   if (isLoading) {
-    return (
-      <section id="faq" className="faq d-flex align-items-center py-5">
-        <Container>
-          <div className="text-center">
-            <Spinner animation="border" />
-          </div>
-        </Container>
-      </section>
-    );
+    return <FAQSkeleton />;
   }
 
   return (

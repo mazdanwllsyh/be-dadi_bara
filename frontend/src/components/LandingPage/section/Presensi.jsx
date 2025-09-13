@@ -204,9 +204,34 @@ const Presensi = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center d-flex justify-content-center align-items-center my-5 vh-100">
-        <Spinner />
-      </div>
+      <section
+        id="userprofile"
+        className="d-flex justify-content-center align-items-center vh-100"
+      >
+        <Container className="my-2">
+          <Card className="shadow p-4 placeholder-glow">
+            <Card.Header className="border-0 text-center">
+              <h2 className="placeholder col-6 mb-0"></h2>
+            </Card.Header>
+            <Card.Body className="p-0">
+              <div className="my-2">
+                <span
+                  className="placeholder col-12 mb-2"
+                  style={{ height: "38px" }}
+                ></span>
+                <span
+                  className="placeholder col-12 mb-2"
+                  style={{ height: "38px" }}
+                ></span>
+                <span
+                  className="placeholder col-12"
+                  style={{ height: "38px" }}
+                ></span>
+              </div>
+            </Card.Body>
+          </Card>
+        </Container>
+      </section>
     );
   }
 
@@ -230,8 +255,8 @@ const Presensi = () => {
                       {user.role === "superAdmin" ? "Super Admin" : "Admin"}
                     </Alert.Heading>
                     <p>
-                      Halaman ini ditujukan untuk presensi anggota. Mohon gunakan
-                      email pribadi Anda untuk melakukan presensi.
+                      Halaman ini ditujukan untuk presensi anggota. Mohon
+                      gunakan email pribadi Anda untuk melakukan presensi.
                     </p>
                     <hr />
                     <p className="mb-0">Terima kasih.</p>

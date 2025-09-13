@@ -17,6 +17,11 @@ import ProtectedRoute from "./ProtectedRoute";
 import VerificationRoute from "./VerificationRoute";
 import ThemedToastContainer from "./ThemedToastContainer";
 
+import AboutSkeleton from "./LandingPage/section/skeletons/AboutSkeleton";
+import JadwalKegiatanSkeleton from "./LandingPage/section/skeletons/JadwalKegiatanSkeleton";
+import FAQSkeleton from "./LandingPage/section/skeletons/FAQSkeleton";
+import ContactUsSkeleton from "./LandingPage/section/skeletons/ContactUsSkeleton";
+
 const InterestModal = lazy(() => import("./LandingPage/InterestModal"));
 const Gallery = lazy(() => import("./LandingPage/section/Gallery"));
 const About = lazy(() => import("./LandingPage/section/About"));
@@ -165,16 +170,25 @@ function AppLandingPage() {
               element={
                 <>
                   <Home />
-                  <LazySection>
-                    <About />
-                  </LazySection>
-                    <JadwalKegiatan />
-                  <LazySection minHeight="70vh">
-                    <FAQ />
-                  </LazySection>
-                  <LazySection minHeight="60vh">
-                    <ContactUs />
-                  </LazySection>
+                  <Suspense fallback={<AboutSkeleton />}>
+                    <LazySection>
+                      <About />
+                    </LazySection>
+                  </Suspense>
+
+                  <JadwalKegiatan />
+
+                  <Suspense fallback={<FAQSkeleton />}>
+                    <LazySection minHeight="70vh">
+                      <FAQ />
+                    </LazySection>
+                  </Suspense>
+
+                  <Suspense fallback={<ContactUsSkeleton />}>
+                    <LazySection minHeight="60vh">
+                      <ContactUs />
+                    </LazySection>
+                  </Suspense>
                 </>
               }
             />

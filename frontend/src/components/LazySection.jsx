@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, Suspense } from "react";
-import { Spinner } from "react-bootstrap";
+import React, { useState, useRef, useEffect } from "react";
 
 const LazySection = ({ children, minHeight = "100vh" }) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -14,7 +13,7 @@ const LazySection = ({ children, minHeight = "100vh" }) => {
         }
       },
       {
-        rootMargin: "0px 0px 200px 0px",
+        rootMargin: "0px 0px 200px 0px", // Mulai load saat 200px sebelum masuk viewport
       }
     );
 
@@ -35,20 +34,7 @@ const LazySection = ({ children, minHeight = "100vh" }) => {
       ref={placeholderRef}
       style={{ minHeight: !isIntersecting ? minHeight : "auto" }}
     >
-      {isIntersecting && (
-        <Suspense
-          fallback={
-            <div
-              className="d-flex justify-content-center align-items-center"
-              style={{ minHeight }}
-            >
-              <Spinner animation="border" />
-            </div>
-          }
-        >
-          {children}
-        </Suspense>
-      )}
+      {isIntersecting && children}
     </div>
   );
 };

@@ -111,7 +111,9 @@ const Testimonials = () => {
       });
       setUser(userResponse.data.user);
     } catch (error) {
-      showErrorSwal(error.response?.data?.message || "Gagal mengirim testimoni.");
+      showErrorSwal(
+        error.response?.data?.message || "Gagal mengirim testimoni."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -121,10 +123,36 @@ const Testimonials = () => {
     if (isLoading) {
       return (
         <div className="text-center my-5">
-          <Spinner animation="border" />
+          <Card
+            className="w-75 mx-auto testimonial-card shadow placeholder-glow"
+            aria-hidden="true"
+          >
+            <Card.Body>
+              <Row className="justify-content-center align-items-center mb-3">
+                <Col xs="auto">
+                  <div
+                    className="placeholder rounded-circle"
+                    style={{ width: "80px", height: "80px" }}
+                  ></div>
+                </Col>
+                <Col xs="auto">
+                  <span
+                    className="placeholder col-6"
+                    style={{ height: "24px" }}
+                  ></span>
+                </Col>
+              </Row>
+              <p className="text-center">
+                <span className="placeholder col-7"></span>
+                <span className="placeholder col-4"></span>
+                <span className="placeholder col-6"></span>
+              </p>
+            </Card.Body>
+          </Card>
         </div>
       );
     }
+
     if (!testimonials || testimonials.length === 0) {
       return (
         <p className="text-center my-5 section-subtitle">
@@ -172,7 +200,7 @@ const Testimonials = () => {
                     width="80"
                     height="80"
                     roundedCircle
-                    style={{ objectFit: "cover", border: "3px solid", }}
+                    style={{ objectFit: "cover", border: "3px solid" }}
                     className="shadow-lg border-black-emphasis"
                   />
                 </Col>

@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import {
-  Container,
-  FloatingLabel,
-  Form,
-  InputGroup,
-  Spinner,
-} from "react-bootstrap";
+import { Container, FloatingLabel, Form, InputGroup } from "react-bootstrap";
+import PengurusSkeleton from "./skeletons/PengurusSkeleton";
 import { FaSearch, FaInstagram } from "react-icons/fa";
 import { AppContext } from "../AppContext";
 import AOS from "aos";
@@ -211,18 +206,7 @@ const Pengurus = () => {
   const structuredData = generateStructuredData();
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Spinner />
-      </div>
-    );
+    return <PengurusSkeleton />;
   }
 
   return (
