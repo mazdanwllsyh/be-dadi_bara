@@ -53,8 +53,8 @@ const Header = () => {
       if (throttleTimeout === null) {
         throttleTimeout = setTimeout(() => {
           controlNavbar();
-          throttleTimeout = null; 
-        }, 100); 
+          throttleTimeout = null;
+        }, 100);
       }
     };
 
@@ -67,7 +67,7 @@ const Header = () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", throttledControlNavbar);
       if (throttleTimeout) {
-        clearTimeout(throttleTimeout); 
+        clearTimeout(throttleTimeout);
       }
     };
   }, [lastScrollY, isMobile]);
@@ -98,7 +98,7 @@ const Header = () => {
 
         {isMobile && (
           <div className="d-flex align-items-center">
-            <ThemeSwitcher />
+            <ThemeSwitcher expanded={false} />
             {user ? (
               <Image
                 src={user?.profilePicture || "/default-avatar.png"}
