@@ -51,7 +51,7 @@ const Presensi = () => {
           return dateTimeB - dateTimeA;
         });
 
-        const latestKegiatan = sortedKegiatan.slice(0, 6);
+        const latestKegiatan = sortedKegiatan.slice(0, 5);
         setKegiatanList(latestKegiatan);
         setPengurusList(pengurusRes.data || []);
       } catch (error) {

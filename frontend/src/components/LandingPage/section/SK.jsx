@@ -4,7 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { AppContext } from "../AppContext";
 import { toast } from "react-toastify";
-
+import SKSkeleton from "./skeletons/SKSkeleton.jsx";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
@@ -40,13 +40,7 @@ const SK = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <section id="sk-dadibara" className="d-flex align-items-center py-5">
-        <div className="text-center">
-          <Spinner animation="border" />
-        </div>
-      </section>
-    );
+    return <SKSkeleton />;
   }
 
   return (
