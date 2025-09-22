@@ -538,7 +538,7 @@ const DashboardPendaftaran = () => {
                 disabled={filteredPendaftar.length === 0}
               >
                 <FaFilePdf className="me-2" />
-                Ekspor ke PDF
+                Eksport ke PDF
               </Button>
             </Col>
           </Row>
