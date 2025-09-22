@@ -1,4 +1,5 @@
 .vercel
+*.zip
 
 frontend/dist
 frontend/build
