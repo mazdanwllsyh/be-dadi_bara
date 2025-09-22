@@ -229,7 +229,7 @@ const DashboardPendaftaran = () => {
       cell: (row) => {
         if (!row.name) return "";
 
-        const cleanedName = row.name.replace(/[.,]/g, " ");
+        const cleanedName = row.name.replace(/[.,_]/g, " ");
 
         const capitalizedName = cleanedName
           .split(" ")
