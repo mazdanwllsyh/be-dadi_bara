@@ -9,9 +9,17 @@ import {
   CardHeader,
   Spinner,
   Pagination,
+  InputGroup,
 } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import { FaEdit, FaTrash, FaPlus, FaSave, FaUndo } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaWhatsapp,
+  FaSave,
+  FaUndo,
+} from "react-icons/fa";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { toast } from "react-toastify";
@@ -113,7 +121,7 @@ const JadwalKegiatanEditor = () => {
           withCredentials: true,
         });
 
-        toast.success("Kegiatan berhasil ditambahkan!");
+        showSuccessSwal("Kegiatan berhasil ditambahkan!");
         fetchJadwalKegiatan();
         setNewKegiatan({
           nama: "",
@@ -123,7 +131,7 @@ const JadwalKegiatanEditor = () => {
           keterangan: "",
         });
       } catch (error) {
-        toast.error(
+        showErrorSwal(
           error.response?.data?.message || "Gagal menambah kegiatan."
         );
       }
@@ -148,16 +156,63 @@ const JadwalKegiatanEditor = () => {
         withCredentials: true,
       });
 
-      toast.success("Perubahan kegiatan berhasil disimpan!");
+      showSuccessSwal("Perubahan kegiatan berhasil disimpan!");
       fetchJadwalKegiatan();
-      setEditingItemId(null); // Fix: Use correct state setter
+      setEditingItemId(null);
     } catch (error) {
-      toast.error(
+      showErrorSwal(
         error.response?.data?.message || "Gagal menyimpan perubahan."
       );
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleShareKegiatan = (item) => {
+    const jam = new Date().getHours();
+    let ucapanSelamat;
+    if (jam >= 4 && jam < 11) {
+      ucapanSelamat = "Pagi";
+    } else if (jam >= 11 && jam < 15) {
+      ucapanSelamat = "Siang";
+    } else if (jam >= 15 && jam < 18) {
+      ucapanSelamat = "Sore";
+    } else {
+      ucapanSelamat = "Malam";
+    }
+
+    const tanggalKegiatan = new Date(item.tanggal);
+    const hari = tanggalKegiatan.toLocaleDateString("id-ID", {
+      weekday: "long",
+    });
+    const tanggalFormatted = tanggalKegiatan.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const pesan = `Assalamualaikum Wr. Wb.
+Selamat ${ucapanSelamat}, Rekan-rekan Karang Taruna DADI BARA.
+
+Dengan hormat, kami mengundang seluruh Anggota Karang Taruna DADI BARA untuk hadir dalam kegiatan:
+
+*Acara:* ${item.nama}
+
+Yang akan dilaksanakan pada:
+*Hari:* ${hari}
+*Tanggal:* ${tanggalFormatted}
+*Pukul:* ${item.waktu} WIB
+*Tempat:* ${item.tempat}
+*Keterangan:* ${item.keterangan || "_-_"}
+
+Demikian undangan ini kami sampaikan. Atas perhatian dan kehadiran rekan-rekan, kami ucapkan terima kasih.
+
+Hormat kami,
+*Pengurus Karang Taruna DADI BARA*
+  `;
+
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   const handleDeleteKegiatan = async (itemId) => {
@@ -266,7 +321,7 @@ const JadwalKegiatanEditor = () => {
             </Col>
             <Col md={6} className="mb-2">
               <Form.Label className="text-custom fw-bold">
-                Waktu Kegiatan:
+                Waktu Kegiatan: (WIB)
               </Form.Label>
               <Form.Control
                 type="time"
@@ -429,14 +484,17 @@ const JadwalKegiatanEditor = () => {
                     </td>
                     <td className="align-middle text-center">
                       {editingItemId === item._id ? (
-                        <Form.Control
-                          type="time"
-                          name="waktu"
-                          value={item.waktu}
-                          onChange={(e) => handleInputChange(e, item._id)}
-                        />
+                        <InputGroup>
+                          <Form.Control
+                            type="time"
+                            name="waktu"
+                            value={item.waktu}
+                            onChange={(e) => handleInputChange(e, item._id)}
+                          />
+                          <InputGroup.Text>WIB</InputGroup.Text>
+                        </InputGroup>
                       ) : (
-                        item.waktu
+                        `${item.waktu} WIB`
                       )}
                     </td>
                     <td
@@ -455,7 +513,10 @@ const JadwalKegiatanEditor = () => {
                         item.keterangan
                       )}
                     </td>
-                    <td style={{ whiteSpace: "nowrap" }} className="align-middle">
+                    <td
+                      style={{ whiteSpace: "nowrap" }}
+                      className="align-middle"
+                    >
                       {editingItemId === item._id ? (
                         <div className="d-flex flex-column gap-2">
                           <Button
@@ -490,6 +551,17 @@ const JadwalKegiatanEditor = () => {
                               onClick={() => handleEditKegiatan(item._id)}
                             >
                               <FaEdit /> Edit
+                            </Button>
+                            <Button
+                              variant="success"
+                              className="w-100"
+                              style={{
+                                backgroundColor: "#25D366",
+                                border: "none",
+                              }}
+                              onClick={() => handleShareKegiatan(item)}
+                            >
+                              <FaWhatsapp /> Bagikan
                             </Button>
                             <Button
                               variant="danger"

@@ -132,7 +132,7 @@ const JadwalKegiatan = () => {
                       <td>{item.nama}</td>
                       <td>{item.tempat}</td>
                       <td>{formatTanggalIndonesia(item.tanggal)}</td>
-                      <td>{item.waktu}</td>
+                      <td>{item.waktu} WIB</td>
                       <td>{item.keterangan}</td>
                     </tr>
                   ))}
