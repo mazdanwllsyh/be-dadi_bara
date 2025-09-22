@@ -338,13 +338,22 @@ const DashboardPendaftaran = () => {
       tableRows.push(itemData);
     });
 
+    const logoUrl =
+      "https://res.cloudinary.com/dr7olcn4r/image/upload/q_auto,w_300/v1757429644/logos/logo_organisasi.png";
+    const logoWidth = 20;
+    const logoHeight = 20;
+    const logoX = 14;
+    const titleY = 25;
+    const logoY = titleY - logoHeight / 2 + 1;
+    doc.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+
     const pageWidth = doc.internal.pageSize.getWidth();
     doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
     doc.text(
       "Laporan Data Pendaftar Anggota Karang Taruna Dadi Bara",
       pageWidth / 2,
-      22,
+      titleY,
       { align: "center" }
     );
     doc.setFont("helvetica", "normal");
@@ -352,11 +361,12 @@ const DashboardPendaftaran = () => {
     autoTable(doc, {
       head: [tableColumns],
       body: tableRows,
-      startY: 35,
+      startY: 42,
       theme: "grid",
       styles: {
         font: "helvetica",
-        fontSize: 10,
+        fontSize: 9,
+        valign: "middle",
       },
       headStyles: {
         fillColor: [172, 172, 172],
@@ -366,11 +376,15 @@ const DashboardPendaftaran = () => {
         lineColor: [0, 0, 0],
         lineWidth: 0.2,
       },
+      bodyStyles: {
+        lineColor: [0, 0, 0],
+        lineWidth: 0.1,
+      },
       columnStyles: {
-        0: { cellWidth: 10 }, // No.
-        2: { cellWidth: 25 }, // Jenis Kelamin
-        3: { cellWidth: 30 }, // No. Telepon
-        6: { cellWidth: 30 }, // Tanggal Lahir
+        0: { cellWidth: 10 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 35 },
+        6: { cellWidth: 30 },
       },
     });
 
@@ -516,16 +530,18 @@ const DashboardPendaftaran = () => {
               </div>
             }
           />
-          <Col xs={12} md="auto" className="d-flex justify-content-center">
-            <Button
-              variant="danger"
-              onClick={handleExportPDF}
-              disabled={filteredPendaftar.length === 0}
-            >
-              <FaFilePdf className="me-2" />
-              Export ke PDF
-            </Button>
-          </Col>
+          <Row className="mt-3">
+            <Col className="d-flex justify-content-end">
+              <Button
+                variant="danger"
+                onClick={handleExportPDF}
+                disabled={filteredPendaftar.length === 0}
+              >
+                <FaFilePdf className="me-2" />
+                Ekspor ke PDF
+              </Button>
+            </Col>
+          </Row>
         </Card.Body>
       </Card>
     </Container>
