@@ -11,9 +11,8 @@ import {
   Modal,
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
-import { FaFileAlt, FaEdit, FaTrash } from "react-icons/fa";
+import { FaFileAlt, FaEdit, FaTrash, FaFilePdf } from "react-icons/fa";
 import { GiReceiveMoney, GiPayMoney, GiTakeMyMoney } from "react-icons/gi";
-import Sidebar from "./Sidebar";
 import { toast } from "react-toastify";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
@@ -21,6 +20,9 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { AppContext } from "../LandingPage/AppContext";
 import instance from "../../utils/axios";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { CSVLink } from "react-csv";
 import useCustomSwals from "./useCustomSwals";
 
 const KeuanganDashboard = () => {
@@ -96,8 +98,6 @@ const KeuanganDashboard = () => {
     },
   };
 
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [newTransaction, setNewTransaction] = useState({
@@ -554,6 +554,118 @@ const KeuanganDashboard = () => {
     },
   ];
 
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    const tableColumns = ["Tanggal", "Jenis", "Deskripsi", "Jumlah (Rp)"];
+    const tableRows = [];
+
+    filteredTransactions.forEach((item) => {
+      const itemData = [
+        new Date(item.date).toLocaleDateString("id-ID"),
+        item.type,
+        item.description,
+        item.amount.toLocaleString("id-ID"),
+      ];
+      tableRows.push(itemData);
+    });
+
+    doc.setFontSize(18);
+    doc.text("Laporan Keuangan Karang Taruna DADI BARA", 14, 22);
+
+    doc.setFontSize(12);
+    const filterName = getIndonesianFilterName(filterTime);
+    doc.text(`Periode: ${filterName}`, 14, 30);
+
+    autoTable(doc, {
+      head: [tableColumns],
+      body: tableRows,
+      startY: 35,
+      theme: "grid",
+      styles: {
+        font: "helvetica",
+        fontSize: 10,
+      },
+      headStyles: {
+        fillColor: [41, 128, 185], // Warna header kolom
+        textColor: 255,
+        fontStyle: "bold",
+      },
+    });
+
+    const finalY = doc.lastAutoTable.finalY;
+
+    doc.setFontSize(11);
+    doc.text(
+      `Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`,
+      14,
+      finalY + 10
+    );
+    doc.text(
+      `Total Pengeluaran: Rp ${totalExpense.toLocaleString("id-ID")}`,
+      14,
+      finalY + 17
+    );
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      `Saldo Akhir: Rp ${totalBalance.toLocaleString("id-ID")}`,
+      14,
+      finalY + 24
+    );
+
+    const date = new Date().toISOString().slice(0, 10);
+    const fileName = `Laporan_Keuangan_${filterName}_${date}.pdf`;
+
+    doc.save(fileName);
+  };
+
+  const csvHeaders = [
+    { label: "Tanggal", key: "tanggal" },
+    { label: "Jenis", key: "jenis" },
+    { label: "Deskripsi", key: "deskripsi" },
+    { label: "Jumlah", key: "jumlah" },
+  ];
+
+  const getIndonesianFilterName = (filter) => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    switch (filter) {
+      case "all":
+        return "Semua Waktu";
+      case "today":
+        return "Hari Ini";
+      case "thisWeek":
+        return "Minggu Ini";
+      case "thisMonth":
+        return "Bulan Ini";
+      case "lastMonth":
+        return "Bulan Kemarin";
+      case "thisYear":
+        return `Tahun ${currentYear}`;
+      case "lastYear":
+        return `Tahun ${currentYear - 1}`;
+      default:
+        if (!isNaN(filter)) {
+          return `Tahun ${filter}`;
+        }
+        return "Semua Waktu";
+    }
+  };
+
+  const csvData = filteredTransactions.map((t) => ({
+    tanggal: new Date(t.date).toLocaleDateString("id-ID"),
+    jenis: t.type,
+    deskripsi: t.description,
+    jumlah: t.amount,
+  }));
+
+  const getCsvFileName = () => {
+    const date = new Date().toISOString().slice(0, 10);
+    const filterName = getIndonesianFilterName(filterTime);
+    return `Laporan_Keuangan_${filterName}_${date}.csv`;
+  };
+
   if (isLoading) {
     return (
       <div
@@ -675,7 +787,31 @@ const KeuanganDashboard = () => {
                 />
               </Col>
             </Row>
-            <h4 className="mt-2 text-custom fw-bold">Rincian Transaksi</h4>
+            <div className="d-flex justify-content-between align-items-center">
+              <h4 className="mt-2 text-custom fw-bold mb-3">
+                Rincian Transaksi
+              </h4>
+
+              <div className="d-flex gap-2">
+                {filteredTransactions.length > 0 && (
+                  <CSVLink
+                    data={csvData}
+                    headers={csvHeaders}
+                    filename={getCsvFileName()}
+                    className="btn btn-success"
+                    target="_blank"
+                    separator={";"}
+                  >
+                    Download CSV
+                  </CSVLink>
+                )}
+                {filteredTransactions.length > 0 && (
+                  <Button variant="danger" onClick={handleExportPDF}>
+                    <FaFilePdf className="me-1" /> Download PDF
+                  </Button>
+                )}
+              </div>
+            </div>
             <DataTable
               columns={columns}
               data={filteredTransactions}
