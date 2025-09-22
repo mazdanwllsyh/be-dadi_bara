@@ -11,7 +11,13 @@ import {
   Modal,
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
-import { FaFileAlt, FaEdit, FaTrash, FaFilePdf } from "react-icons/fa";
+import {
+  FaFileAlt,
+  FaEdit,
+  FaTrash,
+  FaFileCsv,
+  FaFilePdf,
+} from "react-icons/fa";
 import { GiReceiveMoney, GiPayMoney, GiTakeMyMoney } from "react-icons/gi";
 import { toast } from "react-toastify";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
@@ -288,7 +294,7 @@ const KeuanganDashboard = () => {
 
     try {
       await instance.post("/keuangan", formData, { withCredentials: true });
-      toast.success("Transaksi berhasil ditambahkan!");
+      showSuccessSwal("Transaksi berhasil ditambahkan!");
       fetchTransactions();
       setShowAddTransaction(false);
       setNewTransaction({
@@ -299,7 +305,7 @@ const KeuanganDashboard = () => {
       });
       setNewDocumentFile(null);
     } catch (error) {
-      toast.error(
+      showErrorSwal(
         error.response?.data?.message || "Gagal menambahkan transaksi."
       );
     }
@@ -338,13 +344,13 @@ const KeuanganDashboard = () => {
         withCredentials: true,
       });
 
-      toast.success("Transaksi berhasil diperbarui!");
+      showSuccessSwal("Transaksi berhasil diperbarui!");
       fetchTransactions();
       setEditingTransactionId(null);
       setEditedTransaction({ type: "", amount: "", description: "", date: "" });
       setEditedDocumentFile(null);
     } catch (error) {
-      toast.error(
+      showErrorSwal(
         error.response?.data?.message || "Gagal memperbarui transaksi."
       );
     }
@@ -554,14 +560,38 @@ const KeuanganDashboard = () => {
     },
   ];
 
+  const ExportButtons = () =>
+    filteredTransactions.length > 0 && (
+      <div className="d-flex justify-content-center justify-content-md-end gap-2">
+        <CSVLink
+          data={csvData}
+          headers={csvHeaders}
+          filename={getCsvFileName()}
+          className="btn btn-success"
+          target="_blank"
+          separator={";"}
+        >
+          <FaFileCsv className="me-1" />
+          Download CSV
+        </CSVLink>
+        <Button variant="danger" onClick={handleExportPDF}>
+          <FaFilePdf className="me-1" /> Download PDF
+        </Button>
+      </div>
+    );
+
   const handleExportPDF = () => {
     const doc = new jsPDF();
-    const tableColumns = ["Tanggal", "Jenis", "Deskripsi", "Jumlah (Rp)"];
+    const tableColumns = ["Tanggal", "Jenis", "Keterangan", "Jumlah (Rp)"];
     const tableRows = [];
 
     filteredTransactions.forEach((item) => {
       const itemData = [
-        new Date(item.date).toLocaleDateString("id-ID"),
+        new Date(item.date).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
         item.type,
         item.description,
         item.amount.toLocaleString("id-ID"),
@@ -569,26 +599,50 @@ const KeuanganDashboard = () => {
       tableRows.push(itemData);
     });
 
-    doc.setFontSize(18);
-    doc.text("Laporan Keuangan Karang Taruna DADI BARA", 14, 22);
+    const logoUrl =
+      "https://res.cloudinary.com/dr7olcn4r/image/upload/q_auto,w_300/v1757429644/logos/logo_organisasi.png";
+    const logoWidth = 20;
+    const logoHeight = 20;
+    const logoX = 14;
+    const titleY = 25;
+    const logoY = titleY - logoHeight / 2 + 1;
+    doc.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    const pageWidth = doc.internal.pageSize.getWidth();
+    doc.text(
+      "Laporan Keuangan Karang Taruna Dadi Bara",
+      pageWidth / 2,
+      titleY,
+      { align: "center" }
+    );
+    doc.setFont("helvetica", "normal");
 
     doc.setFontSize(12);
     const filterName = getIndonesianFilterName(filterTime);
-    doc.text(`Periode: ${filterName}`, 14, 30);
+    doc.text(`Periode: ${filterName}`, pageWidth - 14, 35, { align: "right" });
 
     autoTable(doc, {
       head: [tableColumns],
       body: tableRows,
-      startY: 35,
+      startY: 45,
       theme: "grid",
       styles: {
         font: "helvetica",
         fontSize: 10,
       },
       headStyles: {
-        fillColor: [41, 128, 185], // Warna header kolom
-        textColor: 255,
+        fillColor: [172, 172, 172],
+        textColor: [0, 0, 0],
         fontStyle: "bold",
+        halign: "center",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.2,
+      },
+      bodyStyles: {
+        lineColor: [44, 62, 80],
+        lineWidth: 0.1,
       },
     });
 
@@ -638,9 +692,17 @@ const KeuanganDashboard = () => {
       case "thisWeek":
         return "Minggu Ini";
       case "thisMonth":
-        return "Bulan Ini";
+        return now.toLocaleDateString("id-ID", {
+          month: "long",
+          year: "numeric",
+        });
       case "lastMonth":
-        return "Bulan Kemarin";
+        const lastMonth = new Date();
+        lastMonth.setMonth(now.getMonth() - 1);
+        return lastMonth.toLocaleDateString("id-ID", {
+          month: "long",
+          year: "numeric",
+        });
       case "thisYear":
         return `Tahun ${currentYear}`;
       case "lastYear":
@@ -787,31 +849,14 @@ const KeuanganDashboard = () => {
                 />
               </Col>
             </Row>
-            <div className="d-flex justify-content-between align-items-center">
-              <h4 className="mt-2 text-custom fw-bold mb-3">
-                Rincian Transaksi
-              </h4>
-
-              <div className="d-flex gap-2">
-                {filteredTransactions.length > 0 && (
-                  <CSVLink
-                    data={csvData}
-                    headers={csvHeaders}
-                    filename={getCsvFileName()}
-                    className="btn btn-success"
-                    target="_blank"
-                    separator={";"}
-                  >
-                    Download CSV
-                  </CSVLink>
-                )}
-                {filteredTransactions.length > 0 && (
-                  <Button variant="danger" onClick={handleExportPDF}>
-                    <FaFilePdf className="me-1" /> Download PDF
-                  </Button>
-                )}
-              </div>
-            </div>
+            {isMobile && (
+              <Row className="mb-3">
+                <Col>
+                  <ExportButtons />
+                </Col>
+              </Row>
+            )}
+            <h4 className="mt-2 text-custom fw-bold mb-3">Rincian Transaksi</h4>
             <DataTable
               columns={columns}
               data={filteredTransactions}
@@ -839,6 +884,14 @@ const KeuanganDashboard = () => {
                 </div>
               }
             />
+
+            {!isMobile && (
+              <Row className="mt-3">
+                <Col>
+                  <ExportButtons />
+                </Col>
+              </Row>
+            )}
 
             <div className="d-flex justify-content-center">
               <Button

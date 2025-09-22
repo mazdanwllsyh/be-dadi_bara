@@ -17,10 +17,12 @@ import {
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import DataTable from "react-data-table-component";
-import { FaWhatsapp, FaTrash } from "react-icons/fa";
+import { FaWhatsapp, FaTrash, FaFilePdf } from "react-icons/fa";
 import { AppContext } from "../LandingPage/AppContext";
 import { toast } from "react-toastify";
 import instance from "../../utils/axios";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import useCustomSwals from "./useCustomSwals";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -310,6 +312,93 @@ const DashboardPendaftaran = () => {
     },
   ];
 
+  const handleExportPDF = () => {
+    const doc = new jsPDF("landscape");
+    const tableColumns = [
+      "No.",
+      "Nama",
+      "Jenis Kelamin",
+      "No. Telepon",
+      "Jabatan",
+      "Alamat",
+      "Tanggal Lahir",
+    ];
+    const tableRows = [];
+
+    filteredPendaftar.forEach((item, index) => {
+      const itemData = [
+        index + 1,
+        item.name || "-",
+        item.gender || "-",
+        item.phone || "-",
+        formatJabatan(item.position) || "-",
+        item.address || "-",
+        formatTanggalIndonesia(item.birthDate) || "-",
+      ];
+      tableRows.push(itemData);
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      "Laporan Data Pendaftar Anggota Karang Taruna Dadi Bara",
+      pageWidth / 2,
+      22,
+      { align: "center" }
+    );
+    doc.setFont("helvetica", "normal");
+
+    autoTable(doc, {
+      head: [tableColumns],
+      body: tableRows,
+      startY: 35,
+      theme: "grid",
+      styles: {
+        font: "helvetica",
+        fontSize: 10,
+      },
+      headStyles: {
+        fillColor: [172, 172, 172],
+        textColor: [0, 0, 0],
+        fontStyle: "bold",
+        halign: "center",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.2,
+      },
+      columnStyles: {
+        0: { cellWidth: 10 }, // No.
+        2: { cellWidth: 25 }, // Jenis Kelamin
+        3: { cellWidth: 30 }, // No. Telepon
+        6: { cellWidth: 30 }, // Tanggal Lahir
+      },
+    });
+
+    const finalY = doc.lastAutoTable.finalY;
+
+    doc.setFontSize(11);
+    doc.text(
+      `Pendaftar Laki-laki: ${genderCounts.lakiLaki} Orang`,
+      14,
+      finalY + 10
+    );
+    doc.text(
+      `Pendaftar Perempuan: ${genderCounts.perempuan} Orang`,
+      14,
+      finalY + 17
+    );
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      `Jumlah Total Pendaftar: ${totalPendaftar} Orang`,
+      14,
+      finalY + 24
+    );
+
+    const date = new Date().toISOString().slice(0, 10);
+    doc.save(`Laporan_Pendaftar_${date}.pdf`);
+  };
+
   if (isLoading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
@@ -427,6 +516,16 @@ const DashboardPendaftaran = () => {
               </div>
             }
           />
+          <Col xs={12} md="auto" className="d-flex justify-content-center">
+            <Button
+              variant="danger"
+              onClick={handleExportPDF}
+              disabled={filteredPendaftar.length === 0}
+            >
+              <FaFilePdf className="me-2" />
+              Export ke PDF
+            </Button>
+          </Col>
         </Card.Body>
       </Card>
     </Container>

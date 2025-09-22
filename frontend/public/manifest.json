@@ -3,27 +3,27 @@
   "name": "KARTAR DADI BARA",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_192,w_192/logos/logo_organisasi.webp",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_192,w_192/logos/logo_organisasi.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_256,w_256/logos/logo_organisasi.webp",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_256,w_256/logos/logo_organisasi.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_384,w_384/logos/logo_organisasi.webp",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_384,w_384/logos/logo_organisasi.png",
       "type": "image/png",
       "sizes": "384x384"
     },
     {
-      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_512,w_512/logos/logo_organisasi.webp",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_512,w_512/logos/logo_organisasi.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_900,w_900/logos/logo_organisasi.webp",
+      "src": "https://res.cloudinary.com/dr7olcn4r/image/upload/c_fill,h_900,w_900/logos/logo_organisasi.png",
       "type": "image/png",
       "sizes": "900x900"
     }
