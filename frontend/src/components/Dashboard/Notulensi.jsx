@@ -302,11 +302,14 @@ const Notulensi = () => {
             <tbody>
               {currentEntries.map((kegiatan) => (
                 <tr key={kegiatan._id}>
-                  <td>{kegiatan.nama}</td>
-                  <td>{`${new Date(kegiatan.tanggal).toLocaleDateString(
-                    "id-ID",
-                    { day: "2-digit", month: "long", year: "numeric" }
-                  )}, ${kegiatan.waktu}`}</td>
+                  <td className="align-middle">{kegiatan.nama}</td>
+                  <td className="align-middle">{`${new Date(
+                    kegiatan.tanggal
+                  ).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}, ${kegiatan.waktu}`}</td>
                   <td className="align-middle">
                     <div className="d-flex flex-column gap-2 align-items-center">
                       {kegiatan.notulen && (
@@ -357,7 +360,7 @@ const Notulensi = () => {
                         )}
                     </div>
                   </td>
-                  <td>
+                  <td className="align-middle">
                     <div className="d-flex flex-column gap-2">
                       <Button
                         variant="warning"

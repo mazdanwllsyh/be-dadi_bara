@@ -455,7 +455,7 @@ const JadwalKegiatanEditor = () => {
                         item.keterangan
                       )}
                     </td>
-                    <td style={{ whiteSpace: "nowrap" }}>
+                    <td style={{ whiteSpace: "nowrap" }} className="align-middle">
                       {editingItemId === item._id ? (
                         <div className="d-flex flex-column gap-2">
                           <Button
