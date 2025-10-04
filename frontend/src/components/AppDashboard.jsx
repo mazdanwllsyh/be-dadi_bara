@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, lazy, Suspense } from "react"; 
+import React, { useState, useEffect, useContext, lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { UserContext } from "./LandingPage/UserContext";
@@ -6,6 +6,7 @@ import RefreshDashboard from "./Dashboard/RefreshDashboard";
 import SessionTimer from "./Dashboard/SessionTimer";
 import Sidebar from "./Dashboard/Sidebar";
 import OffcanvasHeader from "./Dashboard/OffcanvasHeader";
+import DashboardSkeleton from "./Dashboard/skeleton/DashboardSkeleton";
 
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
 const LandingPageDashboard = lazy(() =>
@@ -21,7 +22,7 @@ const UserDashboard = lazy(() => import("./Dashboard/UserDashboard"));
 const AdminDashboard = lazy(() => import("./Dashboard/AdminDashboard"));
 
 const AppDashboard = () => {
-  const { user } = useContext(UserContext); 
+  const { user } = useContext(UserContext);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -104,8 +105,22 @@ const AppDashboard = () => {
           }
         >
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<DashboardSkeleton />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <Suspense fallback={<DashboardSkeleton />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />
             <Route path="/landingpage" element={<LandingPageDashboard />} />
             <Route path="/gallery-dashboard" element={<GalleryEditor />} />
             <Route path="/keanggotaan" element={<Keanggotaan />} />
@@ -118,7 +133,9 @@ const AppDashboard = () => {
       </main>
 
       <RefreshDashboard isMobile={isMobile} />
-      {user && (user.role === "admin" || user.role === "superAdmin") && <SessionTimer />}
+      {user && (user.role === "admin" || user.role === "superAdmin") && (
+        <SessionTimer />
+      )}
     </div>
   );
 };
