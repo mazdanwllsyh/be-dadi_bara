@@ -183,18 +183,19 @@ export const registerRequest = asyncHandler(async (req, res) => {
 
 export const googleAuth = asyncHandler(async (req, res) => {
   const { credential, code } = req.body;
+
+  const authorizationCode = code || credential;
+
+  if (!authorizationCode) {
+    res.status(400);
+    throw new Error("Kredensial Google atau Authorization Code tidak ada.");
+  }
+
   let idToken;
 
   try {
-    if (code) {
-      const { tokens } = await client.getToken(code);
-      idToken = tokens.id_token;
-    } else if (credential) {
-      idToken = credential;
-    } else {
-      res.status(400);
-      throw new Error("Kredensial Google atau Authorization Code tidak ada.");
-    }
+    const { tokens } = await client.getToken(authorizationCode);
+    idToken = tokens.id_token;
 
     if (!idToken) {
       res.status(400);
