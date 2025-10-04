@@ -13,7 +13,7 @@ console.log(
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, 
+  secure: false,
   service: "gmail",
   auth: {
     user: process.env.GMAIL_USER,
@@ -36,7 +36,7 @@ export const sendEmailVerify = async (email, verificationCode) => {
           <tr>
             <td style="padding: 20px 0; text-align: center;">
               <a href="https://dadibara.bejalen.com/"_blank style="background-color: none; border-radius="12px">
-                <img src="https://res.cloudinary.com/dr7olcn4r/image/upload/v1757167793/logos/logo_organisasi.png" alt="Logo Organisasi" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
+                <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/v1759601598/logos/logo_organisasi.png" alt="Logo Organisasi" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
               </a>
             </td>
           </tr>
