@@ -213,7 +213,7 @@ const AdminDashboard = () => {
                           href={`https://wa.me/${sa.phone}`}
                           target="_blank"
                           size="sm"
-                          style={{ backgroundColor: "#25D366", border: "none" }}
+                          style={{ backgroundColor: "#00db40", border: "none" }}
                           disabled={!sa.phone}
                         >
                           <FaWhatsapp /> Hubungi
@@ -223,7 +223,6 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </Table>
-              {/* Komponen pagination dihapus dari sini */}
             </Card.Body>
           </Card>
         </Col>
@@ -325,7 +324,7 @@ const AdminDashboard = () => {
                                 href={`https://wa.me/${admin.phone}`}
                                 target="_blank"
                                 style={{
-                                  backgroundColor: "#25D366",
+                                  backgroundColor: "#00db40",
                                   border: "none",
                                 }}
                                 size="sm"

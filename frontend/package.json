@@ -15,7 +15,6 @@
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "chart.js": "^4.5.0",
-    "emailjs-com": "^3.2.0",
     "jspdf": "^3.0.3",
     "jspdf-autotable": "^5.0.2",
     "moment": "^2.30.1",

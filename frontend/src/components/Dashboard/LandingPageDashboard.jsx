@@ -161,7 +161,7 @@ const LandingPageDashboard = () => {
                   {data.logoDadiBara && (
                     <Button
                       variant="link"
-                      className="p-0 ms-2 text-decoration-underline"
+                      className="p-0 ms-2 text-decoration-underline mb-1"
                       onClick={() => window.open(data.logoDadiBara, "_blank")}
                     >
                       (Lihat File)
@@ -182,7 +182,7 @@ const LandingPageDashboard = () => {
                   {data.logoDesaBaru && (
                     <Button
                       variant="link"
-                      className="p-0 ms-2 text-decoration-underline"
+                      className="p-0 ms-2 text-decoration-underline mb-1"
                       onClick={() => window.open(data.logoDesaBaru, "_blank")}
                     >
                       (Lihat File)

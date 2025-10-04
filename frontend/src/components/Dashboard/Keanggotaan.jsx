@@ -376,7 +376,7 @@ const Keanggotaan = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="d-flex align-items-center w-100 text-white text-decoration-none"
-            style={{ backgroundColor: "#25D366", border: "none" }}
+            style={{ backgroundColor: "#00db40", border: "none" }}
           >
             <FaWhatsapp className="me-2" /> Hubungi
           </Button>
