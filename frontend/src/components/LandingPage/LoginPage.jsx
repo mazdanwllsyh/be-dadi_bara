@@ -21,10 +21,9 @@ import GoogleSignIn from "./GoogleSignIn.jsx";
 import useCustomSwals from "../Dashboard/useCustomSwals.jsx";
 
 const LoginPage = ({ show, handleClose, handleShowRegister }) => {
-  const { data, } = useContext(AppContext);
+  const { data } = useContext(AppContext);
   const { user, setUser } = useContext(UserContext);
-  const { showSuccessSwal, showErrorSwal, showInfoSwal, } =
-    useCustomSwals();
+  const { showSuccessSwal, showErrorSwal, showInfoSwal } = useCustomSwals();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -109,6 +108,8 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
         const handleAutoLogin = async () => {
           setIsGoogleLoading(true);
           try {
+            const nonce = Math.random().toString(36).substring(2, 15);
+
             const credential = await navigator.credentials.get({
               signal: controller.signal,
               identity: {
@@ -116,6 +117,7 @@ const LoginPage = ({ show, handleClose, handleShowRegister }) => {
                   {
                     configURL: "https://accounts.google.com/gsi/fedcm.json",
                     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+                    nonce: nonce,
                   },
                 ],
               },
