@@ -15,10 +15,11 @@ const GoogleSignIn = ({ onLoginSuccess, handleClose }) => {
   const login = useGoogleLogin({
     flow: "auth-code",
 
+    ux_mode: "redirect",
+
     onSuccess: async (codeResponse) => {
       setIsLoading(true);
       try {
-        // Kirim 'code' ke backend
         const response = await instance.post("/auth/google", {
           code: codeResponse.code,
         });
