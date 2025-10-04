@@ -8,3 +8,8 @@ backend_latest.zip
 backend_dadibara.zip
 frontend_vite_latest.zip
 frontend_dadibara.zip
+
+backend/migrate-cloudinary.js
+backend/generate-urls.js
+backend/urls.txt
+backend/assets_lama.json
