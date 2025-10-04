@@ -181,63 +181,77 @@ export const registerRequest = asyncHandler(async (req, res) => {
   });
 });
 
+const processGooglePayload = async (payload) => {
+  const { email, name, picture } = payload;
+  if (!email) {
+    throw new Error("Tidak dapat mengambil email dari kredensial Google.");
+  }
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    user = await User.create({
+      fullName: name,
+      email,
+      password: Math.random().toString(36).slice(-8),
+      isVerified: true,
+      profilePicture: picture,
+      role: "user",
+    });
+  } else {
+    if (picture && !user.profilePicture) {
+      user.profilePicture = picture;
+      await user.save();
+    }
+  }
+
+  const existingTestimonial = await Testimonial.findOne({ user: user._id });
+  const userForFrontend = user.toObject();
+  userForFrontend.hasSubmittedTestimonial = !!existingTestimonial;
+  return userForFrontend;
+};
+
 export const googleAuth = asyncHandler(async (req, res) => {
   const { credential, code } = req.body;
-  let idToken;
+  const tokenFromFrontend = code || credential;
+
+  if (!tokenFromFrontend) {
+    res.status(400);
+    throw new Error("Kredensial Google atau Authorization Code tidak ada.");
+  }
 
   try {
-    if (code) {
-      const { tokens } = await client.getToken(code);
-      idToken = tokens.id_token;
-    } else if (credential) {
-      idToken = credential;
-    } else {
-      res.status(400);
-      throw new Error("Kredensial Google atau Authorization Code tidak ada.");
-    }
-
-    if (!idToken) {
-      res.status(400);
-      throw new Error("Gagal mendapatkan ID Token dari Google.");
-    }
-
-    const ticket = await client.verifyIdToken({
-      idToken: idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    const { email, name, picture } = payload;
-
-    if (!email) {
-      res.status(400);
-      throw new Error("Tidak dapat mengambil email dari kredensial Google.");
-    }
-
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = await User.create({
-        fullName: name,
-        email,
-        password: Math.random().toString(36).slice(-8),
-        isVerified: true,
-        profilePicture: picture,
-        role: "user",
+    let payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: tokenFromFrontend,
+        audience: process.env.GOOGLE_CLIENT_ID,
       });
-    } else {
-      if (picture && !user.profilePicture) {
-        user.profilePicture = picture;
-        await user.save();
+      payload = ticket.getPayload();
+    } catch (error) {
+      console.log(
+        "Verifikasi sebagai ID Token gagal, mencoba menukar sebagai Authorization Code..."
+      );
+
+      const { tokens } = await client.getToken(tokenFromFrontend);
+      const idToken = tokens.id_token;
+
+      if (!idToken) {
+        throw new Error("Gagal mendapatkan ID Token setelah penukaran kode.");
       }
+
+      const ticket = await client.verifyIdToken({
+        idToken: idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
     }
 
-    const existingTestimonial = await Testimonial.findOne({ user: user._id });
-    const userForFrontend = user.toObject();
-    userForFrontend.hasSubmittedTestimonial = !!existingTestimonial;
+    const user = await processGooglePayload(payload);
 
-    createSendResToken(user, 200, res);
-  } catch (error) {
-    console.error("Error verifikasi Google Auth:", error);
+    const userInDb = await User.findById(user._id);
+    createSendResToken(userInDb, 200, res);
+  } catch (finalError) {
+    console.error("Gagal total saat otentikasi Google:", finalError);
     res.status(400);
     throw new Error("Kredensial Google tidak valid atau sudah kedaluwarsa.");
   }
