@@ -237,7 +237,6 @@ const Dashboard = () => {
         <Col xs={12}>
           <Card>
             <Card.Body>
-              {/* ▼▼▼ TAMBAHKAN KELAS FLEXBOX DI SINI ▼▼▼ */}
               <div
                 className="d-flex justify-content-center"
                 style={{
