@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import emailjs from "emailjs-com";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { UserContext } from "../UserContext";
@@ -15,8 +12,7 @@ const ContactUs = () => {
     pesan: "",
   });
 
-  const { showSuccessSwal, showErrorSwal, } = useCustomSwals();
-  const [isSending, setIsSending] = useState(false);
+  const { showErrorSwal } = useCustomSwals();
   const [isCooldown, setIsCooldown] = useState(false);
   const [cooldownMessage, setCooldownMessage] = useState("");
 
@@ -59,8 +55,8 @@ const ContactUs = () => {
     const remaining = checkCooldown();
 
     if (remaining > 0) {
-      const interval = setInterval(checkCooldown, 60000); 
-      return () => clearInterval(interval); 
+      const interval = setInterval(checkCooldown, 60000);
+      return () => clearInterval(interval);
     }
   }, []);
 
@@ -72,48 +68,29 @@ const ContactUs = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleMailto = () => {
     const { nama, email, pesan } = formData;
-
     if (nama === "" || email === "" || pesan === "") {
-      toast.error("Mohon lengkapi semua kolom!", { position: "bottom-right" });
+      showErrorSwal("Mohon Lengkapi Semua Kolom!");
       return;
     }
 
-    setIsSending(true); 
+    const tujuanEmail = "kartardadibara@gmail.com";
+    const subjek = `Pesan dari ${nama} - Form Website Dadi Bara`;
 
-    emailjs
-      .send(
-        "dadibaraemail",
-        "template_dadibara",
-        { from_name: nama, from_email: email, message: pesan, reply_to: email },
-        "Ku_TJesVG59mypDDP"
-      )
-      .then(
-        (response) => {
-          console.log("Berhasil mengirim email", response);
-          showSuccessSwal("Pesan Anda telah berhasil dikirim!", {
-            position: "bottom-left",
-          });
+    const body = `
+      Halo, Pesan ini dikirimkan melalui form website Dadi Bara.
+      
+      Nama: ${nama}
+      Email: ${email}
+      -----------------------------------------
+      Isi Pesan:
+      ${pesan}
+    `;
 
-          setFormData({ nama: "", email: "", pesan: "" });
-
-          const cooldownEndTime = new Date().getTime() + 48 * 60 * 60 * 1000;
-          localStorage.setItem("contactFormCooldownEnd", cooldownEndTime);
-          setIsCooldown(true);
-          setCooldownMessage("Harap tunggu 48 jam lagi");
-        },
-        (error) => {
-          console.error("Gagal mengirim email:", error);
-          showErrorSwal("Terjadi kesalahan, silakan coba lagi.", {
-            position: "bottom-center",
-          });
-        }
-      )
-      .finally(() => {
-        setIsSending(false);
-      });
+    window.location.href = `mailto:${tujuanEmail}?subject=${encodeURIComponent(
+      subjek
+    )}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -122,7 +99,7 @@ const ContactUs = () => {
         <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
           <div className="col" data-aos="fade-up">
             <h2 className="section-title">Hubungi Kami</h2>
-            <form onSubmit={handleSubmit}>
+            <div onSubmit={handleMailto}>
               <div className="mb-3 form-floating section-subtitle">
                 <input
                   type="text"
@@ -160,36 +137,27 @@ const ContactUs = () => {
                   value={formData.pesan}
                   onChange={handleChange}
                   required
-                  minLength="20"
+                  minLength="35"
                 ></textarea>
                 <label htmlFor="pesan">Pesan atau Kritik dan Saran</label>
               </div>
               {user &&
               (user.role === "admin" ||
-                user.role ===
-                  "superAdmin") ?
-              null : isCooldown ? (
+                user.role === "superAdmin") ? null : isCooldown ? (
                 <div className="text-center p-2 rounded bg-light">
                   <span className="text-danger fw-bold">{cooldownMessage}</span>
                 </div>
               ) : (
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleMailto}
                   className="btn btn-primary w-100 fw-bold section-subtitle text-light"
                   style={{ backgroundColor: "darkcyan", border: 0 }}
-                  disabled={isSending}
                 >
-                  {isSending ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2"></span>
-                      Mengirim...
-                    </>
-                  ) : (
-                    "Kirim"
-                  )}
+                  Kirim via Aplikasi Email
                 </button>
               )}
-            </form>
+            </div>
           </div>
           <div className="col" data-aos="fade-left">
             <h2 className="section-title">Lokasi Kami</h2>
@@ -206,7 +174,6 @@ const ContactUs = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 };
