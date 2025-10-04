@@ -556,7 +556,7 @@ Hormat kami,
                               variant="success"
                               className="w-100"
                               style={{
-                                backgroundColor: "#25D366",
+                                backgroundColor: "#00db40",
                                 border: "none",
                               }}
                               onClick={() => handleShareKegiatan(item)}

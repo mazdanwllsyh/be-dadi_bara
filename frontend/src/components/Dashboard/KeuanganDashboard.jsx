@@ -572,10 +572,10 @@ const KeuanganDashboard = () => {
           separator={";"}
         >
           <FaFileCsv className="me-1" />
-          Download CSV
+          Eksport ke CSV
         </CSVLink>
         <Button variant="danger" onClick={handleExportPDF}>
-          <FaFilePdf className="me-1" /> Download PDF
+          <FaFilePdf className="me-1" /> Eksport ke PDF
         </Button>
       </div>
     );
@@ -600,7 +600,7 @@ const KeuanganDashboard = () => {
     });
 
     const logoUrl =
-      "https://res.cloudinary.com/dr7olcn4r/image/upload/q_auto,w_300/v1757429644/logos/logo_organisasi.png";
+      "https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png";
     const logoWidth = 20;
     const logoHeight = 20;
     const logoX = 14;
@@ -743,7 +743,7 @@ const KeuanganDashboard = () => {
 
   return (
     <>
-      <Container className="dashboard-container my-3">
+      <Container fluid className="py-4 my-3">
         <Card className="shadow">
           <Card.Header className="bg-secondary text-light">
             <h5 className="mb-0 section-title">

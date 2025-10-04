@@ -153,7 +153,7 @@ const Notulensi = () => {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-      toast.success("Notulensi berhasil disimpan!");
+      showSuccessSwal("Notulensi berhasil disimpan!");
       fetchKegiatan();
       handleCloseEditModal();
     } catch (error) {
@@ -420,21 +420,24 @@ const Notulensi = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Unggah Dokumen 1 (Gambar/PDF)</Form.Label>
-              {selectedKegiatan?.documents?.[0]?.documentUrl && (
-                <Form.Text className="d-flex text-muted mb-1">
-                  File saat ini:{" "}
-                  <Button
-                    variant="link"
-                    className="p-0 text-decoration-underline"
-                    onClick={() =>
-                      handleViewNotulen(selectedKegiatan, "document", 0)
-                    }
-                  >
-                    Lihat File
-                  </Button>
-                </Form.Text>
-              )}
+              <div className="d-flex justify-content-between align-items-baseline mb-1">
+                <Form.Label>Unggah Dokumen 1 (Gambar/PDF)</Form.Label>
+                {selectedKegiatan?.documents?.[0]?.documentUrl && (
+                  <Form.Text className="text-muted">
+                    File saat ini:{" "}
+                    <Button
+                      variant="link"
+                      className="p-0 text-decoration-underline"
+                      style={{ verticalAlign: "baseline" }}
+                      onClick={() =>
+                        handleViewNotulen(selectedKegiatan, "document", 0)
+                      }
+                    >
+                      Lihat File
+                    </Button>
+                  </Form.Text>
+                )}
+              </div>
               <Form.Control
                 type="file"
                 onChange={(e) => setNotulenFile1(e.target.files[0])}
@@ -442,21 +445,24 @@ const Notulensi = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Unggah Dokumen 2 (Gambar/PDF)</Form.Label>
-              {selectedKegiatan?.documents?.[1]?.documentUrl && (
-                <Form.Text className="d-flex text-muted mb-1">
-                  File saat ini:{" "}
-                  <Button
-                    variant="link"
-                    className="p-0 text-decoration-underline"
-                    onClick={() =>
-                      handleViewNotulen(selectedKegiatan, "document", 1)
-                    }
-                  >
-                    Lihat File
-                  </Button>
-                </Form.Text>
-              )}
+              <div className="d-flex justify-content-between align-items-baseline mb-1">
+                <Form.Label>Unggah Dokumen 2 (Gambar/PDF)</Form.Label>
+                {selectedKegiatan?.documents?.[1]?.documentUrl && (
+                  <Form.Text className="text-muted">
+                    File saat ini:{" "}
+                    <Button
+                      variant="link"
+                      className="p-0 text-decoration-underline"
+                      style={{ verticalAlign: "baseline" }} // Tambahkan ini agar sejajar
+                      onClick={() =>
+                        handleViewNotulen(selectedKegiatan, "document", 1)
+                      }
+                    >
+                      Lihat File
+                    </Button>
+                  </Form.Text>
+                )}
+              </div>
               <Form.Control
                 type="file"
                 onChange={(e) => setNotulenFile2(e.target.files[0])}

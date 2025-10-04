@@ -33,7 +33,6 @@ export const customJabatanSort = (rowA, rowB) => {
   const indexA = jabatanHierarchy.indexOf(titleA);
   const indexB = jabatanHierarchy.indexOf(titleB);
 
-  // Jika jabatan utama sama, urutkan berdasarkan title asli (misal: ketua_1 sebelum ketua_2)
   if (indexA === indexB) {
     return rowA.title.localeCompare(rowB.title);
   }
@@ -326,15 +325,13 @@ const Keanggotaan = () => {
 
     try {
       if (isEditing) {
-        // Logika Edit
         await instance.put(`/members/${currentRow._id}`, formData, {
           withCredentials: true,
         });
-        toast.success("Data pengurus berhasil diperbarui!");
+        showSuccessSwal("Data pengurus berhasil diperbarui!");
       } else {
-        // Logika Tambah
         await instance.post("/members", formData, { withCredentials: true });
-        toast.success("Anggota baru berhasil ditambahkan!");
+        showSuccessSwal("Anggota baru berhasil ditambahkan!");
       }
       fetchMembers();
       handleCloseModal();

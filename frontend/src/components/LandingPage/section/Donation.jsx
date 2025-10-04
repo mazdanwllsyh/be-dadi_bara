@@ -32,7 +32,10 @@ const Donation = () => {
 
   return (
     <>
-      <section id="donation" className="d-flex py-5 align-items-center justify-content-center">
+      <section
+        id="donation"
+        className="d-flex py-5 align-items-center justify-content-center"
+      >
         <Container>
           <Row className="justify-content-center">
             <Col md={8} lg={6}>
@@ -50,12 +53,12 @@ const Donation = () => {
                   </p>
                   <figure className="my-4">
                     <img
-                      src="https://res.cloudinary.com/dr7olcn4r/image/upload/v1754792131/QRIS_Dadi-Bara_d5s5c8.jpg"
+                      src="https://res.cloudinary.com/dk0yjrhvx/image/upload/v1759599354/aset_migrasi/qnhhowpgbmqbefbuitkr.jpg"
                       alt="QRIS Donasi Karang Taruna DADI BARA"
                       className="img-fluid rounded-4 shadow"
                       style={{
-                        maxWidth: "100%", 
-                        height: "auto", 
+                        maxWidth: "100%",
+                        height: "auto",
                         cursor: "pointer",
                       }}
                       onClick={handleShowFullscreen}
@@ -115,7 +118,7 @@ const Donation = () => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <img
-            src="https://res.cloudinary.com/dr7olcn4r/image/upload/v1754792131/QRIS_Dadi-Bara_d5s5c8.jpg"
+            src="https://res.cloudinary.com/dk0yjrhvx/image/upload/v1759599354/aset_migrasi/qnhhowpgbmqbefbuitkr.jpg"
             alt="QRIS Donasi Karang Taruna DADI BARA"
             className="img-fluid rounded-5 shadow-sm"
           />

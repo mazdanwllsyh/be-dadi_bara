@@ -147,7 +147,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Container className="dashboard-container my-3">
+    <Container fluid className="my-3">
       <Row>
         <Col>
           <h2 className="section-title mb-4">Dashboard</h2>
@@ -237,11 +237,14 @@ const Dashboard = () => {
         <Col xs={12}>
           <Card>
             <Card.Body>
+              {/* ▼▼▼ TAMBAHKAN KELAS FLEXBOX DI SINI ▼▼▼ */}
               <div
+                className="d-flex justify-content-center"
                 style={{
                   position: "relative",
+                  maxWidth: "100%",
                   width: "100%",
-                  height: "auto",
+                  margin: "0 auto",
                 }}
               >
                 <Bar options={chartOptions} data={chartData} />

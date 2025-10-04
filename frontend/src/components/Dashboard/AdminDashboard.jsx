@@ -184,7 +184,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Container className="dashboard-container my-3">
+    <Container fluid className="py-2 my-3">
       <Row>
         <Col md={12} className="mb-4">
           <Card className="shadow-sm">

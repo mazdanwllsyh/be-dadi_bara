@@ -339,7 +339,7 @@ const DashboardPendaftaran = () => {
     });
 
     const logoUrl =
-      "https://res.cloudinary.com/dr7olcn4r/image/upload/q_auto,w_300/v1757429644/logos/logo_organisasi.png";
+      "https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png";
     const logoWidth = 20;
     const logoHeight = 20;
     const logoX = 14;

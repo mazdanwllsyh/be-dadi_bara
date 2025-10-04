@@ -117,7 +117,7 @@ const LandingPageDashboard = () => {
     );
 
   return (
-    <Container className="dashboard-container my-3">
+    <Container fluid className="py-2 my-3">
       <Card className="shadow">
         <CardHeader>
           <h2 className="section-title mb-0">Editor Halaman Utama</h2>
