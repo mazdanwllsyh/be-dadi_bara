@@ -72,7 +72,6 @@ export const sendEmailVerify = async (email, verificationCode) => {
                 ${verificationCode}
               </p>
               
-              {/* ▼▼▼ PERUBAHAN #3: BOLD HANYA "10 MENIT" ▼▼▼ */}
               <p style="color: #cccccc; font-size: 16px;">
                 Silakan Verifikasi, Kode Berlaku Hingga <strong style="color: #FFFFFF;">10 Menit</strong>.
               </p>
