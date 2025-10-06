@@ -34,7 +34,7 @@ export const sendEmailVerify = async (email, verificationCode) => {
           <tr>
             <td style="padding: 20px 0; text-align: center;">
               <a href="https://dadibara.bejalen.com/" target="_blank">
-                <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/v1759601598/logos/logo_organisasi.png" alt="Logo Organisasi" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
+                <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png" alt="Logo" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
               </a>
             </td>
           </tr>
@@ -56,15 +56,15 @@ export const sendEmailVerify = async (email, verificationCode) => {
                 ${verificationCode}
               </p>
               
-              <p style="font-style: italic; color: #cccccc; font-size: 16px;">
+              <p style="font-style: bold; color: #cccccc; font-size: 16px;">
                 Silakan Verifikasi, Kode Berlaku Hingga 10 Menit.
               </p>
             </td>
           </tr>
 
           <tr>
-            <td style="padding: 30px 30px; border-top: 1px solid #495057;">
-              <p style="font-size: 18px; color: #bbbbbb; margin: 0; text-align: center;">
+            <td style="padding: 30px 30px; border-top: 1px solid #414244FF;">
+              <p style="font-size: 15px; color: #bbbbbb; margin: 0; text-align: center;">
                 Jika Anda tidak merasa mendaftar, silakan abaikan email ini. Terima kasih.
               </p>
             </td>

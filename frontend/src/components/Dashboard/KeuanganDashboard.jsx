@@ -751,7 +751,6 @@ const KeuanganDashboard = () => {
             </h5>
           </Card.Header>
           <Card.Body className="p-3">
-            {/* Bagian Card Pemasukan, Pengeluaran, Saldo (tidak berubah) */}
             <Row className="mb-3 row-cols-1 row-cols-md-3 g-3">
               <Col>
                 <Card className="bg-success text-white shadow-sm h-100">
