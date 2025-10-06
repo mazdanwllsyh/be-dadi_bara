@@ -124,14 +124,14 @@ export const sendWelcomeEmail = async (user) => {
                 Halo ${user.fullName},
               </p>
               <p style="font-size: 16px; color: #555;">
-                Terima kasih telah bergabung dengan platform digital Karang Taruna DADI BARA. Akun Anda telah berhasil dibuat/diverifikasi.
+                Terima kasih telah bergabung dengan platform digital Karang Taruna DADI BARA. Akun Anda telah berhasil diverifikasi.
               </p>
               <div style="background-color: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: left;">
                 <p style="margin: 0;"><strong>Nama:</strong> ${user.fullName}</p>
                 <p style="margin: 5px 0;"><strong>Email:</strong> ${user.email}</p>
               </div>
               <p style="font-size: 14px; color: #777;">
-                Sesi login Anda saat ini akan aktif selama kurang lebih **${expiresInMinutes} menit**.
+                Sesi login Anda saat ini akan aktif selama kurang lebih ${expiresInMinutes} menit.
               </p>
               <a href="https://dadibara.bejalen.com/profile" style="display: inline-block; background-color: darkcyan; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin-top: 20px;">
                 Lihat Profil Anda
