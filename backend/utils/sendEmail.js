@@ -29,20 +29,20 @@ export const sendEmailVerify = async (email, verificationCode) => {
     subject: `Kode Verifikasi Anda adalah: ${verificationCode}`,
     html: `
       <body style="font-family: 'Inter', 'SF UI Display', Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
-        <table role="presentation" style="width:100%; max-width:600px; margin: 0 auto; border-spacing:0; border-radius: 12px; background-color: #95a2ad; color: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid #3D4249FF;">
+        <table role="presentation" style="width:100%; max-width:600px; margin: 0 auto; border-spacing:0; border-radius: 12px; background-color: #95a2ad; color: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.45); border: 1px solid #7B8A9B;">
           
           <tr>
             <td style="padding: 20px 30px; text-align: left; vertical-align: middle;">
               <table role="presentation" style="width:100%; border:0; border-spacing:0;">
                 <tr>
-                  <td style="width: 70px; vertical-align: middle;">
+                  <td style="width: 200px; vertical-align: middle; text-align: center;">
                     <a href="https://dadibara.bejalen.com/" target="_blank">
-                      <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png" alt="Logo" style="width: 60px; height: auto; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.5));"/>
+                      <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png" alt="Logo" style="width: 150px; height: auto; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.5));"/>
                     </a>
                   </td>
                   <td style="vertical-align: middle; padding-left: 15px;">
-                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 14px; color: #373737FF; font-weight: bold;">Karang Taruna</p>
-                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 18px; color: #000000FF; font-weight: bold;">DADI BARA</p>
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 14px; color: #E0E0E0; font-weight: bold;">Karang Taruna</p>
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 18px; color: #FFFFFF; font-weight: bold;">DADI BARA</p>
                   </td>
                 </tr>
               </table>
@@ -51,7 +51,7 @@ export const sendEmailVerify = async (email, verificationCode) => {
 
           <tr>
             <td style="padding: 0 30px;">
-              <hr style="border: none; border-top: 1px solid #181A1DFF;" />
+              <hr style="border: none; border-top: 1px solid #2F3032FF;" />
             </td>
           </tr>
 
@@ -72,16 +72,17 @@ export const sendEmailVerify = async (email, verificationCode) => {
                 ${verificationCode}
               </p>
               
-              <p style="font-style: bold; color: #cccccc; font-size: 16px;">
-                Silakan Verifikasi, Kode Berlaku Hingga 10 Menit.
+              {/* ▼▼▼ PERUBAHAN #3: BOLD HANYA "10 MENIT" ▼▼▼ */}
+              <p style="color: #cccccc; font-size: 16px;">
+                Silakan Verifikasi, Kode Berlaku Hingga <strong style="color: #FFFFFF;">10 Menit</strong>.
               </p>
             </td>
           </tr>
 
           <tr>
-            <td style="padding: 30px 30px; border-top: 1px solid #414244FF;">
+            <td style="padding: 30px 30px; border-top: 1px solid #7B8A9B;">
               <p style="font-size: 15px; color: #bbbbbb; margin: 0; text-align: center;">
-                Jika Anda tidak merasa mendaftar, silakan abaikan email ini. Terima kasih.
+                *Jika Anda tidak merasa mendaftar, silakan abaikan email ini. Terima kasih.
               </p>
             </td>
           </tr>
