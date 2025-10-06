@@ -29,13 +29,29 @@ export const sendEmailVerify = async (email, verificationCode) => {
     subject: `Kode Verifikasi Anda adalah: ${verificationCode}`,
     html: `
       <body style="font-family: 'Inter', 'SF UI Display', Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
-        <table role="presentation" style="width:100%; max-width:600px; margin: 0 auto; border:0; border-spacing:0; border-radius: 12px; background-color: #95a2ad; color: #ffffff; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.39);">
+        <table role="presentation" style="width:100%; max-width:600px; margin: 0 auto; border-spacing:0; border-radius: 12px; background-color: #95a2ad; color: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid #3D4249FF;">
           
           <tr>
-            <td style="padding: 20px 0; text-align: center;">
-              <a href="https://dadibara.bejalen.com/" target="_blank">
-                <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png" alt="Logo" style="width: 150px; height: auto; display: block; margin: 0 auto;"/>
-              </a>
+            <td style="padding: 20px 30px; text-align: left; vertical-align: middle;">
+              <table role="presentation" style="width:100%; border:0; border-spacing:0;">
+                <tr>
+                  <td style="width: 70px; vertical-align: middle;">
+                    <a href="https://dadibara.bejalen.com/" target="_blank">
+                      <img src="https://res.cloudinary.com/dk0yjrhvx/image/upload/q_auto,w_300/v1759601598/logos/logo_organisasi.png" alt="Logo" style="width: 60px; height: auto; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.5));"/>
+                    </a>
+                  </td>
+                  <td style="vertical-align: middle; padding-left: 15px;">
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 14px; color: #373737FF; font-weight: bold;">Karang Taruna</p>
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 18px; color: #000000FF; font-weight: bold;">DADI BARA</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 0 30px;">
+              <hr style="border: none; border-top: 1px solid #181A1DFF;" />
             </td>
           </tr>
 
