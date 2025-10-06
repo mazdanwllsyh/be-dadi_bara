@@ -41,8 +41,8 @@ export const sendEmailVerify = async (email, verificationCode) => {
                     </a>
                   </td>
                   <td style="vertical-align: middle; padding-left: 15px;">
-                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 14px; color: #E0E0E0; font-weight: bold;">Karang Taruna</p>
-                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 18px; color: #FFFFFF; font-weight: bold;">DADI BARA</p>
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 22px; color: #E0E0E0; font-weight: bold;">Karang Taruna</p>
+                    <p style="margin: 0; font-family: 'SF UI Display', Arial, sans-serif; font-size: 26px; color: #FFFFFF; font-weight: bold;">DADI BARA</p>
                   </td>
                 </tr>
               </table>
