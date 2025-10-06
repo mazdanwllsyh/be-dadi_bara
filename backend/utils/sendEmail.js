@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -83,7 +84,12 @@ export const sendEmailVerify = async (email, verificationCode) => {
 };
 
 export const sendWelcomeEmail = async (user) => {
-  const decodedToken = jwt.decode(user.token); 
+  if (!user || !user.token) {
+    console.error("Gagal mengirim email sambutan: user atau token tidak ada.");
+    return;
+  }
+
+  const decodedToken = jwt.decode(user.token);
   const sessionExpiresAt = new Date(decodedToken.exp * 1000);
   const expiresInMinutes = Math.round((sessionExpiresAt - Date.now()) / 60000);
 
