@@ -3,7 +3,7 @@ import Member from "../models/memberModel.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import asyncHandler from "../middlewares/asyncHandler.js";
-import { sendEmailVerify } from "../utils/sendEmail.js";
+import { sendEmailVerify, sendWelcomeEmail } from "../utils/sendEmail.js";
 import { OAuth2Client } from "google-auth-library";
 import Testimonial from "../models/TestimonialModel.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -80,6 +80,11 @@ const createSendResToken = async (
   const userResponse = user.toObject ? user.toObject() : { ...user };
   delete userResponse.password;
   userResponse.sessionExpiresAt = sessionExpiresAt;
+
+  if (!isRefreshToken) {
+    const userWithToken = { ...user.toObject(), token };
+    sendWelcomeEmail(userWithToken).catch((err) => console.error(err)); 
+  }
 
   res.status(statusCode).json({ user: userResponse });
 };
